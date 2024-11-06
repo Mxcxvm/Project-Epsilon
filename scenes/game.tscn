@@ -162,6 +162,21 @@ texture = ExtResource("1_4rd4p")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_75ugk")
 
+[sub_resource type="Animation" id="Animation_yt5u5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(206, -84)]
+}
+
 [sub_resource type="Animation" id="Animation_y1tcl"]
 resource_name = "move"
 length = 1.5
@@ -179,21 +194,6 @@ tracks/0/keys = {
 "values": [Vector2(206, -84), Vector2(306, -84)]
 }
 
-[sub_resource type="Animation" id="Animation_yt5u5"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(206, -84)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ef3gl"]
 _data = {
 "RESET": SubResource("Animation_yt5u5"),
@@ -207,21 +207,23 @@ tile_set = SubResource("TileSet_q15rp")
 format = 2
 layer_0/tile_data = PackedInt32Array(65534, 0, 0, 65535, 0, 0, 0, 0, 0, 1, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, -65528, 0, 5, -131064, 0, 3, 131074, 262144, 9, 196610, 262144, 10, 196609, 262144, 10, 196608, 262144, 10, 262143, 262144, 10, 262142, 262144, 10, 262141, 262144, 10, 196611, 262144, 10, 196612, 262144, 10, 196613, 262144, 10, 196614, 262144, 10, 196615, 262144, 10, 196616, 262144, 10, 196617, 262144, 10, 196618, 262144, 10, 196619, 262144, 10, 262140, 262144, 10, 262139, 262144, 10, 262138, 262144, 10, 262137, 262144, 10, 262136, 262144, 10, 262135, 262144, 10, 262134, 262144, 10, 262133, 262144, 10, 262132, 262144, 10, 262131, 262144, 10, 262130, 262144, 10, 327666, 262144, 10, 327667, 262144, 10, 327668, 262144, 10, 327669, 262144, 10, 327670, 262144, 10, 327671, 262144, 10, 327672, 262144, 10, 327673, 262144, 10, 327674, 262144, 10, 327675, 262144, 10, 327676, 262144, 10, 327677, 262144, 10, 327678, 262144, 10, 327679, 262144, 10, 262144, 262144, 10, 262145, 262144, 10, 262146, 262144, 10, 262147, 262144, 10, 262148, 262144, 10, 262149, 262144, 10, 262150, 262144, 10, 262151, 262144, 10, 262152, 262144, 10, 262153, 262144, 10, 262154, 262144, 10, 262155, 262144, 10, 262156, 262144, 10, 262157, 262144, 10, 262158, 262144, 10, 262159, 262144, 10, 196620, 262144, 10, 196621, 262144, 10, 196622, 262144, 10, 196623, 262144, 10, 196624, 262144, 10, 196625, 262144, 10, 196626, 262144, 10, 196627, 262144, 10, 196628, 262144, 10, 196629, 262144, 10, 262165, 262144, 10, 262164, 262144, 10, 262163, 262144, 10, 262162, 262144, 10, 262161, 262144, 10, 262160, 262144, 10, 131075, 262144, 9, 131076, 262144, 9, 131077, 262144, 9, 131078, 262144, 9, 131079, 262144, 9, 131080, 262144, 9, 131081, 262144, 9, 131082, 262144, 9, 131083, 262144, 9, 131084, 262144, 9, 131085, 262144, 9, 131073, 262144, 9, 131072, 262144, 9, 196607, 262144, 9, 196606, 262144, 9, 196605, 262144, 9, 196604, 262144, 9, 131086, 262144, 9, 131087, 262144, 9, 131088, 262144, 9, 131089, 262144, 9, 131090, 262144, 9, 131091, 262144, 9, 131092, 262144, 9, 131093, 262144, 9, 196603, 262144, 9, 196602, 262144, 9, 196601, 262144, 9, 196600, 262144, 9, 196599, 262144, 9, 196598, 262144, 9, 196597, 262144, 9, 196596, 262144, 9, 196595, 262144, 9, 196594, 262144, 9, 2, 589824, 0, 3, 655360, 0, 4, 655360, 0, 5, 655360, 0, 6, 720896, 0, -196605, 0, 0, -196604, 0, 0, -196603, 0, 0, -65536, 65536, 6, -65525, 65536, 6, 12, 0, 0, 13, 0, 0, 14, 0, 0, 15, 0, 0, 16, 0, 0, 17, 0, 0, 18, 0, 0, 19, 0, 0, -65515, 327680, 0, -131051, 327680, 0, -196587, 327680, 0, -262123, 327680, 0, -327659, 327680, 0, -393195, 327680, 0, -458731, 327680, 0, 20, 0, 0, 21, 0, 0, 65533, 0, 0, 65532, 0, 0, 65531, 0, 0, 65530, 0, 0, 65529, 0, 0, 65528, 0, 0, -12, 65536, 0, -65548, 65536, 0, -131084, 65536, 0, -196620, 65536, 0, -262156, 65536, 0, -327692, 65536, 0, -393228, 65536, 0, -458764, 65536, 0, 65524, 0, 0, 65525, 0, 0, 65526, 0, 0, 65527, 0, 0, -65521, 65536, 6, -7, 65536, 6)
 
-[node name="Player" parent="." instance=ExtResource("1_edsgv")]
+[node name="Player2" parent="." instance=ExtResource("1_edsgv")]
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
+[node name="Camera2D" type="Camera2D" parent="Player2"]
 position = Vector2(-1.19209e-07, -8)
 scale = Vector2(0.438264, 0.725222)
 zoom = Vector2(4, 4)
 position_smoothing_enabled = true
 
-[node name="Platform" parent="." instance=ExtResource("3_asqf1")]
+[node name="Platforms" type="Node" parent="."]
+
+[node name="Platform" parent="Platforms" instance=ExtResource("3_asqf1")]
 position = Vector2(142, -84)
 
-[node name="Platform2" parent="." instance=ExtResource("3_asqf1")]
+[node name="Platform2" parent="Platforms" instance=ExtResource("3_asqf1")]
 position = Vector2(206, -84)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Platform2"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Platforms/Platform2"]
 libraries = {
 "": SubResource("AnimationLibrary_ef3gl")
 }
