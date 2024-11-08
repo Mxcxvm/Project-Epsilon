@@ -1,12 +1,16 @@
-[gd_scene load_steps=63 format=3 uid="uid://dxnkfj47wkm23"]
+[gd_scene load_steps=58 format=3 uid="uid://dxnkfj47wkm23"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_7rjoq"]
 [ext_resource type="Texture2D" uid="uid://cfu1x4qmoxqg2" path="res://assets/sprites/vagabond/idle/idle01.png" id="2_6bst3"]
 [ext_resource type="Texture2D" uid="uid://bot1brva64bdn" path="res://assets/sprites/vagabond/heavy_attack/heavy_attack01.png" id="2_brw2j"]
+[ext_resource type="Texture2D" uid="uid://cyte1u53quo2e" path="res://assets/sprites/vagabond/dash/dash01.png" id="2_rhtpy"]
 [ext_resource type="Texture2D" uid="uid://dijyv4krl1erl" path="res://assets/sprites/vagabond/heavy_attack/heavy_attack02.png" id="3_fc6ob"]
+[ext_resource type="Texture2D" uid="uid://bknmopqagfoqh" path="res://assets/sprites/vagabond/dash/dash02.png" id="3_p1agm"]
 [ext_resource type="Texture2D" uid="uid://r2hcoqjuq3d6" path="res://assets/sprites/vagabond/idle/idle02.png" id="3_py1ao"]
 [ext_resource type="Texture2D" uid="uid://cbyornsefd670" path="res://assets/sprites/vagabond/heavy_attack/heavy_attack03.png" id="4_8c6es"]
 [ext_resource type="Texture2D" uid="uid://ba7qo3y50i81w" path="res://assets/sprites/vagabond/idle/idle03.png" id="4_ry7wa"]
+[ext_resource type="Texture2D" uid="uid://doopnkxnronvh" path="res://assets/sprites/vagabond/dash/dash03.png" id="4_yc4yj"]
+[ext_resource type="Texture2D" uid="uid://bcns7ww7n88pb" path="res://assets/sprites/vagabond/dash/dash04.png" id="5_0j4us"]
 [ext_resource type="Texture2D" uid="uid://de0i78pmy0cf6" path="res://assets/sprites/vagabond/heavy_attack/heavy_attack04.png" id="5_qlqgm"]
 [ext_resource type="Texture2D" uid="uid://cb6222bcs5h4w" path="res://assets/sprites/vagabond/idle/idle04.png" id="5_rpbti"]
 [ext_resource type="Texture2D" uid="uid://bgfyd17mk7y4j" path="res://assets/sprites/vagabond/heavy_attack/heavy_attack05.png" id="6_6h43l"]
@@ -51,18 +55,26 @@
 [ext_resource type="Texture2D" uid="uid://xg07qmpbfpdq" path="res://assets/sprites/vagabond/attack/attack05.png" id="29_scbuj"]
 [ext_resource type="Texture2D" uid="uid://cqrbcsdvq80r4" path="res://assets/sprites/vagabond/run/run08.png" id="29_y8rmw"]
 [ext_resource type="Texture2D" uid="uid://chcu1h03ox27x" path="res://assets/sprites/vagabond/attack/attack06.png" id="30_ytllc"]
-[ext_resource type="Texture2D" uid="uid://duhj66miudx1k" path="res://assets/sprites/vagabond/attack/attack07.png" id="31_powqe"]
-[ext_resource type="Texture2D" uid="uid://jd2m7kaex77f" path="res://assets/sprites/vagabond/attack/attack08.png" id="32_akd0h"]
-[ext_resource type="Texture2D" uid="uid://b3penm6bxyxwk" path="res://assets/sprites/vagabond/attack/attack09.png" id="33_n8s2g"]
-[ext_resource type="Texture2D" uid="uid://wuhfdwaxnhmx" path="res://assets/sprites/vagabond/attack/attack10.png" id="34_lmrb4"]
-[ext_resource type="Texture2D" uid="uid://ckioxoree0emm" path="res://assets/sprites/vagabond/attack/attack11.png" id="35_o63f1"]
-[ext_resource type="Texture2D" uid="uid://boqn7gtfo2yli" path="res://assets/sprites/vagabond/attack/attack12.png" id="36_lra2b"]
-[ext_resource type="Texture2D" uid="uid://bm3cb1m887jaf" path="res://assets/sprites/vagabond/attack/attack13.png" id="37_bhf0j"]
-[ext_resource type="Texture2D" uid="uid://dwd0gck2xbavf" path="res://assets/sprites/vagabond/attack/attack14.png" id="38_4p7to"]
-[ext_resource type="Texture2D" uid="uid://b7ns6oslw30gg" path="res://assets/sprites/vagabond/attack/attack15.png" id="39_dgcaa"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_n6itq"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rhtpy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_p1agm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_yc4yj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_0j4us")
+}],
+"loop": true,
+"name": &"dash",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("2_brw2j")
@@ -103,7 +115,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("14_cpksw")
 }],
-"loop": true,
+"loop": false,
 "name": &"heavy_attack",
 "speed": 10.0
 }, {
@@ -170,7 +182,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 40.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -184,66 +196,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"jump",
-"speed": 3.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("25_rq3gg")
-}, {
-"duration": 1.0,
-"texture": ExtResource("26_cw8od")
-}, {
-"duration": 1.0,
-"texture": ExtResource("27_wgi8d")
-}, {
-"duration": 1.0,
-"texture": ExtResource("25_rq3gg")
-}, {
-"duration": 1.0,
-"texture": ExtResource("26_cw8od")
-}, {
-"duration": 1.0,
-"texture": ExtResource("27_wgi8d")
-}, {
-"duration": 1.0,
-"texture": ExtResource("28_psrp8")
-}, {
-"duration": 1.0,
-"texture": ExtResource("29_scbuj")
-}, {
-"duration": 1.0,
-"texture": ExtResource("30_ytllc")
-}, {
-"duration": 1.0,
-"texture": ExtResource("31_powqe")
-}, {
-"duration": 1.0,
-"texture": ExtResource("32_akd0h")
-}, {
-"duration": 1.0,
-"texture": ExtResource("33_n8s2g")
-}, {
-"duration": 1.0,
-"texture": ExtResource("34_lmrb4")
-}, {
-"duration": 1.0,
-"texture": ExtResource("35_o63f1")
-}, {
-"duration": 1.0,
-"texture": ExtResource("36_lra2b")
-}, {
-"duration": 1.0,
-"texture": ExtResource("37_bhf0j")
-}, {
-"duration": 1.0,
-"texture": ExtResource("38_4p7to")
-}, {
-"duration": 1.0,
-"texture": ExtResource("39_dgcaa")
-}],
-"loop": true,
-"name": &"light_attack",
-"speed": 10.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -273,6 +226,29 @@ animations = [{
 "loop": true,
 "name": &"run",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("25_rq3gg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_cw8od")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_wgi8d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_psrp8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_scbuj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_ytllc")
+}],
+"loop": false,
+"name": &"slash",
+"speed": 10.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j0j4y"]
@@ -284,13 +260,13 @@ z_index = 1
 script = ExtResource("1_7rjoq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(1, -32)
+position = Vector2(10, -32)
 sprite_frames = SubResource("SpriteFrames_n6itq")
-animation = &"light_attack"
+animation = &"heavy_attack"
 autoplay = "idle"
-frame = 2
-frame_progress = 0.47872
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -10)
 shape = SubResource("CapsuleShape2D_j0j4y")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
