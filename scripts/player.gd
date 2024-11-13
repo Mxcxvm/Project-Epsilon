@@ -19,9 +19,9 @@ func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("move_left", "move_right")
 	
 	# Flip the Sprite
-	if direction > 0:
+	if direction > 0 and is_attacking == false:
 		animated_sprite.flip_h = false	
-	if direction < 0:
+	if direction < 0 and is_attacking == false:
 		animated_sprite.flip_h = true	
 		
 	# Play movement animations
@@ -39,18 +39,21 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		
 	# Handle attacks
-	if Input.is_action_just_pressed("attack"):
-		animated_sprite.play("slash")
+	if Input.is_action_just_pressed("light_attack"):
+		animated_sprite.play("attack_light")
 		is_attacking = true
+		$AttackArea2D/CollisionShape2D.disabled = false
 		
 	if Input.is_action_just_pressed("heavy_attack"):
-		animated_sprite.play("heavy_attack")
+		animated_sprite.play("attack_heavy")
 		is_attacking = true
+		$AttackArea2D/CollisionShape2D.disabled = false
 
 	move_and_slide()
 	
 
 
 func _on_animated_sprite_2d_animation_finished() -> void:
-	if animated_sprite.animation == "slash" or animated_sprite.animation == "heavy_attack":
+	if animated_sprite.animation == "attack_light" or animated_sprite.animation == "attack_heavy":
+		$AttackArea2D/CollisionShape2D.disabled = true
 		is_attacking = false
