@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="InvItem" load_steps=3 format=3 uid="uid://dw403blhfsbg3"]
+
+[ext_resource type="Script" path="res://inventory/Inventory_item.gd" id="1_r5xa0"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vtlgi"]
+
+[resource]
+script = ExtResource("1_r5xa0")
+name = "Longsword"
+texture = SubResource("PlaceholderTexture2D_vtlgi")

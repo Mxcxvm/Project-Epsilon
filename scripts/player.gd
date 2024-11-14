@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+@export var inv: Inv
+
 const SPEED = 130.0
 const JUMP_VELOCITY = -300.0
 var is_attacking = false
