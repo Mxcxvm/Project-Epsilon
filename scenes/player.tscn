@@ -327,10 +327,11 @@ centered = false
 position = Vector2(0, -10)
 shape = SubResource("CapsuleShape2D_j0j4y")
 
-[node name="AttackArea2D" type="Area2D" parent="."]
+[node name="AttackArea2D" type="Area2D" parent="." groups=["Sword"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea2D"]
 position = Vector2(21.5, -10)
 shape = SubResource("RectangleShape2D_2bimr")
+disabled = true
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

@@ -1,7 +1,24 @@
-[gd_scene load_steps=9 format=3 uid="uid://b101w1wg2ohn3"]
+[gd_scene load_steps=14 format=3 uid="uid://b101w1wg2ohn3"]
 
+[ext_resource type="Script" path="res://scenes/enemy.gd" id="1_pskf2"]
 [ext_resource type="Texture2D" uid="uid://dkkg35rapg2th" path="res://assets/sprites/slime_green.png" id="1_sh2x6"]
-[ext_resource type="PackedScene" uid="uid://b54ra5rmlmiv0" path="res://scenes/killzone.tscn" id="2_qv3ca"]
+[ext_resource type="Texture2D" uid="uid://dhgavmfsjde2o" path="res://assets/sprites/slime_purple.png" id="2_2ment"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uq7wu"]
+atlas = ExtResource("2_2ment")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_23gta"]
+atlas = ExtResource("2_2ment")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ta1g1"]
+atlas = ExtResource("2_2ment")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pv4wh"]
+atlas = ExtResource("2_2ment")
+region = Rect2(0, 0, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lrxh2"]
 atlas = ExtResource("1_sh2x6")
@@ -23,6 +40,23 @@ region = Rect2(72, 24, 24, 24)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_uq7wu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_23gta")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ta1g1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pv4wh")
+}],
+"loop": false,
+"name": &"Destroyed",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_lrxh2")
 }, {
 "duration": 1.0,
@@ -35,22 +69,30 @@ animations = [{
 "texture": SubResource("AtlasTexture_o5fna")
 }],
 "loop": true,
-"name": &"default",
+"name": &"Idle",
 "speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jib10"]
-size = Vector2(10, 10)
+size = Vector2(26, 38)
 
-[node name="Slime" type="Node2D"]
+[node name="Slime" type="Area2D"]
+scale = Vector2(0.400002, 0.400002)
+script = ExtResource("1_pskf2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -12)
+visibility_layer = 2
+position = Vector2(0, -39)
+scale = Vector2(3.19191, 3.19191)
 sprite_frames = SubResource("SpriteFrames_rl1dl")
-autoplay = "default"
+animation = &"Destroyed"
+autoplay = "Idle"
+frame = 3
+frame_progress = 0.182451
 
-[node name="Killzone" parent="." instance=ExtResource("2_qv3ca")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
-position = Vector2(0, -6)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -20)
 shape = SubResource("RectangleShape2D_jib10")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

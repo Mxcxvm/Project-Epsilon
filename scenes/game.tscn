@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://b6nalqfrc6gn"]
+[gd_scene load_steps=14 format=3 uid="uid://b6nalqfrc6gn"]
 
 [ext_resource type="Texture2D" uid="uid://dcnnqy24s70v6" path="res://assets/sprites/world_tileset.png" id="1_4rd4p"]
 [ext_resource type="PackedScene" uid="uid://dxnkfj47wkm23" path="res://scenes/player.tscn" id="1_edsgv"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://fxs7iyibn7rq" path="res://scenes/Platform.tscn" id="3_asqf1"]
 [ext_resource type="PackedScene" uid="uid://b54ra5rmlmiv0" path="res://scenes/killzone.tscn" id="4_o2shk"]
 [ext_resource type="PackedScene" uid="uid://i7dc5pfotnt0" path="res://inventory/inv_ui.tscn" id="4_owjd7"]
+[ext_resource type="PackedScene" uid="uid://b101w1wg2ohn3" path="res://scenes/Enemy.tscn" id="7_v0sa0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_75ugk"]
 texture = ExtResource("1_4rd4p")
@@ -250,5 +251,8 @@ offset_left = 475.0
 offset_top = 254.0
 offset_right = 671.0
 offset_bottom = 406.0
+
+[node name="Slime" parent="." instance=ExtResource("7_v0sa0")]
+position = Vector2(200, 0)
 
 [connection signal="body_shape_entered" from="Killzone" to="Player2" method="_on_killzone_body_shape_entered"]
