@@ -255,4 +255,7 @@ offset_bottom = 406.0
 [node name="Slime" parent="." instance=ExtResource("7_v0sa0")]
 position = Vector2(200, 0)
 
+[node name="Slime2" parent="." instance=ExtResource("7_v0sa0")]
+position = Vector2(248, -1)
+
 [connection signal="body_shape_entered" from="Killzone" to="Player2" method="_on_killzone_body_shape_entered"]
