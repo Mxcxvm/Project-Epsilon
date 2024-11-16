@@ -41,7 +41,7 @@ In *Project Epsilon* steuerst du einen abtrünnigen Agenten, der sich durch eine
      ```bash
      git clone https://github.com/Mxcxvm/ProjectEpsilon.git
      ```
-   - Öffne das Projekt in Godot und wähle die gewünschte Plattform aus.
+   - Öffne das Projekt in Godot.
    - Starte den Build-Prozess oder klicke auf "Play" für die Testversion.
 
 ## Kontrollen
@@ -52,7 +52,7 @@ In *Project Epsilon* steuerst du einen abtrünnigen Agenten, der sich durch eine
 | Springen               | `Leertaste`                    |
 | Angreifen              | `J / Linke Maustaste`          |
 | Schwerer Angriff       | `k / Rechte Maustaste`         |
-| Inventar öffnen        | `Tav`                          |
+| Inventar öffnen        | `Tab`                          |
 | Karte öffnen           | `M`                            |
 | Dash                   | `Shift`                        |
 | Menü öffnen            | `Esc`                          |
