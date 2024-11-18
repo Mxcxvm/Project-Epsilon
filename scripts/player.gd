@@ -25,6 +25,8 @@ var air_dash_used = false
 var is_charging = false  # Variable für den Charge-Status
 const CHARGE_ANIMATION_FRAME = 2  # Der Frame, an dem die Charge-Animation stoppt
 
+var damage = 0
+
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 func _physics_process(delta: float) -> void:
@@ -123,23 +125,21 @@ func _physics_process(delta: float) -> void:
 			animated_sprite.play("attack_light")
 			is_attacking = true
 			$AttackArea2D/CollisionShape2D.disabled = false
-			# Korrigiere Position beim light attack in die andere Richtung
 			if animated_sprite.flip_h:
 				animated_sprite.offset.x = -15 
-				$AttackArea2D.position.x = 0  # Kollisionsbox nach links
-				$AttackArea2D.scale.x = -1    # Flip die Kollisionsbox nach links
+				$AttackArea2D.position.x = 0
+				$AttackArea2D.scale.x = -1
 			else:
 				animated_sprite.offset.x = 0
-				$AttackArea2D.position.x = 0   # Kollisionsbox nach rechts
-				$AttackArea2D.scale.x = 1      # Normal-Ausrichtung der Kollisionsbox
+				$AttackArea2D.position.x = 0
+				$AttackArea2D.scale.x = 1
 
 		# Heavy Attack - Zwei Animationen
 		if Input.is_action_pressed("heavy_attack") and not is_attacking and current_stamina >= HEAVY_ATTACK_COST:
-			if not is_charging:  # Nur beim ersten Frame des Ladens
+			if not is_charging:
 				is_charging = true
-				is_attacking = true  # Verhindert andere Aktionen während des Ladens
+				is_attacking = true
 				animated_sprite.play("attack_heavy_charge")
-				# Setze die gleichen Offset- und Flip-Werte wie beim Heavy Attack
 				if animated_sprite.flip_h:
 					animated_sprite.offset.x = -55 
 					$AttackArea2D.position.x = -0
@@ -148,7 +148,7 @@ func _physics_process(delta: float) -> void:
 					animated_sprite.offset.x = 0
 					$AttackArea2D.position.x = 0
 					$AttackArea2D.scale.x = 1
-			
+
 		if Input.is_action_just_released("heavy_attack") and is_charging:
 			current_stamina -= HEAVY_ATTACK_COST
 			animated_sprite.play("attack_heavy")

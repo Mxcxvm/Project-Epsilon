@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=3 uid="uid://dxnkfj47wkm23"]
+[gd_scene load_steps=70 format=3 uid="uid://dxnkfj47wkm23"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_7rjoq"]
 [ext_resource type="Texture2D" uid="uid://cfu1x4qmoxqg2" path="res://assets/sprites/vagabond/idle/idle01.png" id="2_6bst3"]
@@ -58,6 +58,7 @@
 [ext_resource type="Texture2D" uid="uid://cj65gve52ynqs" path="res://assets/sprites/vagabond/jump_flip/jump_flip01.png" id="48_5y3k6"]
 [ext_resource type="Texture2D" uid="uid://by5iia5yiugtb" path="res://assets/sprites/vagabond/jump_flip/jump_flip02.png" id="49_wi6c0"]
 [ext_resource type="Texture2D" uid="uid://r7ac812j1i7f" path="res://assets/sprites/vagabond/jump_flip/jump_flip03.png" id="50_2w5xf"]
+[ext_resource type="Script" path="res://scenes/attack_area_2d.gd" id="59_i3i4w"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_utmy2"]
 atlas = ExtResource("25_rq3gg")
@@ -356,6 +357,7 @@ position = Vector2(0, -10)
 shape = SubResource("CapsuleShape2D_j0j4y")
 
 [node name="AttackArea2D" type="Area2D" parent="." groups=["Sword"]]
+script = ExtResource("59_i3i4w")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea2D"]
 position = Vector2(21.5, -10)
