@@ -7,14 +7,17 @@
 [node name="Inv_UI" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 196.0
-offset_bottom = 152.0
+offset_right = 187.0
+offset_bottom = 141.0
+scale = Vector2(4, 4)
 script = ExtResource("1_5x5iy")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 layout_mode = 0
-offset_right = 196.0
-offset_bottom = 152.0
+offset_left = 45.75
+offset_top = 0.75
+offset_right = 230.75
+offset_bottom = 138.75
 texture = ExtResource("2_l4qlm")
 
 [node name="GridContainer" type="GridContainer" parent="NinePatchRect"]

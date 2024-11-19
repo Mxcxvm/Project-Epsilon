@@ -184,3 +184,6 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 		is_attacking = false
 	elif animated_sprite.animation == "dash":
 		is_dashing = false
+
+func collect(item):
+	inv.insert(item)

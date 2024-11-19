@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b6nalqfrc6gn"]
+[gd_scene load_steps=17 format=3 uid="uid://b6nalqfrc6gn"]
 
 [ext_resource type="Texture2D" uid="uid://dcnnqy24s70v6" path="res://assets/sprites/world_tileset.png" id="1_4rd4p"]
 [ext_resource type="PackedScene" uid="uid://dxnkfj47wkm23" path="res://scenes/player.tscn" id="1_edsgv"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b54ra5rmlmiv0" path="res://scenes/killzone.tscn" id="4_o2shk"]
 [ext_resource type="PackedScene" uid="uid://i7dc5pfotnt0" path="res://inventory/inv_ui.tscn" id="4_owjd7"]
 [ext_resource type="PackedScene" uid="uid://b101w1wg2ohn3" path="res://scenes/Enemy.tscn" id="7_v0sa0"]
+[ext_resource type="PackedScene" uid="uid://dk6e4daresqt3" path="res://inventory/items/coin_collectable.tscn" id="8_k0th2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_75ugk"]
 texture = ExtResource("1_4rd4p")
@@ -167,10 +168,8 @@ texture = ExtResource("1_4rd4p")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_75ugk")
 
-[sub_resource type="Animation" id="Animation_i6v1e"]
-resource_name = "move_up"
-length = 1.5
-loop_mode = 2
+[sub_resource type="Animation" id="Animation_8l0nf"]
+length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -178,10 +177,10 @@ tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(578, -31), Vector2(578, -108)]
+"values": [Vector2(-160, -27)]
 }
 
 [sub_resource type="Animation" id="Animation_ndxwr"]
@@ -201,6 +200,23 @@ tracks/0/keys = {
 "values": [Vector2(174, -84), Vector2(291, -84)]
 }
 
+[sub_resource type="Animation" id="Animation_i6v1e"]
+resource_name = "move_up"
+length = 1.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(578, -31), Vector2(578, -108)]
+}
+
 [sub_resource type="Animation" id="Animation_ffesk"]
 resource_name = "out_of_bounce"
 length = 1.5
@@ -216,21 +232,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(-160, -27), Vector2(-160, -90)]
-}
-
-[sub_resource type="Animation" id="Animation_8l0nf"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-160, -27)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ef3gl"]
@@ -313,5 +314,14 @@ position = Vector2(200, 0)
 
 [node name="Slime2" parent="." instance=ExtResource("7_v0sa0")]
 position = Vector2(248, -1)
+
+[node name="Coin_collectable" parent="." instance=ExtResource("8_k0th2")]
+position = Vector2(-36, -28)
+
+[node name="Coin_collectable2" parent="." instance=ExtResource("8_k0th2")]
+position = Vector2(-82, -27)
+
+[node name="Coin_collectable3" parent="." instance=ExtResource("8_k0th2")]
+position = Vector2(-125, -27)
 
 [connection signal="body_shape_entered" from="Killzone" to="Player2" method="_on_killzone_body_shape_entered"]
