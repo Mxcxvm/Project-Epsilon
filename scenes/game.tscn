@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b54ra5rmlmiv0" path="res://scenes/killzone.tscn" id="4_o2shk"]
 [ext_resource type="PackedScene" uid="uid://i7dc5pfotnt0" path="res://inventory/inv_ui.tscn" id="4_owjd7"]
 [ext_resource type="PackedScene" uid="uid://b101w1wg2ohn3" path="res://scenes/Enemy.tscn" id="7_v0sa0"]
-[ext_resource type="PackedScene" uid="uid://dk6e4daresqt3" path="res://inventory/items/coin_collectable.tscn" id="8_k0th2"]
+[ext_resource type="PackedScene" path="res://inventory/items/coin_collectable.tscn" id="8_k0th2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_75ugk"]
 texture = ExtResource("1_4rd4p")
@@ -309,19 +309,23 @@ offset_top = 254.0
 offset_right = 671.0
 offset_bottom = 406.0
 
-[node name="Slime" parent="." instance=ExtResource("7_v0sa0")]
-position = Vector2(200, 0)
+[node name="Items" type="Node" parent="."]
 
-[node name="Slime2" parent="." instance=ExtResource("7_v0sa0")]
-position = Vector2(248, -1)
-
-[node name="Coin_collectable" parent="." instance=ExtResource("8_k0th2")]
-position = Vector2(-36, -28)
-
-[node name="Coin_collectable2" parent="." instance=ExtResource("8_k0th2")]
+[node name="Coin_collectable2" parent="Items" instance=ExtResource("8_k0th2")]
 position = Vector2(-82, -27)
 
-[node name="Coin_collectable3" parent="." instance=ExtResource("8_k0th2")]
+[node name="Coin_collectable" parent="Items" instance=ExtResource("8_k0th2")]
+position = Vector2(-36, -28)
+
+[node name="Coin_collectable3" parent="Items" instance=ExtResource("8_k0th2")]
 position = Vector2(-125, -27)
+
+[node name="Enemies" type="Node" parent="."]
+
+[node name="Slime" parent="Enemies" instance=ExtResource("7_v0sa0")]
+position = Vector2(200, 0)
+
+[node name="Slime2" parent="Enemies" instance=ExtResource("7_v0sa0")]
+position = Vector2(248, -1)
 
 [connection signal="body_shape_entered" from="Killzone" to="Player2" method="_on_killzone_body_shape_entered"]
