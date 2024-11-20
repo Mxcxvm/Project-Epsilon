@@ -393,7 +393,7 @@ theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_2ra8r")
 text = "Resume"
 
-[node name="Go to Main Menu" type="Button" parent="UI/Pause Menu/Pause Panel/VBoxContainer"]
+[node name="Exit Game" type="Button" parent="UI/Pause Menu/Pause Panel/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_kq6im")
@@ -402,4 +402,4 @@ text = "Exit Game"
 
 [connection signal="body_shape_entered" from="Killzone" to="Player2" method="_on_killzone_body_shape_entered"]
 [connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Resume Button" to="UI/Pause Menu" method="_on_resume_button_pressed"]
-[connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Go to Main Menu" to="UI/Pause Menu" method="_on_go_to_main_menu_pressed"]
+[connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Exit Game" to="UI/Pause Menu" method="_on_go_to_main_menu_pressed"]
