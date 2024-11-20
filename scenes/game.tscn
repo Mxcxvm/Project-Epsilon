@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b6nalqfrc6gn"]
+[gd_scene load_steps=21 format=3 uid="uid://b6nalqfrc6gn"]
 
 [ext_resource type="Texture2D" uid="uid://dcnnqy24s70v6" path="res://assets/sprites/world_tileset.png" id="1_4rd4p"]
 [ext_resource type="PackedScene" uid="uid://dxnkfj47wkm23" path="res://scenes/player.tscn" id="1_edsgv"]
@@ -7,7 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://b54ra5rmlmiv0" path="res://scenes/killzone.tscn" id="4_o2shk"]
 [ext_resource type="PackedScene" uid="uid://i7dc5pfotnt0" path="res://inventory/inv_ui.tscn" id="4_owjd7"]
 [ext_resource type="PackedScene" uid="uid://b101w1wg2ohn3" path="res://scenes/Enemy.tscn" id="7_v0sa0"]
-[ext_resource type="PackedScene" path="res://inventory/items/coin_collectable.tscn" id="8_k0th2"]
+[ext_resource type="PackedScene" uid="uid://dk6e4daresqt3" path="res://inventory/items/coin_collectable.tscn" id="8_k0th2"]
+[ext_resource type="Script" path="res://scenes/pause_menu.gd" id="9_0eorh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_75ugk"]
 texture = ExtResource("1_4rd4p")
@@ -244,6 +245,16 @@ _data = {
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ptsxl"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ra8r"]
+bg_color = Color(0.4, 0.223529, 0.192157, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kq6im"]
+bg_color = Color(0.4, 0.223529, 0.192157, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77mlo"]
+content_margin_left = 0.0
+bg_color = Color(0.4, 0.223529, 0.192157, 1)
+
 [node name="Game" type="Node2D"]
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -257,8 +268,7 @@ inv = ExtResource("3_4f2ei")
 
 [node name="Camera2D" type="Camera2D" parent="Player2"]
 position = Vector2(0, -7)
-scale = Vector2(6.438, 10.657)
-zoom = Vector2(7, 7)
+zoom = Vector2(5, 5)
 limit_bottom = 120
 
 [node name="Platforms" type="Node" parent="."]
@@ -324,8 +334,72 @@ position = Vector2(-125, -27)
 
 [node name="Slime" parent="Enemies" instance=ExtResource("7_v0sa0")]
 position = Vector2(200, 0)
+scale = Vector2(0.5, 0.5)
 
 [node name="Slime2" parent="Enemies" instance=ExtResource("7_v0sa0")]
 position = Vector2(248, -1)
+scale = Vector2(0.5, 0.5)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Pause Menu" type="Node" parent="UI"]
+script = ExtResource("9_0eorh")
+
+[node name="Pause Panel" type="Panel" parent="UI/Pause Menu"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/Pause Menu/Pause Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -165.0
+offset_top = -174.0
+offset_right = 166.0
+offset_bottom = -105.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "Game Paused"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Pause Menu/Pause Panel"]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -145.0
+offset_top = -94.0
+offset_right = 151.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="Resume Button" type="Button" parent="UI/Pause Menu/Pause Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_2ra8r")
+text = "Resume"
+
+[node name="Go to Main Menu" type="Button" parent="UI/Pause Menu/Pause Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_kq6im")
+theme_override_styles/normal = SubResource("StyleBoxFlat_77mlo")
+text = "Exit Game"
 
 [connection signal="body_shape_entered" from="Killzone" to="Player2" method="_on_killzone_body_shape_entered"]
+[connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Resume Button" to="UI/Pause Menu" method="_on_resume_button_pressed"]
+[connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Go to Main Menu" to="UI/Pause Menu" method="_on_go_to_main_menu_pressed"]

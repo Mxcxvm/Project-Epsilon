@@ -45,7 +45,7 @@ func _physics_process(delta: float) -> void:
 		jump_count = 0
 	
 	# Handle jump
-	if Input.is_action_just_pressed("jump") and jump_count < MAX_JUMPS:
+	if Input.is_action_just_pressed("jump") and is_attacking == false and jump_count < MAX_JUMPS:
 		velocity.y = JUMP_VELOCITY
 		jump_count += 1
 		
