@@ -18,3 +18,6 @@ func _on_resume_button_pressed() -> void:
 
 func _on_go_to_main_menu_pressed() -> void:
 	get_tree().quit()
+
+func _on_options_pressed() -> void:
+	pass # Replace with function body.
