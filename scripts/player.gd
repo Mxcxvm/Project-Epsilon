@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @export var inv: Inv
 
+# Movement Konstanten
 const SPEED = 125.0
 const JUMP_VELOCITY = -250.0
 const DASH_SPEED = 350.0
@@ -14,6 +15,12 @@ const DASH_COST = 25.0
 const LIGHT_ATTACK_COST = 20.0
 const HEAVY_ATTACK_COST = 35.0
 
+# Damage Konstanten
+var base_damage = 10
+const LIGHT_ATTACK_MULTIPLIER = 1.0
+const HEAVY_ATTACK_MULTIPLIER = 2.0
+var current_damage = 0
+
 var current_stamina = MAX_STAMINA
 var is_attacking = false
 var jump_count = 0
@@ -22,24 +29,50 @@ var is_dashing = false
 var dash_timer = 0.0
 var dash_direction = 0
 var air_dash_used = false 
-var is_charging = false  # Variable für den Charge-Status
-const CHARGE_ANIMATION_FRAME = 2  # Der Frame, an dem die Charge-Animation stoppt
+var is_charging = false
+const CHARGE_ANIMATION_FRAME = 2
 
-var damage = 0
+# Health System
+var max_health = 100
+var current_health = max_health
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
+func _ready():
+	current_health = max_health
+
+# Schaden (Noch fertig machen)
+func take_damage(amount: int) -> void:
+	current_health -= amount
+	print("Player took ", amount, " damage. Remaining health: ", current_health)
+
+	if current_health <= 0:
+		die()
+
+func die() -> void:
+	print("Player died!")
+
+# Damage je nach attacke berechnen
+func calculate_damage(attack_type: String) -> int:
+	match attack_type:
+		"light":
+			return int(base_damage * LIGHT_ATTACK_MULTIPLIER)
+		"heavy":
+			return int(base_damage * HEAVY_ATTACK_MULTIPLIER)
+		_:
+			return 0
+			
+			
 func _physics_process(delta: float) -> void:
-	
 	# Regeneriere Stamina
 	if not is_attacking and not is_dashing:
 		current_stamina = min(current_stamina + STAMINA_REGEN * delta, MAX_STAMINA)
 	
-	# Add the gravity only when not dashing
+	# Gerader Dash in der Luft 
 	if not is_on_floor() and not is_dashing:
 		velocity += get_gravity() * delta
 	
-	# Reset air dash when touching floor
+	# Reset air dash wenn auf Boden
 	if is_on_floor():
 		air_dash_used = false
 		jump_count = 0
@@ -59,7 +92,7 @@ func _physics_process(delta: float) -> void:
 	
 	# Handle dash
 	if Input.is_action_just_pressed("dash") and not is_dashing and not is_attacking and current_stamina >= DASH_COST:
-		# check if air dash already used
+		# check ob air dash bereits verwendet wurde
 		if not is_on_floor() and air_dash_used:
 			return  # Verhindere den Dash
 			
@@ -72,16 +105,27 @@ func _physics_process(delta: float) -> void:
 		if not is_on_floor():
 			air_dash_used = true
 			
+		# Dash-Richtung bestimmen
 		if direction != 0:
+			# Wenn Bewegungsrichtung aktiv, nutze diese für Dash
 			dash_direction = direction
 		else:
-			dash_direction = -1 if animated_sprite.flip_h else 1
+			# Andernfalls nutze Blickrichtung des Sprites
+			if animated_sprite.flip_h:
+				dash_direction = -1  # Nach links
+			else:
+				dash_direction = 1   # Nach rechts
+				
+		# Dash-Animation abspielen
 		animated_sprite.play("dash")
+		
+		# Sprite-Ausrichtung an Dash-Richtung anpassen
 		if dash_direction < 0:
-			animated_sprite.flip_h = true
+			animated_sprite.flip_h = true  # Nach links
 		else:
-			animated_sprite.flip_h = false
+			animated_sprite.flip_h = false  # Nach rechts
 	
+	# Dash logik 
 	if is_dashing:
 		dash_timer -= delta
 		velocity.x = dash_direction * DASH_SPEED
@@ -124,6 +168,7 @@ func _physics_process(delta: float) -> void:
 			current_stamina -= LIGHT_ATTACK_COST
 			animated_sprite.play("attack_light")
 			is_attacking = true
+			current_damage = calculate_damage("light")
 			$AttackArea2D/CollisionShape2D.disabled = false
 			if animated_sprite.flip_h:
 				animated_sprite.offset.x = -15 
@@ -152,6 +197,7 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_released("heavy_attack") and is_charging:
 			current_stamina -= HEAVY_ATTACK_COST
 			animated_sprite.play("attack_heavy")
+			current_damage = calculate_damage("heavy")
 			$AttackArea2D/CollisionShape2D.disabled = false
 			if animated_sprite.flip_h:
 				animated_sprite.offset.x = -55 
@@ -163,14 +209,6 @@ func _physics_process(delta: float) -> void:
 				$AttackArea2D.scale.x = 1
 			is_charging = false
 
-	# Optional: Abbruch des Charge
-	if not Input.is_action_pressed("heavy_attack") and is_charging:
-		is_charging = false
-		is_attacking = false  # Reset auch den Attack-Status
-		if not is_attacking:
-			animated_sprite.play("idle")
-
-	# Stelle sicher, dass der Offset zurückgesetzt wird, wenn kein Angriff stattfindet
 	if not is_attacking:
 		animated_sprite.offset.x = 0
 		$AttackArea2D.position.x = 0
@@ -178,12 +216,15 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
+func get_current_damage() -> int:
+	return current_damage
+
+	
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if animated_sprite.animation == "attack_light" or animated_sprite.animation == "attack_heavy":
 		$AttackArea2D/CollisionShape2D.disabled = true
 		is_attacking = false
-	elif animated_sprite.animation == "dash":
-		is_dashing = false
-
+		current_damage = 0  # Reset
+		
 func collect(item):
 	inv.insert(item)

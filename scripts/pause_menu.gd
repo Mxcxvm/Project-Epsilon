@@ -12,12 +12,16 @@ func _process(delta: float) -> void:
 		get_tree().paused = true
 		pause_panel.show()
 		
+# Wenn resume button geclickt wird, dann hide panel und pausiere
 func _on_resume_button_pressed() -> void:
 	pause_panel.hide()
 	get_tree().paused = false
-
-func _on_go_to_main_menu_pressed() -> void:
+	
+# Wenn Reset geclickt wird dann entpausiere und Lade die scene neu
+func _on_reset_button_pressed() -> void:
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+	
+# Wenn Exit Game geclickt wird dann schließe game
+func _on_exit_button_pressed() -> void:
 	get_tree().quit()
-
-func _on_options_pressed() -> void:
-	pass # Replace with function body.

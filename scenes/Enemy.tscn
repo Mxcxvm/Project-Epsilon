@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://b101w1wg2ohn3"]
+[gd_scene load_steps=16 format=3 uid="uid://b101w1wg2ohn3"]
 
-[ext_resource type="Script" path="res://scenes/enemy.gd" id="1_pskf2"]
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_pskf2"]
 [ext_resource type="Texture2D" uid="uid://dkkg35rapg2th" path="res://assets/sprites/slime_green.png" id="1_sh2x6"]
 [ext_resource type="Texture2D" uid="uid://dhgavmfsjde2o" path="res://assets/sprites/slime_purple.png" id="2_2ment"]
+[ext_resource type="Script" path="res://scripts/detection_area.gd" id="4_hckss"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uq7wu"]
 atlas = ExtResource("2_2ment")
@@ -76,7 +77,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jib10"]
 size = Vector2(26, 38)
 
-[node name="Slime" type="Area2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_gcujy"]
+
+[node name="Slime" type="CharacterBody2D"]
 scale = Vector2(0.400002, 0.400002)
 script = ExtResource("1_pskf2")
 
@@ -87,12 +90,27 @@ scale = Vector2(3.19191, 3.19191)
 sprite_frames = SubResource("SpriteFrames_rl1dl")
 animation = &"Destroyed"
 autoplay = "Idle"
-frame = 3
-frame_progress = 0.182451
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -20)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_jib10")
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[node name="HitBox2D" type="Area2D" parent="." groups=["enemies"]]
+position = Vector2(0, -2.38417e-06)
+
+[node name="HitBoxCollision2D" type="CollisionShape2D" parent="HitBox2D"]
+position = Vector2(0, -20)
+shape = SubResource("RectangleShape2D_jib10")
+
+[node name="DetectionArea2D" type="Area2D" parent="."]
+script = ExtResource("4_hckss")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea2D"]
+scale = Vector2(13.3084, 13.3084)
+shape = SubResource("CircleShape2D_gcujy")
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="area_entered" from="HitBox2D" to="." method="_on_hit_box_2d_area_entered"]
+[connection signal="body_entered" from="DetectionArea2D" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea2D" to="." method="_on_detection_area_body_exited"]

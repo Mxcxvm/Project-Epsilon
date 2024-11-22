@@ -58,7 +58,7 @@
 [ext_resource type="Texture2D" uid="uid://cj65gve52ynqs" path="res://assets/sprites/vagabond/jump_flip/jump_flip01.png" id="48_5y3k6"]
 [ext_resource type="Texture2D" uid="uid://by5iia5yiugtb" path="res://assets/sprites/vagabond/jump_flip/jump_flip02.png" id="49_wi6c0"]
 [ext_resource type="Texture2D" uid="uid://r7ac812j1i7f" path="res://assets/sprites/vagabond/jump_flip/jump_flip03.png" id="50_2w5xf"]
-[ext_resource type="Script" path="res://scenes/attack_area_2d.gd" id="59_i3i4w"]
+[ext_resource type="Script" path="res://scripts/attack_area_2d.gd" id="59_i3i4w"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_utmy2"]
 atlas = ExtResource("25_rq3gg")
@@ -366,3 +366,4 @@ shape = SubResource("RectangleShape2D_2bimr")
 disabled = true
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_entered" from="AttackArea2D" to="." method="_on_attack_area_2d_body_entered"]
