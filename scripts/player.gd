@@ -2,6 +2,9 @@ extends CharacterBody2D
 
 @export var inv: Inv
 
+# signals
+signal stamina_value(current_stamina)
+
 # Movement Konstanten
 const SPEED = 125.0
 const JUMP_VELOCITY = -250.0
@@ -36,6 +39,7 @@ const CHARGE_ANIMATION_FRAME = 2
 var max_health = 100
 var current_health = max_health
 
+
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready():
@@ -44,8 +48,9 @@ func _ready():
 # Schaden (Noch fertig machen)
 func take_damage(amount: int) -> void:
 	current_health -= amount
+	# TODO Hier anstatt aufruf stattdessen signal anlegen
+	%HUD.update_health(current_health)
 	print("Player took ", amount, " damage. Remaining health: ", current_health)
-
 	if current_health <= 0:
 		die()
 
@@ -64,10 +69,11 @@ func calculate_damage(attack_type: String) -> int:
 			
 			
 func _physics_process(delta: float) -> void:
+	emit_signal("stamina_value", current_stamina)
 	# Regeneriere Stamina
 	if not is_attacking and not is_dashing:
 		current_stamina = min(current_stamina + STAMINA_REGEN * delta, MAX_STAMINA)
-	
+
 	# Gerader Dash in der Luft 
 	if not is_on_floor() and not is_dashing:
 		velocity += get_gravity() * delta
@@ -215,6 +221,7 @@ func _physics_process(delta: float) -> void:
 		$AttackArea2D.scale.x = 1  # Reset der Kollisionsbox-Ausrichtung
 
 	move_and_slide()
+
 
 func get_current_damage() -> int:
 	return current_damage

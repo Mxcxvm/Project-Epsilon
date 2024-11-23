@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://b6nalqfrc6gn"]
+[gd_scene load_steps=27 format=4 uid="uid://b6nalqfrc6gn"]
 
 [ext_resource type="Texture2D" uid="uid://dcnnqy24s70v6" path="res://assets/sprites/world_tileset.png" id="1_4rd4p"]
 [ext_resource type="PackedScene" uid="uid://dxnkfj47wkm23" path="res://scenes/player.tscn" id="1_edsgv"]
@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://b101w1wg2ohn3" path="res://scenes/Enemy.tscn" id="7_v0sa0"]
 [ext_resource type="PackedScene" uid="uid://dk6e4daresqt3" path="res://inventory/items/coin_collectable.tscn" id="8_k0th2"]
 [ext_resource type="Script" path="res://scripts/pause_menu.gd" id="9_0eorh"]
+[ext_resource type="Script" path="res://scenes/hud.gd" id="10_hjc74"]
+[ext_resource type="FontFile" uid="uid://dohynjsmn6812" path="res://assets/fonts/PixelOperator8.ttf" id="11_qdl6q"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_75ugk"]
 texture = ExtResource("1_4rd4p")
@@ -255,6 +257,29 @@ bg_color = Color(0.4, 0.223529, 0.192157, 1)
 content_margin_left = 0.0
 bg_color = Color(0.4, 0.223529, 0.192157, 1)
 
+[sub_resource type="Theme" id="Theme_yx4l8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_af7mr"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o8lel"]
+bg_color = Color(2.83971e-06, 0.687761, 0.211493, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jfyoa"]
+bg_color = Color(0.814351, 0.649954, 1.54018e-06, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
 [node name="Game" type="Node2D"]
 
 [node name="TileMap" type="Node" parent="."]
@@ -316,9 +341,9 @@ shape = SubResource("WorldBoundaryShape2D_ptsxl")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Inv_UI" parent="CanvasLayer" instance=ExtResource("4_owjd7")]
-offset_left = 475.0
+offset_left = 536.0
 offset_top = 254.0
-offset_right = 671.0
+offset_right = 717.0
 offset_bottom = 406.0
 
 [node name="Items" type="Node" parent="."]
@@ -408,6 +433,70 @@ theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_kq6im")
 theme_override_styles/normal = SubResource("StyleBoxFlat_77mlo")
 text = "Exit Game"
 
+[node name="HUD" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+script = ExtResource("10_hjc74")
+
+[node name="score" type="Label" parent="HUD"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -72.0
+offset_top = 10.0
+offset_right = 23.0
+offset_bottom = 71.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("11_qdl6q")
+theme_override_font_sizes/font_size = 25
+text = "0"
+
+[node name="score_label" type="Label" parent="HUD"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -203.0
+offset_top = 8.0
+offset_right = -28.0
+offset_bottom = 69.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("11_qdl6q")
+theme_override_font_sizes/font_size = 25
+text = "Score:"
+
+[node name="hp_bar" type="ProgressBar" parent="HUD"]
+offset_left = 69.0
+offset_top = 10.0
+offset_right = 216.0
+offset_bottom = 29.0
+theme = SubResource("Theme_yx4l8")
+theme_override_fonts/font = ExtResource("11_qdl6q")
+theme_override_styles/background = SubResource("StyleBoxFlat_af7mr")
+theme_override_styles/fill = SubResource("StyleBoxFlat_o8lel")
+value = 100.0
+show_percentage = false
+
+[node name="hp_label" type="Label" parent="HUD"]
+offset_left = 38.0
+offset_top = 11.0
+offset_right = 96.0
+offset_bottom = 42.0
+theme_override_fonts/font = ExtResource("11_qdl6q")
+theme_override_font_sizes/font_size = 15
+text = "HP"
+
+[node name="stamina_bar" type="ProgressBar" parent="HUD"]
+offset_left = 69.0
+offset_top = 33.0
+offset_right = 216.0
+offset_bottom = 43.0
+theme = SubResource("Theme_yx4l8")
+theme_override_fonts/font = ExtResource("11_qdl6q")
+theme_override_styles/background = SubResource("StyleBoxFlat_af7mr")
+theme_override_styles/fill = SubResource("StyleBoxFlat_jfyoa")
+value = 100.0
+show_percentage = false
+
+[connection signal="stamina_value" from="Player" to="HUD" method="_on_player_stamina_value_change"]
 [connection signal="body_shape_entered" from="Killzone" to="Player" method="_on_killzone_body_shape_entered"]
 [connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Resume Button" to="UI/Pause Menu" method="_on_resume_button_pressed"]
 [connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Reset Button" to="UI/Pause Menu" method="_on_reset_button_pressed"]
