@@ -93,7 +93,6 @@ autoplay = "Idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -20)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_jib10")
 
 [node name="HitBox2D" type="Area2D" parent="." groups=["enemies"]]

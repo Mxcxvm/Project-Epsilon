@@ -349,8 +349,10 @@ script = ExtResource("1_7rjoq")
 texture_filter = 1
 position = Vector2(-32, -64)
 sprite_frames = SubResource("SpriteFrames_n6itq")
-animation = &"attack_heavy_charge"
+animation = &"dash"
 autoplay = "idle"
+frame = 2
+frame_progress = 0.391624
 centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
