@@ -3,7 +3,6 @@
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_pskf2"]
 [ext_resource type="Texture2D" uid="uid://dkkg35rapg2th" path="res://assets/sprites/slime_green.png" id="1_sh2x6"]
 [ext_resource type="Texture2D" uid="uid://dhgavmfsjde2o" path="res://assets/sprites/slime_purple.png" id="2_2ment"]
-[ext_resource type="Script" path="res://scripts/detection_area.gd" id="4_hckss"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uq7wu"]
 atlas = ExtResource("2_2ment")
@@ -77,6 +76,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jib10"]
 size = Vector2(26, 38)
 
+[sub_resource type="GDScript" id="GDScript_6ygeq"]
+script/source = "extends Area2D"
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_gcujy"]
 
 [node name="Slime" type="CharacterBody2D"]
@@ -103,7 +105,7 @@ position = Vector2(0, -20)
 shape = SubResource("RectangleShape2D_jib10")
 
 [node name="DetectionArea2D" type="Area2D" parent="."]
-script = ExtResource("4_hckss")
+script = SubResource("GDScript_6ygeq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea2D"]
 scale = Vector2(13.3084, 13.3084)

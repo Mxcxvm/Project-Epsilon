@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var hp = 20
+var hp = 30
 const SPEED = 30
 var chase = false
 var direction
@@ -8,7 +8,6 @@ var player
 	
 		
 func _physics_process(delta: float) -> void:
-	
 	# Wenn kein hp dann sterben
 	if hp <= 0:
 		chase = false

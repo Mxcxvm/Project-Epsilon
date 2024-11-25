@@ -21,7 +21,7 @@ const HEAVY_ATTACK_COST = 35.0
 # Damage Konstanten
 var base_damage = 10
 const LIGHT_ATTACK_MULTIPLIER = 1.0
-const HEAVY_ATTACK_MULTIPLIER = 2.0
+const HEAVY_ATTACK_MULTIPLIER = 4.0
 var current_damage = 0
 
 var current_stamina = MAX_STAMINA
@@ -45,7 +45,7 @@ func _ready():
 	current_health = max_health
 			
 func _physics_process(delta: float) -> void:
-	# signal des staminas
+	# signal von stamina
 	emit_signal("stamina_value", current_stamina)
 	
 	# Regeneriere Stamina
@@ -55,7 +55,7 @@ func _physics_process(delta: float) -> void:
 	# Get the input direction -1, 0, 1
 	var direction := Input.get_axis("move_left", "move_right")
 
-	# Apply Gravity, aber nicht im dash (Gerader Dash in der Luft)
+	# Gravity hinzufügen, aber nicht beim dash (Gerader Dash in der Luft)
 	if not is_on_floor() and not is_dashing:
 		velocity += get_gravity() * delta
 		
@@ -75,7 +75,7 @@ func _physics_process(delta: float) -> void:
 	jump()
 	move_and_slide()
 
-# Handle Idle to run 
+# Handle Idle zu run und bewegung des charachters
 func idle_and_move(direction):
 	# Play movement animations
 	if not is_dashing and not is_attacking:  # Keine Bewegungsanimationen während Dash/Attack
@@ -107,7 +107,7 @@ func jump():
 		else:
 			animated_sprite.play("jump_flip")
 			
-#Handle dash
+# Handle dash
 func dash(delta: float, direction: float) -> void:
 	# Handle dash
 	if Input.is_action_just_pressed("dash") and not is_dashing and not is_attacking and current_stamina >= DASH_COST:
@@ -164,13 +164,6 @@ func calculate_damage(attack_type: String) -> int:
 		_:
 			return 0
 			
-
-func _on_animated_sprite_2d_animation_finished() -> void:
-	if animated_sprite.animation == "attack_light" or animated_sprite.animation == "attack_heavy":
-		$AttackArea2D/CollisionShape2D.disabled = true
-		is_attacking = false
-		current_damage = 0  # Reset
-		
 # Handle attack
 func attack():
 	if Input.is_action_just_pressed("light_attack") and current_stamina >= LIGHT_ATTACK_COST:
@@ -222,7 +215,14 @@ func attack():
 		animated_sprite.offset.x = 0
 		$AttackArea2D.position.x = 0
 		$AttackArea2D.scale.x = 1  # Reset der Kollisionsbox-Ausrichtung
-
+		
+# Handle attack Animations
+func _on_animated_sprite_2d_animation_finished() -> void:
+	if animated_sprite.animation == "attack_light" or animated_sprite.animation == "attack_heavy":
+		$AttackArea2D/CollisionShape2D.disabled = true
+		is_attacking = false
+		current_damage = 0  # Reset
+		
 # Schaden (Noch fertig machen)
 func take_damage(amount: int) -> void:
 	current_health -= amount

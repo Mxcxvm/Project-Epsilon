@@ -12,7 +12,7 @@ func _process(delta: float) -> void:
 		get_tree().paused = true
 		pause_panel.show()
 		
-# Wenn resume button geclickt wird, dann hide panel und pausiere
+# Wenn R esume button geclickt wird, dann hide panel und pausiere
 func _on_resume_button_pressed() -> void:
 	pause_panel.hide()
 	get_tree().paused = false
