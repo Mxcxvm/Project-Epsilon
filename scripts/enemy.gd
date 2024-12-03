@@ -5,11 +5,13 @@ const SPEED = 30
 var chase = false
 var direction
 var player
+var damage = 60
 	
 		
 func _physics_process(delta: float) -> void:
 	# Wenn kein hp dann sterben
 	if hp <= 0:
+		$HitBox2D/HitBoxCollision2D.disabled = true
 		chase = false
 		$AnimatedSprite2D.play("Destroyed")
 	
@@ -43,3 +45,14 @@ func _on_hit_box_2d_area_entered(area: Area2D) -> void:
 		hp -= damage
 		print("Damage dealt to enemy: ", damage)
 		print("Remaining enemy HP: ", hp)
+
+
+func _on_hit_box_2d_body_entered(body: Node2D) -> void:
+	if body.name == "Player":
+		player = body
+		var x = player.position.x - position.x
+		if x > 0:
+			player.knockback(500, damage)
+		else: 
+			player.knockback(-500, damage)
+		
