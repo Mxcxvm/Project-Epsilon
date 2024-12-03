@@ -2,7 +2,6 @@ extends CharacterBody2D
 
 @export var inv: Inv
 
-
 # signals
 signal stamina_value(current_stamina)
 
@@ -40,13 +39,11 @@ const CHARGE_ANIMATION_FRAME = 2
 var max_health = 100
 var current_health = max_health
 
-@onready var timer: Timer = $Timer
-
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready():
 	current_health = max_health
-
+			
 func _physics_process(delta: float) -> void:
 	# signal von stamina
 	emit_signal("stamina_value", current_stamina)
@@ -87,7 +84,7 @@ func idle_and_move(direction):
 				animated_sprite.play("idle")
 			if direction != 0:
 				animated_sprite.play("run")
-	# Bewegung des Players
+	# 
 	if direction:
 		velocity.x = direction * SPEED
 	else:
@@ -101,33 +98,31 @@ func idle_and_move(direction):
 
 # Handle jump
 func jump():
-	# Bewegung des Players 
 	if Input.is_action_just_pressed("jump") and is_dashing == false and is_attacking == false and jump_count < MAX_JUMPS:
 		velocity.y = JUMP_VELOCITY
 		jump_count += 1
 		
-		# Je nach count unterschiedliche Animation spielen
 		if jump_count == 1:
 			animated_sprite.play("jump")
 		else:
 			animated_sprite.play("jump_flip")
-
+			
 # Handle dash
 func dash(delta: float, direction: float) -> void:
-	# Dash kriterien
+	# Handle dash
 	if Input.is_action_just_pressed("dash") and not is_dashing and not is_attacking and current_stamina >= DASH_COST:
 		# check ob air dash bereits verwendet wurde
 		if not is_on_floor() and air_dash_used:
 			return  # Verhindere den Dash
-
-		# Dash Ausdauer Logik
+			
 		if air_dash_used == false:
+			
 			current_stamina -= DASH_COST
 			is_dashing = true
 			dash_timer = DASH_DURATION
 			velocity.y = 0
 			
-			# Setze air_dash_used = True wenn wir in der Luft sind
+			# Setze air_dash_used wenn wir in der Luft sind
 			if not is_on_floor():
 				air_dash_used = true
 			
@@ -141,27 +136,23 @@ func dash(delta: float, direction: float) -> void:
 					dash_direction = -1  # Nach links
 				else:
 					dash_direction = 1   # Nach rechts
+					
+			# Dash-Animation abspielen
+			animated_sprite.play("dash")
 			
 			# Sprite-Ausrichtung an Dash-Richtung anpassen
 			if dash_direction < 0:
 				animated_sprite.flip_h = true  # Nach links
 			else:
 				animated_sprite.flip_h = false  # Nach rechts
-			# Dash-Animation abspielen
-			animated_sprite.play("dash")
-			
-	# Dash Bewegungslogik 
+	# Dash logik 
 	if is_dashing:
 		dash_timer -= delta
 		velocity.x = dash_direction * DASH_SPEED
 		velocity.y = 0
-		$HitBox/HitBoxCollisionShape2D.disabled = true # Macht den Player während des Dash unverwundbar
 		if dash_timer <= 0:
 			is_dashing = false
 			dash_timer = 0
-	else:
-		if not timer.time_left > 0: # Nur enable wenn der Unverwundbarkeits-Timer abgelaufen ist
-			$HitBox/HitBoxCollisionShape2D.disabled = false
 
 # Damage je nach attacke berechnen
 func calculate_damage(attack_type: String) -> int:
@@ -172,7 +163,7 @@ func calculate_damage(attack_type: String) -> int:
 			return int(base_damage * HEAVY_ATTACK_MULTIPLIER)
 		_:
 			return 0
-
+			
 # Handle attack
 func attack():
 	if Input.is_action_just_pressed("light_attack") and current_stamina >= LIGHT_ATTACK_COST:
@@ -224,7 +215,7 @@ func attack():
 		animated_sprite.offset.x = 0
 		$AttackArea2D.position.x = 0
 		$AttackArea2D.scale.x = 1  # Reset der Kollisionsbox-Ausrichtung
-
+		
 # Handle attack Animations
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if animated_sprite.animation == "attack_light" or animated_sprite.animation == "attack_heavy":
@@ -232,51 +223,21 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 		is_attacking = false
 		current_damage = 0  # Reset
 		
-	if animated_sprite.animation == "death":
-		print("u died")
-
-# Schaden 
+# Schaden (Noch fertig machen)
 func take_damage(amount: int) -> void:
 	current_health -= amount
 	# TODO Hier anstatt aufruf stattdessen signal anlegen
 	%HUD.update_health(current_health)
 	print("Player took ", amount, " damage. Remaining health: ", current_health)
-	
 	if current_health <= 0:
 		die()
 
 # Handle die
 func die() -> void:
-	set_physics_process(false)  # Deaktiviere Physik
-	animated_sprite.play("death")  # Spiele Todesanimation ab
-	await animated_sprite.animation_finished  # Warte bis Animation fertig ist
-		
+	print("Player died!")
 
-# Knockback und Schaden wenn der Player getroffen wird, macht den Player für 2 Sekunden unverwundbar
-func knockback(x, damage) -> void:
-	if not $HitBox/HitBoxCollisionShape2D.disabled:
-		velocity.x = x * 2 # Stärkerer Knockback
-		velocity.y = -100 # Leichter Aufwärts-Knockback
-		take_damage(damage)
-		$HitBox/HitBoxCollisionShape2D.disabled = true # Mache den Player unverwundbar
-		timer.start() # 1 Sekunden Unverwundbarkeit in Timer
-		
-		# Blinken während Unverwundbarkeit
-		var tween = create_tween()
-		tween.tween_property(animated_sprite, "modulate:a", 0.5, 0)
-		tween.tween_property(animated_sprite, "modulate:a", 1.0, 0)
-		tween.set_loops(10)
-
-# was 
-func _on_timer_timeout() -> void:
-	$HitBox/HitBoxCollisionShape2D.disabled = false
-	animated_sprite.modulate.a = 1.0 # Stelle normale Sichtbarkeit wieder her
-
-# Attack Damage rückgabe für den Enemy
 func get_current_damage() -> int:
 	return current_damage
-
-
 
 func collect(item):
 	inv.insert(item)

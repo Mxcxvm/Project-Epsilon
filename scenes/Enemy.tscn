@@ -77,8 +77,7 @@ animations = [{
 size = Vector2(26, 38)
 
 [sub_resource type="GDScript" id="GDScript_6ygeq"]
-script/source = "extends Area2D
-"
+script/source = "extends Area2D"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gcujy"]
 
@@ -99,8 +98,7 @@ position = Vector2(0, -20)
 shape = SubResource("RectangleShape2D_jib10")
 
 [node name="HitBox2D" type="Area2D" parent="." groups=["enemies"]]
-position = Vector2(0, 2.49999)
-scale = Vector2(1.77396, 1.08242)
+position = Vector2(0, -2.38417e-06)
 
 [node name="HitBoxCollision2D" type="CollisionShape2D" parent="HitBox2D"]
 position = Vector2(0, -20)
@@ -115,6 +113,5 @@ shape = SubResource("CircleShape2D_gcujy")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="HitBox2D" to="." method="_on_hit_box_2d_area_entered"]
-[connection signal="body_entered" from="HitBox2D" to="." method="_on_hit_box_2d_body_entered"]
 [connection signal="body_entered" from="DetectionArea2D" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea2D" to="." method="_on_detection_area_body_exited"]
