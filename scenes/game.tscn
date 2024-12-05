@@ -1870,78 +1870,86 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_jfyoa")
 value = 100.0
 show_percentage = false
 
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+[node name="ParallaxBackground" type="Node2D" parent="."]
 
-[node name="ParallaxLayer7" type="ParallaxLayer" parent="ParallaxBackground"]
-position = Vector2(-219, -140)
-motion_scale = Vector2(0.2, 1)
-motion_mirroring = Vector2(320, 0)
+[node name="ParallaxLayer7" type="Parallax2D" parent="ParallaxBackground"]
+scroll_scale = Vector2(0.2, 1)
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer7"]
-position = Vector2(120, -92)
+position = Vector2(122, -93)
 texture = ExtResource("14_hkye8")
 
-[node name="ParallaxLayer8" type="ParallaxLayer" parent="ParallaxBackground"]
-position = Vector2(-219, -140)
-motion_scale = Vector2(0.2, 1)
-motion_mirroring = Vector2(320, 0)
+[node name="ParallaxLayer8" type="Parallax2D" parent="ParallaxBackground"]
+scroll_scale = Vector2(0.2, 1)
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer8"]
-position = Vector2(120, 228)
+position = Vector2(122, 227)
 texture = ExtResource("15_tw43o")
 
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
-position = Vector2(-219, -140)
-motion_scale = Vector2(0.05, 1)
-motion_mirroring = Vector2(320, 0)
+[node name="ParallaxLayer" type="Parallax2D" parent="ParallaxBackground"]
+scroll_scale = Vector2(0.05, 1)
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
-position = Vector2(120, 68)
+position = Vector2(122, 67)
 texture = ExtResource("14_6ucq3")
 
-[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
-position = Vector2(-219, -150)
-motion_scale = Vector2(0.1, 1)
-motion_mirroring = Vector2(320, 0)
+[node name="ParallaxLayer2" type="Parallax2D" parent="ParallaxBackground"]
+scroll_scale = Vector2(0.1, 1)
+scroll_offset = Vector2(-219, -150)
+repeat_size = Vector2(320, 0)
+repeat_times = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
-position = Vector2(120, 68)
+position = Vector2(122, 67)
 texture = ExtResource("15_auap8")
 
-[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
-position = Vector2(-219, -140)
-motion_scale = Vector2(0.4, 1)
-motion_mirroring = Vector2(320, 0)
+[node name="ParallaxLayer3" type="Parallax2D" parent="ParallaxBackground"]
+scroll_scale = Vector2(0.4, 1)
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer3"]
-position = Vector2(120, 68)
+position = Vector2(122, 67)
 texture = ExtResource("16_id7fr")
 
-[node name="ParallaxLayer4" type="ParallaxLayer" parent="ParallaxBackground"]
-position = Vector2(-219, -140)
-motion_scale = Vector2(0.6, 1)
-motion_mirroring = Vector2(320, 0)
+[node name="ParallaxLayer4" type="Parallax2D" parent="ParallaxBackground"]
+scroll_scale = Vector2(0.6, 1)
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer4"]
-position = Vector2(120, 68)
+position = Vector2(122, 67)
 texture = ExtResource("17_jgfc4")
 
-[node name="ParallaxLayer5" type="ParallaxLayer" parent="ParallaxBackground"]
-position = Vector2(-219, -140)
-motion_scale = Vector2(0.7, 1)
-motion_mirroring = Vector2(320, 0)
+[node name="ParallaxLayer5" type="Parallax2D" parent="ParallaxBackground"]
+scroll_scale = Vector2(0.7, 1)
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer5"]
-position = Vector2(120, 68)
+position = Vector2(122, 67)
 texture = ExtResource("17_jgfc4")
 
-[node name="ParallaxLayer6" type="ParallaxLayer" parent="ParallaxBackground"]
-position = Vector2(-219, -140)
-motion_scale = Vector2(0.85, 1)
-motion_mirroring = Vector2(320, 0)
+[node name="ParallaxLayer6" type="Parallax2D" parent="ParallaxBackground"]
+scroll_scale = Vector2(0.85, 1)
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer6"]
-position = Vector2(120, 68)
+position = Vector2(122, 67)
 texture = ExtResource("14_qcufi")
 
 [connection signal="stamina_value" from="Player" to="HUD" method="_on_player_stamina_value_change"]
