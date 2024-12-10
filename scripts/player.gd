@@ -1,7 +1,5 @@
 extends CharacterBody2D
 
-@export var inv: Inv
-
 
 # signals
 signal stamina_value(current_stamina)
@@ -275,8 +273,3 @@ func _on_timer_timeout() -> void:
 # Attack Damage rückgabe für den Enemy
 func get_current_damage() -> int:
 	return current_damage
-
-
-
-func collect(item):
-	inv.insert(item)

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://dsjgbhxl66jym"]
+
+[ext_resource type="Script" path="res://inventory/items/ItemData.gd" id="1_0q58t"]
+[ext_resource type="Texture2D" uid="uid://cgycb5wylg2m5" path="res://inventory/items/sword.png" id="2_exmvi"]
+
+[resource]
+script = ExtResource("1_0q58t")
+type = 4
+name = "Basic Sword"
+damage = 5.0
+description = "boring ahh sword"
+texture = ExtResource("2_exmvi")
