@@ -1,0 +1,102 @@
+[gd_scene load_steps=7 format=3 uid="uid://cej12kcqx0d0o"]
+
+[ext_resource type="Script" path="res://scripts/player_hud.gd" id="1_8p4vu"]
+[ext_resource type="FontFile" uid="uid://dohynjsmn6812" path="res://assets/fonts/PixelOperator8.ttf" id="2_6ax75"]
+
+[sub_resource type="Theme" id="Theme_g8whp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4jhae"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qe6da"]
+bg_color = Color(2.83971e-06, 0.687761, 0.211493, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vktyh"]
+bg_color = Color(0.814351, 0.649954, 1.54018e-06, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="PlayerHUD" type="CanvasLayer" groups=["hud"]]
+script = ExtResource("1_8p4vu")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="hp_bar" type="ProgressBar" parent="Control"]
+layout_mode = 0
+offset_left = 69.0
+offset_top = 10.0
+offset_right = 216.0
+offset_bottom = 29.0
+theme = SubResource("Theme_g8whp")
+theme_override_fonts/font = ExtResource("2_6ax75")
+theme_override_styles/background = SubResource("StyleBoxFlat_4jhae")
+theme_override_styles/fill = SubResource("StyleBoxFlat_qe6da")
+value = 100.0
+show_percentage = false
+
+[node name="hp_label" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 38.0
+offset_top = 11.0
+offset_right = 96.0
+offset_bottom = 42.0
+theme_override_fonts/font = ExtResource("2_6ax75")
+theme_override_font_sizes/font_size = 15
+text = "HP"
+
+[node name="stamina_bar" type="ProgressBar" parent="Control"]
+layout_mode = 0
+offset_left = 69.0
+offset_top = 33.0
+offset_right = 216.0
+offset_bottom = 43.0
+theme = SubResource("Theme_g8whp")
+theme_override_fonts/font = ExtResource("2_6ax75")
+theme_override_styles/background = SubResource("StyleBoxFlat_4jhae")
+theme_override_styles/fill = SubResource("StyleBoxFlat_vktyh")
+value = 100.0
+show_percentage = false
+
+[node name="score" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -72.0
+offset_top = 10.0
+offset_right = 23.0
+offset_bottom = 71.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("2_6ax75")
+theme_override_font_sizes/font_size = 25
+text = "0"
+
+[node name="score_label" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -203.0
+offset_top = 8.0
+offset_right = -28.0
+offset_bottom = 69.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("2_6ax75")
+theme_override_font_sizes/font_size = 25
+text = "Score:"

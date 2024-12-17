@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://brsck262ajcge"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_crmmy"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_crmmy")
+
+[node name="Host" type="Button" parent="."]
+layout_mode = 0
+offset_left = 403.0
+offset_top = 279.0
+offset_right = 447.0
+offset_bottom = 310.0
+text = "Host"
+
+[node name="Join" type="Button" parent="."]
+layout_mode = 0
+offset_left = 734.0
+offset_top = 277.0
+offset_right = 772.0
+offset_bottom = 308.0
+text = "Join"
+
+[connection signal="pressed" from="Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="Join" to="." method="_on_join_pressed"]

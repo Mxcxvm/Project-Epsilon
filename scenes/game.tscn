@@ -1,18 +1,12 @@
-[gd_scene load_steps=42 format=4 uid="uid://b6nalqfrc6gn"]
+[gd_scene load_steps=32 format=4 uid="uid://b6nalqfrc6gn"]
 
 [ext_resource type="Texture2D" uid="uid://dcnnqy24s70v6" path="res://assets/sprites/world_tileset.png" id="1_cneqb"]
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_u4n54"]
-[ext_resource type="PackedScene" uid="uid://dxnkfj47wkm23" path="res://scenes/player.tscn" id="2_hl44j"]
 [ext_resource type="Texture2D" uid="uid://bvjfkk83pl7vw" path="res://assets/sprites/alienworld_tileset.png" id="2_r5l2c"]
 [ext_resource type="Texture2D" uid="uid://tm55nhocj8mb" path="res://assets/sprites/alien_tree.png" id="3_2yrij"]
 [ext_resource type="PackedScene" uid="uid://fxs7iyibn7rq" path="res://scenes/Platform.tscn" id="4_6sct0"]
 [ext_resource type="PackedScene" uid="uid://b54ra5rmlmiv0" path="res://scenes/killzone.tscn" id="5_55xqm"]
-[ext_resource type="PackedScene" uid="uid://b101w1wg2ohn3" path="res://scenes/Enemy.tscn" id="8_u577k"]
 [ext_resource type="Script" path="res://scripts/pause_menu.gd" id="9_4mtwa"]
-[ext_resource type="Script" path="res://scenes/InvHandler.gd" id="9_cx5s3"]
-[ext_resource type="Script" path="res://scripts/hud.gd" id="10_d4qf7"]
-[ext_resource type="FontFile" uid="uid://dohynjsmn6812" path="res://assets/fonts/PixelOperator8.ttf" id="11_6ax75"]
-[ext_resource type="Script" path="res://scripts/InventorySlot.gd" id="11_a2f80"]
 [ext_resource type="Texture2D" uid="uid://cnnec44ug1t0t" path="res://assets/backgrounds/5.png" id="14_6ucq3"]
 [ext_resource type="Texture2D" uid="uid://c6agexyvqtbwg" path="res://assets/backgrounds/fillup.png" id="14_hkye8"]
 [ext_resource type="Texture2D" uid="uid://biyg4ekmvusgj" path="res://assets/backgrounds/1.png" id="14_qcufi"]
@@ -1623,31 +1617,14 @@ bg_color = Color(0.4, 0.223529, 0.192157, 1)
 content_margin_left = 0.0
 bg_color = Color(0.4, 0.223529, 0.192157, 1)
 
-[sub_resource type="Theme" id="Theme_yx4l8"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_af7mr"]
-bg_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o8lel"]
-bg_color = Color(2.83971e-06, 0.687761, 0.211493, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jfyoa"]
-bg_color = Color(0.814351, 0.649954, 1.54018e-06, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
 [node name="Game" type="Node2D"]
 script = ExtResource("1_u4n54")
+
+[node name="Players" type="Node" parent="." groups=["players_container"]]
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." groups=["player_spawner"]]
+_spawnable_scenes = PackedStringArray("res://scenes/player.tscn")
+spawn_path = NodePath("../Players")
 
 [node name="TileMap" type="Node" parent="."]
 
@@ -1686,20 +1663,11 @@ position = Vector2(-193, -41)
 scale = Vector2(1.04232, 1.00272)
 texture = ExtResource("3_2yrij")
 
-[node name="Player" parent="." instance=ExtResource("2_hl44j")]
-visibility_layer = 2
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2(0, -7)
-zoom = Vector2(5, 5)
-limit_bottom = 120
-
 [node name="Platforms" type="Node" parent="."]
 
 [node name="Platform2" parent="Platforms" instance=ExtResource("4_6sct0")]
-position = Vector2(-132, -43)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Platforms/Platform2"]
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="Platforms/Platform2"]
 libraries = {
 "": SubResource("AnimationLibrary_ef3gl")
 }
@@ -1714,15 +1682,11 @@ shape = SubResource("WorldBoundaryShape2D_ptsxl")
 
 [node name="Items" type="Node" parent="."]
 
-[node name="Enemies" type="Node" parent="."]
+[node name="Enemies" type="Node" parent="." groups=["enemies_container"]]
 
-[node name="Slime" parent="Enemies" instance=ExtResource("8_u577k")]
-position = Vector2(209, 8)
-scale = Vector2(0.5, 0.5)
-
-[node name="Slime2" parent="Enemies" instance=ExtResource("8_u577k")]
-position = Vector2(261, 8)
-scale = Vector2(0.5, 0.5)
+[node name="EnemySpawner" type="MultiplayerSpawner" parent="." groups=["enemy_spawner"]]
+_spawnable_scenes = PackedStringArray("res://scenes/Enemy.tscn")
+spawn_path = NodePath("../Enemies")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -1790,148 +1754,7 @@ theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_kq6im")
 theme_override_styles/normal = SubResource("StyleBoxFlat_77mlo")
 text = "Exit Game"
 
-[node name="Inventory" type="CanvasLayer" parent="UI"]
-script = ExtResource("9_cx5s3")
-
-[node name="Background" type="Panel" parent="UI/Inventory"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -256.0
-offset_top = -160.0
-offset_right = 256.0
-offset_bottom = 160.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Inv" type="GridContainer" parent="UI/Inventory"]
-unique_name_in_owner = true
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-columns = 4
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Inventory"]
-offset_left = 360.0
-offset_top = 272.0
-offset_right = 428.0
-offset_bottom = 376.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/Inventory/VBoxContainer"]
-layout_mode = 2
-
-[node name="HeadSlot" type="PanelContainer" parent="UI/Inventory/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-script = ExtResource("11_a2f80")
-
-[node name="ChestSlot" type="PanelContainer" parent="UI/Inventory/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-script = ExtResource("11_a2f80")
-type = 1
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="UI/Inventory/VBoxContainer"]
-layout_mode = 2
-
-[node name="LegSlot" type="PanelContainer" parent="UI/Inventory/VBoxContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-script = ExtResource("11_a2f80")
-type = 2
-
-[node name="FeetSlot" type="PanelContainer" parent="UI/Inventory/VBoxContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-script = ExtResource("11_a2f80")
-type = 3
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="UI/Inventory/VBoxContainer"]
-layout_mode = 2
-
-[node name="WeaponSlot" type="PanelContainer" parent="UI/Inventory/VBoxContainer/HBoxContainer3"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-script = ExtResource("11_a2f80")
-type = 4
-
-[node name="AccessorySlot" type="PanelContainer" parent="UI/Inventory/VBoxContainer/HBoxContainer3"]
-custom_minimum_size = Vector2(32, 32)
-layout_mode = 2
-script = ExtResource("11_a2f80")
-type = 5
-
-[node name="HUD" type="CanvasLayer" parent="."]
-unique_name_in_owner = true
-script = ExtResource("10_d4qf7")
-
-[node name="score" type="Label" parent="HUD"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -72.0
-offset_top = 10.0
-offset_right = 23.0
-offset_bottom = 71.0
-grow_horizontal = 0
-theme_override_fonts/font = ExtResource("11_6ax75")
-theme_override_font_sizes/font_size = 25
-text = "0"
-
-[node name="score_label" type="Label" parent="HUD"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -203.0
-offset_top = 8.0
-offset_right = -28.0
-offset_bottom = 69.0
-grow_horizontal = 0
-theme_override_fonts/font = ExtResource("11_6ax75")
-theme_override_font_sizes/font_size = 25
-text = "Score:"
-
-[node name="hp_bar" type="ProgressBar" parent="HUD"]
-offset_left = 69.0
-offset_top = 10.0
-offset_right = 216.0
-offset_bottom = 29.0
-theme = SubResource("Theme_yx4l8")
-theme_override_fonts/font = ExtResource("11_6ax75")
-theme_override_styles/background = SubResource("StyleBoxFlat_af7mr")
-theme_override_styles/fill = SubResource("StyleBoxFlat_o8lel")
-value = 100.0
-show_percentage = false
-
-[node name="hp_label" type="Label" parent="HUD"]
-offset_left = 38.0
-offset_top = 11.0
-offset_right = 96.0
-offset_bottom = 42.0
-theme_override_fonts/font = ExtResource("11_6ax75")
-theme_override_font_sizes/font_size = 15
-text = "HP"
-
-[node name="stamina_bar" type="ProgressBar" parent="HUD"]
-offset_left = 69.0
-offset_top = 33.0
-offset_right = 216.0
-offset_bottom = 43.0
-theme = SubResource("Theme_yx4l8")
-theme_override_fonts/font = ExtResource("11_6ax75")
-theme_override_styles/background = SubResource("StyleBoxFlat_af7mr")
-theme_override_styles/fill = SubResource("StyleBoxFlat_jfyoa")
-value = 100.0
-show_percentage = false
-
 [node name="ParallaxBackground" type="Node2D" parent="."]
-visible = false
 
 [node name="ParallaxLayer7" type="Parallax2D" parent="ParallaxBackground"]
 scroll_scale = Vector2(0.2, 1)
@@ -2013,8 +1836,6 @@ repeat_times = 8
 position = Vector2(122, 67)
 texture = ExtResource("14_qcufi")
 
-[connection signal="stamina_value" from="Player" to="HUD" method="_on_player_stamina_value_change"]
-[connection signal="body_shape_entered" from="Killzone" to="Player" method="_on_killzone_body_shape_entered"]
 [connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Resume Button" to="UI/Pause Menu" method="_on_resume_button_pressed"]
 [connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Reset Button" to="UI/Pause Menu" method="_on_reset_button_pressed"]
 [connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Exit Game Button" to="UI/Pause Menu" method="_on_exit_button_pressed"]

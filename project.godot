@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Project Epsilon"
-run/main_scene="res://scenes/Game.tscn"
+run/main_scene="res://scenes/MainMenu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+MultiplayerManager="*res://scripts/multiplayer_manager.gd"
 
 [editor]
 

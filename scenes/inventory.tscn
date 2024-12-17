@@ -1,0 +1,77 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvucexn2jjegg"]
+
+[ext_resource type="Script" path="res://scenes/InvHandler.gd" id="1_pdmfe"]
+[ext_resource type="Script" path="res://scripts/InventorySlot.gd" id="2_p66bl"]
+
+[node name="Inventory" type="CanvasLayer"]
+script = ExtResource("1_pdmfe")
+
+[node name="Background" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -160.0
+offset_right = 256.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Inv" type="GridContainer" parent="."]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+columns = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 360.0
+offset_top = 272.0
+offset_right = 428.0
+offset_bottom = 376.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="HeadSlot" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+script = ExtResource("2_p66bl")
+
+[node name="ChestSlot" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+script = ExtResource("2_p66bl")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="LegSlot" type="PanelContainer" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+script = ExtResource("2_p66bl")
+
+[node name="FeetSlot" type="PanelContainer" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+script = ExtResource("2_p66bl")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="WeaponSlot" type="PanelContainer" parent="VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+script = ExtResource("2_p66bl")
+type = 4
+
+[node name="AccessorySlot" type="PanelContainer" parent="VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+script = ExtResource("2_p66bl")

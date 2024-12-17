@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=3 uid="uid://dxnkfj47wkm23"]
+[gd_scene load_steps=83 format=3 uid="uid://dxnkfj47wkm23"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_7rjoq"]
 [ext_resource type="Texture2D" uid="uid://cfu1x4qmoxqg2" path="res://assets/sprites/vagabond/idle/idle01.png" id="2_6bst3"]
@@ -38,7 +38,7 @@
 [ext_resource type="Texture2D" uid="uid://cv0k78okpad8f" path="res://assets/sprites/vagabond/idle/idle18.png" id="19_uo5ty"]
 [ext_resource type="Texture2D" uid="uid://bxbcj17lmu1xw" path="res://assets/sprites/vagabond/idle/idle19.png" id="20_1tcyl"]
 [ext_resource type="Texture2D" uid="uid://ct5mt22yb4kbo" path="res://assets/sprites/vagabond/idle/idle20.png" id="21_7um7m"]
-[ext_resource type="Texture2D" uid="uid://cjnxhg8vh5e8f" path="res://assets/sprites/vagabond/jump/jump01.png" id="22_6rde3"]
+[ext_resource type="Texture2D" uid="uid://de0inqcnfawdw" path="res://assets/sprites/vagabond/jump/jump01.png" id="22_6rde3"]
 [ext_resource type="Texture2D" uid="uid://b8q726rskyjwp" path="res://assets/sprites/vagabond/run/run01.png" id="22_72b45"]
 [ext_resource type="Texture2D" uid="uid://c1ef3m0ktjuwp" path="res://assets/sprites/vagabond/run/run02.png" id="23_gpeuw"]
 [ext_resource type="Texture2D" uid="uid://d307hwi3udjlf" path="res://assets/sprites/vagabond/jump/jump02.png" id="23_sj2hs"]
@@ -69,6 +69,28 @@
 [ext_resource type="Texture2D" uid="uid://cj65gve52ynqs" path="res://assets/sprites/vagabond/jump_flip/jump_flip01.png" id="48_5y3k6"]
 [ext_resource type="Texture2D" uid="uid://by5iia5yiugtb" path="res://assets/sprites/vagabond/jump_flip/jump_flip02.png" id="49_wi6c0"]
 [ext_resource type="Texture2D" uid="uid://r7ac812j1i7f" path="res://assets/sprites/vagabond/jump_flip/jump_flip03.png" id="50_2w5xf"]
+[ext_resource type="PackedScene" uid="uid://cej12kcqx0d0o" path="res://scenes/player_hud.tscn" id="70_qypdi"]
+[ext_resource type="PackedScene" uid="uid://bvucexn2jjegg" path="res://scenes/inventory.tscn" id="71_rw5li"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1e687"]
+properties/0/path = NodePath(".:sync_position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:sync_velocity")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:sync_animation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:sync_flip_h")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath(".:is_dead")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath(".:current_health")
+properties/5/spawn = true
+properties/5/replication_mode = 1
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_utmy2"]
 atlas = ExtResource("25_rq3gg")
@@ -404,6 +426,10 @@ size = Vector2(31, 20)
 z_index = 1
 script = ExtResource("1_7rjoq")
 
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." groups=["players"]]
+replication_interval = 0.017
+replication_config = SubResource("SceneReplicationConfig_1e687")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 position = Vector2(-32, -64)
@@ -433,6 +459,13 @@ disabled = true
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(4, 4)
+
+[node name="PlayerHUD" parent="." instance=ExtResource("70_qypdi")]
+
+[node name="Inventory" parent="." instance=ExtResource("71_rw5li")]
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_entered" from="AttackArea2D" to="." method="_on_attack_area_2d_body_entered"]

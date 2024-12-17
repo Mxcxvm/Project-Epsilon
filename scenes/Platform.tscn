@@ -1,11 +1,92 @@
-[gd_scene load_steps=3 format=3 uid="uid://fxs7iyibn7rq"]
+[gd_scene load_steps=8 format=3 uid="uid://fxs7iyibn7rq"]
 
 [ext_resource type="Texture2D" uid="uid://dr38uidraxoe" path="res://assets/sprites/platforms.png" id="1_owbnb"]
+
+[sub_resource type="Animation" id="Animation_8l0nf"]
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.966667, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-132, -43), Vector2(-132, -91), Vector2(-132, -43)]
+}
+
+[sub_resource type="Animation" id="Animation_ndxwr"]
+resource_name = "move_right"
+length = 1.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Platform2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(174, -84), Vector2(291, -84)]
+}
+
+[sub_resource type="Animation" id="Animation_i6v1e"]
+resource_name = "move_up"
+length = 1.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(578, -31), Vector2(578, -108)]
+}
+
+[sub_resource type="Animation" id="Animation_ffesk"]
+resource_name = "out_of_bounce"
+length = 1.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-160, -27), Vector2(-160, -90)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ef3gl"]
+_data = {
+"RESET": SubResource("Animation_8l0nf"),
+"move_right": SubResource("Animation_ndxwr"),
+"move_up": SubResource("Animation_i6v1e"),
+"out_of_bounce": SubResource("Animation_ffesk")
+}
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ujyp3"]
 size = Vector2(30, 8)
 
-[node name="Platform" type="AnimatableBody2D"]
+[node name="Platform" type="AnimatableBody2D" groups=["sync_objects"]]
+position = Vector2(-132, -43)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ef3gl")
+}
+autoplay = "out_of_bounce"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_owbnb")
