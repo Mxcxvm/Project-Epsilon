@@ -1,4 +1,4 @@
-[gd_scene load_steps=96 format=4 uid="uid://b6nalqfrc6gn"]
+[gd_scene load_steps=125 format=4 uid="uid://b6nalqfrc6gn"]
 
 [ext_resource type="Texture2D" uid="uid://dcnnqy24s70v6" path="res://assets/sprites/world_tileset.png" id="1_cneqb"]
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_u4n54"]
@@ -20,16 +20,31 @@
 [ext_resource type="Texture2D" uid="uid://bhnidqtbeh726" path="res://assets/backgrounds/3.png" id="16_id7fr"]
 [ext_resource type="Texture2D" uid="uid://dmy7b4ywb8rd6" path="res://assets/sprites/misc_assets/particle effects/Spritesheets/Fire+Sparks-Sheet.png" id="17_jajwk"]
 [ext_resource type="Texture2D" uid="uid://b5brb6uvxh1ie" path="res://assets/backgrounds/2.png" id="17_jgfc4"]
-[ext_resource type="Script" path="res://scenes/animated_sprite_2d.gd" id="18_iqgfp"]
 [ext_resource type="Texture2D" uid="uid://ca0riwgxtl80f" path="res://assets/sprites/misc_assets/Trap and Weapon/Jumper.png" id="18_pdroc"]
 [ext_resource type="Script" path="res://scenes/pressure_plate.gd" id="18_ttsyq"]
 [ext_resource type="Texture2D" uid="uid://dev47djxo3tu4" path="res://assets/sprites/misc_assets/particle effects/Spritesheets/Eletric A-Sheet.png" id="19_1encu"]
+[ext_resource type="Texture2D" uid="uid://jrv03mx3kvv5" path="res://assets/backgrounds/Cave/1.png" id="19_ve3qt"]
 [ext_resource type="Script" path="res://scenes/pressure_plate2.gd" id="20_6dm3v"]
+[ext_resource type="Texture2D" uid="uid://b83ooqdt18px1" path="res://assets/backgrounds/Cave/2.png" id="20_wbyhi"]
+[ext_resource type="Texture2D" uid="uid://dtf26sbyw4i77" path="res://assets/backgrounds/Cave/3fx.png" id="21_pwlwp"]
+[ext_resource type="Texture2D" uid="uid://dhy2ttvwxjc48" path="res://assets/backgrounds/Cave/4.png" id="22_yx6gj"]
+[ext_resource type="Texture2D" uid="uid://cs42tu3hfl44" path="res://assets/backgrounds/Cave/5.png" id="23_0g6x7"]
+[ext_resource type="Script" path="res://scenes/fire_animation.gd" id="24_61fsc"]
+[ext_resource type="Texture2D" uid="uid://dljfpfjbp0o8u" path="res://assets/backgrounds/Cave/6fx.png" id="24_73nrf"]
 [ext_resource type="Texture2D" uid="uid://b3b0kljl4d38l" path="res://assets/sprites/door_closed.png" id="24_ou7ke"]
+[ext_resource type="Texture2D" uid="uid://du53v7wp1psoe" path="res://assets/backgrounds/Cave/7.png" id="25_5yhc7"]
 [ext_resource type="Texture2D" uid="uid://dasa7cnmjmd6a" path="res://assets/sprites/door_opened.png" id="25_42d30"]
+[ext_resource type="Texture2D" uid="uid://bprjw5ralleqi" path="res://assets/backgrounds/Cave/8fx.png" id="26_apb86"]
 [ext_resource type="Script" path="res://scenes/door.gd" id="26_lpt25"]
+[ext_resource type="Texture2D" uid="uid://defiu413py27e" path="res://assets/backgrounds/Cave/9.png" id="27_q35jh"]
+[ext_resource type="FontFile" uid="uid://bs73sw3hpme1" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="29_a24la"]
 [ext_resource type="Texture2D" uid="uid://bbglrnjooxln1" path="res://assets/sprites/misc_assets/scifi/transparancies/scifi_console_1c1a.png" id="29_qh3nx"]
 [ext_resource type="Texture2D" uid="uid://why68waluo1x" path="res://assets/sprites/misc_assets/spaceships/PNG_Parts&Spriter_Animation/Ship1/Ship1.png" id="30_yotcs"]
+[ext_resource type="Texture2D" uid="uid://qg5tmkktmwy0" path="res://assets/sprites/misc_assets/Trap and Weapon/Spear.png" id="31_k0vgp"]
+[ext_resource type="Script" path="res://scripts/spears_activator.gd" id="32_n0uqq"]
+[ext_resource type="Script" path="res://scenes/Spear_Script.tres.gd" id="32_tu0n2"]
+[ext_resource type="Script" path="res://scenes/Spear_Reversed.tres.gd" id="33_tpmyg"]
+[ext_resource type="Script" path="res://scenes/sprite_2d.gd" id="37_eb4xp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e878f"]
 texture = ExtResource("1_cneqb")
@@ -4401,6 +4416,107 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4en1a"]
 size = Vector2(4, 13.9494)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_7hpdv"]
+atlas = ExtResource("31_k0vgp")
+region = Rect2(0, 0, 16, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k6i0l"]
+atlas = ExtResource("31_k0vgp")
+region = Rect2(16, 0, 16, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_psdl8"]
+atlas = ExtResource("31_k0vgp")
+region = Rect2(32, 0, 16, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4wodr"]
+atlas = ExtResource("31_k0vgp")
+region = Rect2(48, 0, 16, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6v0hl"]
+atlas = ExtResource("31_k0vgp")
+region = Rect2(64, 0, 16, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xb6nt"]
+atlas = ExtResource("31_k0vgp")
+region = Rect2(80, 0, 16, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_scuf0"]
+atlas = ExtResource("31_k0vgp")
+region = Rect2(0, 0, 16, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tsbco"]
+atlas = ExtResource("31_k0vgp")
+region = Rect2(96, 0, 16, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_isj2a"]
+atlas = ExtResource("31_k0vgp")
+region = Rect2(112, 0, 16, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ai4bn"]
+atlas = ExtResource("31_k0vgp")
+region = Rect2(16, 0, 16, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eq7lm"]
+atlas = ExtResource("31_k0vgp")
+region = Rect2(0, 0, 16, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1kelo"]
+animations = [{
+"frames": [{
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_7hpdv")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_k6i0l")
+}, {
+"duration": 0.3,
+"texture": SubResource("AtlasTexture_psdl8")
+}, {
+"duration": 0.3,
+"texture": SubResource("AtlasTexture_4wodr")
+}, {
+"duration": 0.3,
+"texture": SubResource("AtlasTexture_6v0hl")
+}, {
+"duration": 0.3,
+"texture": SubResource("AtlasTexture_xb6nt")
+}],
+"loop": false,
+"name": &"activate",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_scuf0")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 0.3,
+"texture": SubResource("AtlasTexture_tsbco")
+}, {
+"duration": 0.3,
+"texture": SubResource("AtlasTexture_isj2a")
+}, {
+"duration": 0.3,
+"texture": SubResource("AtlasTexture_ai4bn")
+}, {
+"duration": 0.3,
+"texture": SubResource("AtlasTexture_eq7lm")
+}],
+"loop": false,
+"name": &"withdraw",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g2lqj"]
+size = Vector2(13, 69)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5uxjt"]
+size = Vector2(21.3329, 13.5)
+
 [node name="Game" type="Node2D"]
 script = ExtResource("1_u4n54")
 
@@ -4539,88 +4655,182 @@ theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_kq6im")
 theme_override_styles/normal = SubResource("StyleBoxFlat_77mlo")
 text = "Exit Game"
 
-[node name="ParallaxBackground" type="Node2D" parent="."]
+[node name="Biome1_Background" type="Node2D" parent="."]
 z_index = -4
 
-[node name="ParallaxLayer7" type="Parallax2D" parent="ParallaxBackground"]
+[node name="ParallaxLayer7" type="Parallax2D" parent="Biome1_Background"]
 scroll_scale = Vector2(0.2, 1)
 scroll_offset = Vector2(-219, -140)
 repeat_size = Vector2(320, 0)
-repeat_times = 8
+repeat_times = 16
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer7"]
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background/ParallaxLayer7"]
 position = Vector2(122, -93)
 texture = ExtResource("14_hkye8")
 
-[node name="ParallaxLayer8" type="Parallax2D" parent="ParallaxBackground"]
+[node name="ParallaxLayer8" type="Parallax2D" parent="Biome1_Background"]
 scroll_scale = Vector2(0.2, 1)
 scroll_offset = Vector2(-219, -140)
 repeat_size = Vector2(320, 0)
-repeat_times = 8
+repeat_times = 16
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer8"]
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background/ParallaxLayer8"]
 position = Vector2(122, 227)
 texture = ExtResource("15_tw43o")
 
-[node name="ParallaxLayer" type="Parallax2D" parent="ParallaxBackground"]
+[node name="ParallaxLayer" type="Parallax2D" parent="Biome1_Background"]
 scroll_scale = Vector2(0.05, 1)
 scroll_offset = Vector2(-219, -140)
 repeat_size = Vector2(320, 0)
-repeat_times = 8
+repeat_times = 16
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background/ParallaxLayer"]
 position = Vector2(122, 67)
 texture = ExtResource("14_6ucq3")
 
-[node name="ParallaxLayer2" type="Parallax2D" parent="ParallaxBackground"]
+[node name="ParallaxLayer2" type="Parallax2D" parent="Biome1_Background"]
 scroll_scale = Vector2(0.1, 1)
 scroll_offset = Vector2(-219, -150)
 repeat_size = Vector2(320, 0)
-repeat_times = 8
+repeat_times = 16
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer2"]
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background/ParallaxLayer2"]
 position = Vector2(122, 67)
 texture = ExtResource("15_auap8")
 
-[node name="ParallaxLayer3" type="Parallax2D" parent="ParallaxBackground"]
+[node name="ParallaxLayer3" type="Parallax2D" parent="Biome1_Background"]
 scroll_scale = Vector2(0.4, 1)
 scroll_offset = Vector2(-219, -140)
 repeat_size = Vector2(320, 0)
-repeat_times = 8
+repeat_times = 16
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer3"]
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background/ParallaxLayer3"]
 position = Vector2(122, 67)
 texture = ExtResource("16_id7fr")
 
-[node name="ParallaxLayer4" type="Parallax2D" parent="ParallaxBackground"]
+[node name="ParallaxLayer4" type="Parallax2D" parent="Biome1_Background"]
 scroll_scale = Vector2(0.6, 1)
 scroll_offset = Vector2(-219, -140)
 repeat_size = Vector2(320, 0)
-repeat_times = 8
+repeat_times = 16
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer4"]
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background/ParallaxLayer4"]
 position = Vector2(122, 67)
 texture = ExtResource("17_jgfc4")
 
-[node name="ParallaxLayer5" type="Parallax2D" parent="ParallaxBackground"]
+[node name="ParallaxLayer5" type="Parallax2D" parent="Biome1_Background"]
 scroll_scale = Vector2(0.7, 1)
 scroll_offset = Vector2(-219, -140)
 repeat_size = Vector2(320, 0)
-repeat_times = 8
+repeat_times = 16
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer5"]
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background/ParallaxLayer5"]
 position = Vector2(122, 67)
 texture = ExtResource("17_jgfc4")
 
-[node name="ParallaxLayer6" type="Parallax2D" parent="ParallaxBackground"]
+[node name="ParallaxLayer6" type="Parallax2D" parent="Biome1_Background"]
 scroll_scale = Vector2(0.85, 1)
 scroll_offset = Vector2(-219, -140)
 repeat_size = Vector2(320, 0)
-repeat_times = 8
+repeat_times = 16
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer6"]
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background/ParallaxLayer6"]
 position = Vector2(122, 67)
 texture = ExtResource("14_qcufi")
+
+[node name="Biome1_Background2" type="Node2D" parent="."]
+z_index = -4
+position = Vector2(3477.96, -1045.2)
+metadata/_edit_group_ = true
+
+[node name="ParallaxLayer" type="Parallax2D" parent="Biome1_Background2"]
+scroll_scale = Vector2(0.05, 1)
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background2/ParallaxLayer"]
+position = Vector2(122, 67)
+texture = ExtResource("19_ve3qt")
+
+[node name="ParallaxLayer2" type="Parallax2D" parent="Biome1_Background2"]
+scroll_scale = Vector2(0.1, 1)
+scroll_offset = Vector2(-219, -150)
+repeat_size = Vector2(320, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background2/ParallaxLayer2"]
+position = Vector2(122, 67)
+texture = ExtResource("20_wbyhi")
+
+[node name="ParallaxLayer3" type="Parallax2D" parent="Biome1_Background2"]
+scroll_scale = Vector2(0.4, 1)
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background2/ParallaxLayer3"]
+position = Vector2(122, 67)
+texture = ExtResource("21_pwlwp")
+
+[node name="ParallaxLayer4" type="Parallax2D" parent="Biome1_Background2"]
+scroll_scale = Vector2(0.6, 1)
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background2/ParallaxLayer4"]
+position = Vector2(122, 67)
+texture = ExtResource("22_yx6gj")
+
+[node name="ParallaxLayer5" type="Parallax2D" parent="Biome1_Background2"]
+scroll_scale = Vector2(0.7, 1)
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background2/ParallaxLayer5"]
+position = Vector2(122, 67)
+texture = ExtResource("23_0g6x7")
+
+[node name="ParallaxLayer6" type="Parallax2D" parent="Biome1_Background2"]
+scroll_scale = Vector2(0.85, 1)
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background2/ParallaxLayer6"]
+position = Vector2(122, 67)
+texture = ExtResource("24_73nrf")
+
+[node name="ParallaxLayer7" type="Parallax2D" parent="Biome1_Background2"]
+scroll_scale = Vector2(0.9, 1)
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background2/ParallaxLayer7"]
+position = Vector2(122, 67)
+texture = ExtResource("25_5yhc7")
+
+[node name="ParallaxLayer8" type="Parallax2D" parent="Biome1_Background2"]
+scroll_scale = Vector2(0.95, 1)
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background2/ParallaxLayer8"]
+position = Vector2(122, 67)
+texture = ExtResource("26_apb86")
+
+[node name="ParallaxLayer9" type="Parallax2D" parent="Biome1_Background2"]
+scroll_offset = Vector2(-219, -140)
+repeat_size = Vector2(320, 0)
+repeat_times = 16
+
+[node name="Sprite2D" type="Sprite2D" parent="Biome1_Background2/ParallaxLayer9"]
+position = Vector2(122, 67)
+texture = ExtResource("27_q35jh")
 
 [node name="OtherSprites" type="Node" parent="."]
 
@@ -4707,7 +4917,7 @@ position = Vector2(-37, -58)
 scale = Vector2(0.382553, 0.484682)
 sprite_frames = SubResource("SpriteFrames_4vt5b")
 animation = &"fire_anim"
-script = ExtResource("18_iqgfp")
+script = ExtResource("24_61fsc")
 
 [node name="Fire_Vfx2" type="AnimatedSprite2D" parent="OtherSprites/VfxEffects"]
 z_index = -2
@@ -4716,7 +4926,7 @@ rotation = -0.280598
 scale = Vector2(0.382553, 0.484682)
 sprite_frames = SubResource("SpriteFrames_4vt5b")
 animation = &"fire_anim"
-script = ExtResource("18_iqgfp")
+script = ExtResource("24_61fsc")
 
 [node name="Fire_Vfx3" type="AnimatedSprite2D" parent="OtherSprites/VfxEffects"]
 z_index = -1
@@ -4725,7 +4935,7 @@ rotation = 0.0357665
 scale = Vector2(0.382553, 0.484682)
 sprite_frames = SubResource("SpriteFrames_4vt5b")
 animation = &"fire_anim"
-script = ExtResource("18_iqgfp")
+script = ExtResource("24_61fsc")
 
 [node name="Sparks_Vfx" type="AnimatedSprite2D" parent="OtherSprites/VfxEffects"]
 z_index = -1
@@ -4842,29 +5052,191 @@ offset_bottom = -20.0
 text = "Biom 4: Wald"
 
 [node name="Label12" type="Label" parent="OtherSprites/Text"]
-offset_left = -596.897
-offset_top = 268.753
-offset_right = -282.897
-offset_bottom = 343.753
-text = "TODO: Fallgatter-Rätsel"
+offset_left = -923.0
+offset_top = 309.0
+offset_right = -749.0
+offset_bottom = 384.0
+theme_override_fonts/font = ExtResource("29_a24la")
+theme_override_font_sizes/font_size = 7
+text = "hier logbuch setzen"
 
-[node name="ScifiConsole1c1a" type="Sprite2D" parent="OtherSprites"]
+[node name="Environment" type="Node" parent="OtherSprites"]
+
+[node name="ScifiConsole1c1a" type="Sprite2D" parent="OtherSprites/Environment"]
 position = Vector2(-1863.75, -137)
 scale = Vector2(0.882812, 1)
 texture = ExtResource("29_qh3nx")
 
-[node name="Ship1" type="Sprite2D" parent="."]
+[node name="Ship1" type="Sprite2D" parent="OtherSprites/Environment"]
 z_index = 1
 position = Vector2(-1829, -268)
 texture = ExtResource("30_yotcs")
 
-[node name="Ship2" type="Sprite2D" parent="."]
+[node name="Ship2" type="Sprite2D" parent="OtherSprites/Environment"]
 z_index = 1
 position = Vector2(-1901, -219)
-rotation = 3.14522
+rotation = -3.13797
 scale = Vector2(0.992188, 1)
 texture = ExtResource("30_yotcs")
 flip_v = true
+
+[node name="Spear_Riddle" type="Node" parent="OtherSprites"]
+
+[node name="Spear_Sprite" type="AnimatedSprite2D" parent="OtherSprites/Spear_Riddle"]
+position = Vector2(-782, 295)
+sprite_frames = SubResource("SpriteFrames_1kelo")
+animation = &"activate"
+autoplay = "activate"
+frame = 5
+frame_progress = 1.0
+script = ExtResource("32_tu0n2")
+metadata/_edit_group_ = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OtherSprites/Spear_Riddle/Spear_Sprite"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OtherSprites/Spear_Riddle/Spear_Sprite/StaticBody2D"]
+position = Vector2(0.5, -2.5)
+shape = SubResource("RectangleShape2D_g2lqj")
+
+[node name="Spear_Sprite2" type="AnimatedSprite2D" parent="OtherSprites/Spear_Riddle"]
+position = Vector2(-676, 296)
+sprite_frames = SubResource("SpriteFrames_1kelo")
+animation = &"withdraw"
+autoplay = "withdraw"
+frame = 3
+frame_progress = 1.0
+script = ExtResource("33_tpmyg")
+metadata/_edit_group_ = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OtherSprites/Spear_Riddle/Spear_Sprite2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OtherSprites/Spear_Riddle/Spear_Sprite2/StaticBody2D"]
+position = Vector2(0.5, -2.5)
+shape = SubResource("RectangleShape2D_g2lqj")
+
+[node name="Spear_Sprite5" type="AnimatedSprite2D" parent="OtherSprites/Spear_Riddle"]
+position = Vector2(-379, 295)
+sprite_frames = SubResource("SpriteFrames_1kelo")
+animation = &"withdraw"
+autoplay = "withdraw"
+frame = 3
+frame_progress = 1.0
+script = ExtResource("33_tpmyg")
+metadata/_edit_group_ = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OtherSprites/Spear_Riddle/Spear_Sprite5"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OtherSprites/Spear_Riddle/Spear_Sprite5/StaticBody2D"]
+position = Vector2(0.5, -2.5)
+shape = SubResource("RectangleShape2D_g2lqj")
+
+[node name="Spear_Sprite3" type="AnimatedSprite2D" parent="OtherSprites/Spear_Riddle"]
+position = Vector2(-589, 295)
+sprite_frames = SubResource("SpriteFrames_1kelo")
+animation = &"activate"
+autoplay = "activate"
+frame = 5
+frame_progress = 1.0
+script = ExtResource("32_tu0n2")
+metadata/_edit_group_ = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OtherSprites/Spear_Riddle/Spear_Sprite3"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OtherSprites/Spear_Riddle/Spear_Sprite3/StaticBody2D"]
+position = Vector2(0.5, -2.5)
+shape = SubResource("RectangleShape2D_g2lqj")
+
+[node name="damage_activator" type="Sprite2D" parent="OtherSprites/Spear_Riddle/Spear_Sprite3"]
+position = Vector2(1, 16)
+scale = Vector2(0.421875, 1)
+script = ExtResource("37_eb4xp")
+metadata/_edit_group_ = true
+
+[node name="Area2D" type="Area2D" parent="OtherSprites/Spear_Riddle/Spear_Sprite3/damage_activator"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OtherSprites/Spear_Riddle/Spear_Sprite3/damage_activator/Area2D"]
+position = Vector2(-1.18542, 8.75)
+shape = SubResource("RectangleShape2D_5uxjt")
+
+[node name="Spear_Sprite4" type="AnimatedSprite2D" parent="OtherSprites/Spear_Riddle"]
+position = Vector2(-454, 295)
+sprite_frames = SubResource("SpriteFrames_1kelo")
+animation = &"activate"
+autoplay = "activate"
+frame = 5
+frame_progress = 1.0
+script = ExtResource("32_tu0n2")
+metadata/_edit_group_ = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OtherSprites/Spear_Riddle/Spear_Sprite4"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OtherSprites/Spear_Riddle/Spear_Sprite4/StaticBody2D"]
+position = Vector2(0.5, -2.5)
+shape = SubResource("RectangleShape2D_g2lqj")
+
+[node name="Pressure_plate3" type="Node2D" parent="OtherSprites/Spear_Riddle"]
+position = Vector2(-751, 333)
+script = ExtResource("32_n0uqq")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="OtherSprites/Spear_Riddle/Pressure_plate3"]
+position = Vector2(19, -13)
+texture = ExtResource("18_pdroc")
+hframes = 8
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OtherSprites/Spear_Riddle/Pressure_plate3"]
+libraries = {
+"": SubResource("AnimationLibrary_j2k7v")
+}
+autoplay = "idle"
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OtherSprites/Spear_Riddle/Pressure_plate3"]
+position = Vector2(23, -1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OtherSprites/Spear_Riddle/Pressure_plate3/StaticBody2D"]
+position = Vector2(-5, -12.125)
+shape = SubResource("RectangleShape2D_xysdx")
+
+[node name="Area2D" type="Area2D" parent="OtherSprites/Spear_Riddle/Pressure_plate3/StaticBody2D"]
+position = Vector2(-7, -17)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OtherSprites/Spear_Riddle/Pressure_plate3/StaticBody2D/Area2D"]
+z_index = 1
+position = Vector2(2, 1)
+shape = SubResource("RectangleShape2D_gjx3w")
+
+[node name="Pressure_plate4" type="Node2D" parent="OtherSprites/Spear_Riddle"]
+position = Vector2(-537, 333)
+script = ExtResource("32_n0uqq")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="OtherSprites/Spear_Riddle/Pressure_plate4"]
+position = Vector2(19, -13)
+texture = ExtResource("18_pdroc")
+hframes = 8
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="OtherSprites/Spear_Riddle/Pressure_plate4"]
+libraries = {
+"": SubResource("AnimationLibrary_j2k7v")
+}
+autoplay = "idle"
+
+[node name="StaticBody2D" type="StaticBody2D" parent="OtherSprites/Spear_Riddle/Pressure_plate4"]
+position = Vector2(23, -1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OtherSprites/Spear_Riddle/Pressure_plate4/StaticBody2D"]
+position = Vector2(-5, -12.125)
+shape = SubResource("RectangleShape2D_xysdx")
+
+[node name="Area2D" type="Area2D" parent="OtherSprites/Spear_Riddle/Pressure_plate4/StaticBody2D"]
+position = Vector2(-7, -17)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OtherSprites/Spear_Riddle/Pressure_plate4/StaticBody2D/Area2D"]
+z_index = 1
+position = Vector2(2, 1)
+shape = SubResource("RectangleShape2D_gjx3w")
 
 [connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Resume Button" to="UI/Pause Menu" method="_on_resume_button_pressed"]
 [connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Reset Button" to="UI/Pause Menu" method="_on_reset_button_pressed"]
@@ -4876,3 +5248,11 @@ flip_v = true
 [connection signal="body_entered" from="OtherSprites/Interactables/Pressure_plate2/StaticBody2D/Area2D" to="OtherSprites/Interactables/Pressure_plate2" method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="OtherSprites/Interactables/Pressure_plate2/StaticBody2D/Area2D" to="OtherSprites/Interactables/Pressure_plate2" method="_on_area_2d_body_exited"]
 [connection signal="body_entered" from="OtherSprites/Doors/AnimatedSprite2D/Area2D" to="OtherSprites/Doors/AnimatedSprite2D" method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="OtherSprites/Spear_Riddle/Spear_Sprite3/damage_activator/Area2D" to="OtherSprites/Spear_Riddle/Spear_Sprite3/damage_activator" method="_on_area_2d_body_entered"]
+[connection signal="spear_state" from="OtherSprites/Spear_Riddle/Pressure_plate3" to="OtherSprites/Spear_Riddle/Spear_Sprite" method="_on_pressure_plate_3_spear_state"]
+[connection signal="spear_state" from="OtherSprites/Spear_Riddle/Pressure_plate3" to="OtherSprites/Spear_Riddle/Spear_Sprite2" method="_on_pressure_plate_3_spear_state"]
+[connection signal="body_entered" from="OtherSprites/Spear_Riddle/Pressure_plate3/StaticBody2D/Area2D" to="OtherSprites/Spear_Riddle/Pressure_plate3" method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="OtherSprites/Spear_Riddle/Pressure_plate3/StaticBody2D/Area2D" to="OtherSprites/Spear_Riddle/Pressure_plate3" method="_on_area_2d_body_exited"]
+[connection signal="spear_state" from="OtherSprites/Spear_Riddle/Pressure_plate4" to="OtherSprites/Spear_Riddle/Spear_Sprite3" method="_on_pressure_plate_4_spear_state"]
+[connection signal="body_entered" from="OtherSprites/Spear_Riddle/Pressure_plate4/StaticBody2D/Area2D" to="OtherSprites/Spear_Riddle/Pressure_plate4" method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="OtherSprites/Spear_Riddle/Pressure_plate4/StaticBody2D/Area2D" to="OtherSprites/Spear_Riddle/Pressure_plate4" method="_on_area_2d_body_exited"]
