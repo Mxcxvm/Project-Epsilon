@@ -3,6 +3,7 @@ extends CharacterBody2D
 @export var multiplayer_spawner: MultiplayerSpawner
 @onready var synchronizer := $MultiplayerSynchronizer as MultiplayerSynchronizer
 
+
 # Sync variables
 @export var sync_position := Vector2.ZERO:
 	set(value):
@@ -85,6 +86,7 @@ func _enter_tree():
 	print("[Player] Entering tree, authority: ", get_multiplayer_authority())
 
 func _ready() -> void:
+	
 	# set up initial values
 	current_health = max_health
 	current_stamina = max_stamina
@@ -128,6 +130,8 @@ func _ready() -> void:
 		hud.show()
 	elif hud:
 		hud.hide()
+		
+	
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
@@ -564,3 +568,6 @@ func _on_timer_timeout() -> void:
 # Attack Damage rückgabe für den Enemy
 func get_current_damage() -> int:
 	return current_damage
+
+func _on_interact():
+	print("interacted")
