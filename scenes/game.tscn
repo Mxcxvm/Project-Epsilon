@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=4 uid="uid://b6nalqfrc6gn"]
+[gd_scene load_steps=137 format=4 uid="uid://b6nalqfrc6gn"]
 
 [ext_resource type="Texture2D" uid="uid://dcnnqy24s70v6" path="res://assets/sprites/world_tileset.png" id="1_cneqb"]
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_u4n54"]
@@ -7,13 +7,13 @@
 [ext_resource type="PackedScene" uid="uid://fxs7iyibn7rq" path="res://scenes/Platform.tscn" id="4_6sct0"]
 [ext_resource type="Texture2D" uid="uid://csmvguyt4igqn" path="res://assets/sprites/misc_assets/Trap and Weapon/Fire.png" id="4_jhqou"]
 [ext_resource type="PackedScene" uid="uid://b54ra5rmlmiv0" path="res://scenes/killzone.tscn" id="5_55xqm"]
-[ext_resource type="Script" path="res://scenes/sword_pickup.gd" id="7_ly8fc"]
-[ext_resource type="Texture2D" uid="uid://cgycb5wylg2m5" path="res://inventory/items/sword.png" id="8_pv5c4"]
+[ext_resource type="Texture2D" uid="uid://72wneq54r7vm" path="res://assets/sprites/misc_assets/forest_tileset.png" id="5_cahre"]
+[ext_resource type="Texture2D" uid="uid://dc3nyfjtjnp87" path="res://assets/sprites/misc_assets/mountain_tileset.png" id="6_nx04o"]
+[ext_resource type="Texture2D" uid="uid://c13tphh383bh" path="res://assets/sprites/misc_assets/Platform Asset Part 4/Part 4E.png" id="7_8w0av"]
 [ext_resource type="Script" path="res://scripts/pause_menu.gd" id="9_4mtwa"]
 [ext_resource type="Texture2D" uid="uid://cnnec44ug1t0t" path="res://assets/backgrounds/5.png" id="14_6ucq3"]
 [ext_resource type="Texture2D" uid="uid://c6agexyvqtbwg" path="res://assets/backgrounds/fillup.png" id="14_hkye8"]
 [ext_resource type="Texture2D" uid="uid://biyg4ekmvusgj" path="res://assets/backgrounds/1.png" id="14_qcufi"]
-[ext_resource type="PackedScene" uid="uid://cp8svf3yg7uru" path="res://scenes/interaction_area.tscn" id="15_3tg7e"]
 [ext_resource type="Texture2D" uid="uid://cyqxpslviumj8" path="res://assets/backgrounds/4.png" id="15_auap8"]
 [ext_resource type="Texture2D" uid="uid://cag4xypbosr6x" path="res://assets/backgrounds/fillup_low.png" id="15_tw43o"]
 [ext_resource type="Texture2D" uid="uid://cmgv5057jmtvh" path="res://assets/sprites/misc_assets/spaceships/Foozle_2DS0013_Void_EnemyFleet_2/Nairan/Designs - Base/PNGs/Nairan - Frigate - Base.png" id="16_1rwbe"]
@@ -4062,8 +4062,6 @@ _data = {
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ptsxl"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_wxbmo"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ra8r"]
 bg_color = Color(0.4, 0.223529, 0.192157, 1)
 
@@ -4627,20 +4625,6 @@ position = Vector2(52, 36)
 shape = SubResource("WorldBoundaryShape2D_ptsxl")
 
 [node name="Items" type="Node" parent="."]
-
-[node name="sword_pickup" type="Node2D" parent="Items"]
-script = ExtResource("7_ly8fc")
-
-[node name="Sprite2D" type="Sprite2D" parent="Items/sword_pickup"]
-position = Vector2(-4.76837e-07, -4.76837e-07)
-scale = Vector2(0.03125, 0.03125)
-texture = ExtResource("8_pv5c4")
-
-[node name="InteractionArea" parent="Items/sword_pickup" instance=ExtResource("15_3tg7e")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Items/sword_pickup/InteractionArea"]
-scale = Vector2(0.71, 0.71)
-shape = SubResource("CircleShape2D_wxbmo")
 
 [node name="Enemies" type="Node" parent="." groups=["enemies_container"]]
 
