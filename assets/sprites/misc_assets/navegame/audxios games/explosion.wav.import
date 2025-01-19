@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://ry20gd3ssmuf"
+path="res://.godot/imported/explosion.wav-2ade04609eea93a7992e07d304654578.sample"
+
+[deps]
+
+source_file="res://assets/sprites/misc_assets/navegame/audxios games/explosion.wav"
+dest_files=["res://.godot/imported/explosion.wav-2ade04609eea93a7992e07d304654578.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

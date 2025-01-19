@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bwykg57uvf7ut"
+path="res://.godot/imported/hitHurt.wav-b0793d6aa0d1ad5ecbc88e3c3cf69b6e.sample"
+
+[deps]
+
+source_file="res://assets/sprites/misc_assets/navegame/audxios games/hitHurt.wav"
+dest_files=["res://.godot/imported/hitHurt.wav-b0793d6aa0d1ad5ecbc88e3c3cf69b6e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
