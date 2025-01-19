@@ -10,7 +10,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-
+#Apply dmg to player, when they touch the spear tip
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if not multiplayer.is_server():
 		return

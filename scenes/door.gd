@@ -4,7 +4,7 @@ extends AnimatedSprite2D
 var state_one: bool = false
 var state_two: bool = false
 var doorOpened: bool = false
-var area_two_location = Vector2(2900, -2000)
+var area_two_location = Vector2(2900, -1360)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
