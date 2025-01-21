@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://cvwv58nfmxl6c"]
+
+[ext_resource type="Script" path="res://inventory/items/ItemData.gd" id="1_mxq0f"]
+[ext_resource type="Texture2D" uid="uid://clgl4j747u3fa" path="res://assets/sprites/items/headgear_01.png" id="2_b7con"]
+
+[resource]
+script = ExtResource("1_mxq0f")
+type = 0
+name = "Grundschutz-Helm"
+damage = 0.0
+defense = 3.0
+description = "Ein einfacher Helm, der grundlegenden Schutz vor Stößen und leichten Umwelteinflüssen bietet.
+
+"
+texture = ExtResource("2_b7con")

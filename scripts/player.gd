@@ -569,5 +569,81 @@ func _on_timer_timeout() -> void:
 func get_current_damage() -> int:
 	return current_damage
 
-func _on_interact():
-	print("interacted")
+@rpc("reliable", "call_local")
+func request_item_pickup(pickup_node_path: NodePath) -> void:
+	if multiplayer.is_server():
+		var interactable = get_node_or_null(pickup_node_path)
+		if not interactable or not interactable.is_in_group("pickup_items"):
+			return
+
+		var requesting_player = multiplayer.get_remote_sender_id()
+		if requesting_player != multiplayer.get_unique_id():
+			return
+
+		process_item_pickup(pickup_node_path)
+	else:
+		rpc_id(1, "request_item_pickup", pickup_node_path)
+
+
+@rpc("reliable", "call_local")
+func process_item_pickup(pickup_node_path: NodePath) -> void:
+	var interactable = get_node_or_null(pickup_node_path)
+	if not interactable:
+		return
+
+	var item_data = interactable.get_item_data()
+	if add_item_to_inventory(item_data):
+		interactable.queue_free()
+
+		rpc("sync_item_removal", pickup_node_path)
+		
+@rpc("reliable")
+func sync_item_removal(pickup_node_path: NodePath) -> void:
+	var interactable = get_node_or_null(pickup_node_path)
+	if interactable:
+		interactable.queue_free()
+
+func _on_interact(interactable: Node2D) -> void:
+	if not is_multiplayer_authority():
+		return  
+
+	if interactable.is_in_group("pickup_items"):
+		request_item_pickup.rpc_id(1, interactable.get_path())
+
+
+func add_item_to_inventory(item_data: ItemData) -> bool:
+	var inventory = $Inventory
+	if not inventory:
+		print("Inventory node not found!")
+		return false
+		
+	var inv_grid = inventory.get_node_or_null("%Inv")
+	if not inv_grid:
+		print("Inventory grid not found!")
+		return false
+	
+	if not is_multiplayer_authority():
+		return false
+	
+	for slot in inv_grid.get_children():
+		if slot.get_child_count() == 0:
+			var item = InventoryItem.new()
+			item.init(item_data)
+			slot.add_child(item)
+			sync_inventory.rpc(slot.get_path(), item_data.resource_path)
+			return true
+	
+	return false
+
+@rpc("reliable", "call_local")
+func sync_inventory(slot_path: NodePath, item_resource_path: String) -> void:
+	if is_multiplayer_authority():
+		return
+		
+	var slot = get_node_or_null(slot_path)
+	if not slot:
+		return
+		
+	var item = InventoryItem.new()
+	item.init(load(item_resource_path))
+	slot.add_child(item)
