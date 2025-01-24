@@ -13,6 +13,7 @@ var enemy_types = {
 var connected_players = []
 
 func _ready():
+
 	# check if server needs to be instantiated
 	if multiplayer.is_server():
 		print("Server initializing world objects...")

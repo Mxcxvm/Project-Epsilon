@@ -1,0 +1,159 @@
+[gd_scene load_steps=21 format=3 uid="uid://lxrsfurbj5be"]
+
+[ext_resource type="Script" path="res://scripts/Checkpoint.gd" id="1_mr7yu"]
+[ext_resource type="Texture2D" uid="uid://cem5ajxd5hu60" path="res://assets/Obelisk_demo/Obelisk.png" id="2_ixl35"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3miwo"]
+size = Vector2(60, 90.75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0u4c"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(2470, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ceym"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(2280, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tuygc"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(0, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3wupm"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(190, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xt1ig"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(380, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qs4xv"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(570, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0v0yn"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(760, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tnp4l"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(950, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v14ta"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(1140, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ug12u"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(1330, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eyxp6"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(1520, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ugybb"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(1710, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3xphe"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(1900, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_taa2e"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(2090, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w4usw"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(2280, 0, 190, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vlc1h"]
+atlas = ExtResource("2_ixl35")
+region = Rect2(2470, 0, 190, 240)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_j8nt4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0u4c")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ceym")
+}],
+"loop": false,
+"name": &"not_touched",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tuygc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3wupm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xt1ig")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qs4xv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0v0yn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tnp4l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v14ta")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ug12u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eyxp6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ugybb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3xphe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_taa2e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w4usw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vlc1h")
+}],
+"loop": false,
+"name": &"touched",
+"speed": 7.0
+}]
+
+[node name="Checkpoint" type="Area2D"]
+position = Vector2(0, 1)
+script = ExtResource("1_mr7yu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -46.625)
+shape = SubResource("RectangleShape2D_3miwo")
+
+[node name="RespawnPoint" type="Marker2D" parent="."]
+position = Vector2(5, 0)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1.19209e-07, -46)
+scale = Vector2(0.339392, 0.381242)
+sprite_frames = SubResource("SpriteFrames_j8nt4")
+animation = &"idle"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="ready" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_ready"]

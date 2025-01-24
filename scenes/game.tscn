@@ -1,4 +1,4 @@
-[gd_scene load_steps=142 format=4 uid="uid://b6nalqfrc6gn"]
+[gd_scene load_steps=143 format=4 uid="uid://b6nalqfrc6gn"]
 
 [ext_resource type="Texture2D" uid="uid://dcnnqy24s70v6" path="res://assets/sprites/world_tileset.png" id="1_cneqb"]
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_u4n54"]
@@ -60,6 +60,7 @@
 [ext_resource type="Texture2D" uid="uid://ck63qgl4rpscd" path="res://assets/sprites/misc_assets/Doors/Door 3/Door Activated - Animation/Door 8.png" id="46_iw7js"]
 [ext_resource type="Texture2D" uid="uid://l8wosv8lshab" path="res://assets/sprites/misc_assets/Doors/Door 3/Door Activated - Animation/Door 1.png" id="46_ls2uy"]
 [ext_resource type="Script" path="res://scenes/boss_door_placeholder.gd" id="47_0j16t"]
+[ext_resource type="PackedScene" uid="uid://lxrsfurbj5be" path="res://scenes/checkpoint.tscn" id="61_w5no6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e878f"]
 texture = ExtResource("1_cneqb")
@@ -4065,6 +4066,7 @@ _data = {
 }
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ptsxl"]
+distance = 67.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ggafh"]
 
@@ -4627,7 +4629,7 @@ autoplay = "out_of_bounce"
 position = Vector2(211, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
-position = Vector2(52, 36)
+position = Vector2(187, 436)
 shape = SubResource("WorldBoundaryShape2D_ptsxl")
 
 [node name="Items" type="Node" parent="."]
@@ -5376,6 +5378,14 @@ metadata/_edit_group_ = true
 z_index = 1
 position = Vector2(2, 1)
 shape = SubResource("RectangleShape2D_gjx3w")
+
+[node name="CheckpointManager" type="Node" parent="."]
+
+[node name="Checkpoint" parent="CheckpointManager" instance=ExtResource("61_w5no6")]
+position = Vector2(691, -62)
+
+[node name="Checkpoint2" parent="CheckpointManager" instance=ExtResource("61_w5no6")]
+position = Vector2(-204, 18)
 
 [connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Resume Button" to="UI/Pause Menu" method="_on_resume_button_pressed"]
 [connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Reset Button" to="UI/Pause Menu" method="_on_reset_button_pressed"]

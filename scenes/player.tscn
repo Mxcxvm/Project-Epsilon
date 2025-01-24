@@ -461,7 +461,7 @@ disabled = true
 one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(4, 4)
+zoom = Vector2(5, 5)
 
 [node name="PlayerHUD" parent="." instance=ExtResource("70_qypdi")]
 

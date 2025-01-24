@@ -443,8 +443,13 @@ func initiate_respawn() -> void:
 	current_stamina = max_stamina
 	is_dead = false
 	
-	# Reset position
-	position = Vector2(0, -60)
+	if Checkpoint.is_activated and Checkpoint.last_location:
+		position = Checkpoint.last_location
+		
+	else:
+		# Fallback 
+		position = Vector2(0, -60)
+
 	sync_position = position
 	velocity = Vector2.ZERO
 	sync_velocity = velocity
