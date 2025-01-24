@@ -3,6 +3,7 @@ extends Area2D
 var last_location = null
 var is_activated = false
 
+@onready var checkpoint_sound: AudioStreamPlayer2D = $checkpoint_sound
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 func _on_body_entered(body: Node2D) -> void:
@@ -10,6 +11,7 @@ func _on_body_entered(body: Node2D) -> void:
 		Checkpoint.last_location = body.global_position
 		Checkpoint.is_activated = true
 		animated_sprite_2d.play("touched")
+		checkpoint_sound.play()
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if Checkpoint.is_activated:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=89 format=3 uid="uid://dxnkfj47wkm23"]
+[gd_scene load_steps=90 format=3 uid="uid://dxnkfj47wkm23"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_7rjoq"]
 [ext_resource type="Texture2D" uid="uid://cfu1x4qmoxqg2" path="res://assets/sprites/vagabond/idle/idle01.png" id="2_6bst3"]
@@ -77,6 +77,7 @@
 [ext_resource type="AudioStream" uid="uid://b3h7lrc6ypv2e" path="res://assets/music/jumping_1-6452.mp3" id="74_l10mo"]
 [ext_resource type="AudioStream" uid="uid://cqalpy5rby7iy" path="res://assets/music/laser-6042_3mUjfFLT.mp3" id="76_4pnxv"]
 [ext_resource type="AudioStream" uid="uid://ctfd75thlk6tm" path="res://assets/music/ouch-sound-effect-30-11844.mp3" id="77_nq8ug"]
+[ext_resource type="AudioStream" uid="uid://1uj3v0fj4f1p" path="res://assets/music/item-equip-6904.mp3" id="78_s5kut"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1e687"]
 properties/0/path = NodePath(".:sync_position")
@@ -499,6 +500,9 @@ pitch_scale = 1.5
 
 [node name="damage_taken_sound" type="AudioStreamPlayer2D" parent="Sounds"]
 stream = ExtResource("77_nq8ug")
+
+[node name="pickup_sound" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("78_s5kut")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_entered" from="AttackArea2D" to="." method="_on_attack_area_2d_body_entered"]

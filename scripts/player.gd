@@ -54,7 +54,7 @@ var is_dead := false
 @onready var dashing_sound: AudioStreamPlayer2D = $Sounds/dashing_sound
 @onready var light_attack_sound: AudioStreamPlayer2D = $Sounds/light_attack_sound
 @onready var damage_taken_sound: AudioStreamPlayer2D = $Sounds/damage_taken_sound
-
+@onready var pickup_sound: AudioStreamPlayer2D = $Sounds/pickup_sound
 
 
 # signals
@@ -616,6 +616,7 @@ func process_item_pickup(pickup_node_path: NodePath) -> void:
 
 	var item_data = interactable.get_item_data()
 	if add_item_to_inventory(item_data):
+		pickup_sound.play()
 		interactable.queue_free()
 
 		rpc("sync_item_removal", pickup_node_path)
