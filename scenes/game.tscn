@@ -1,4 +1,4 @@
-[gd_scene load_steps=143 format=4 uid="uid://b6nalqfrc6gn"]
+[gd_scene load_steps=144 format=4 uid="uid://b6nalqfrc6gn"]
 
 [ext_resource type="Texture2D" uid="uid://dcnnqy24s70v6" path="res://assets/sprites/world_tileset.png" id="1_cneqb"]
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_u4n54"]
@@ -61,6 +61,7 @@
 [ext_resource type="Texture2D" uid="uid://l8wosv8lshab" path="res://assets/sprites/misc_assets/Doors/Door 3/Door Activated - Animation/Door 1.png" id="46_ls2uy"]
 [ext_resource type="Script" path="res://scenes/boss_door_placeholder.gd" id="47_0j16t"]
 [ext_resource type="PackedScene" uid="uid://lxrsfurbj5be" path="res://scenes/checkpoint.tscn" id="61_w5no6"]
+[ext_resource type="AudioStream" uid="uid://b1pv0ku2yto35" path="res://assets/music/chip-2-206629.mp3" id="62_1qo1k"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e878f"]
 texture = ExtResource("1_cneqb")
@@ -5386,6 +5387,11 @@ position = Vector2(691, -62)
 
 [node name="Checkpoint2" parent="CheckpointManager" instance=ExtResource("61_w5no6")]
 position = Vector2(-204, 18)
+
+[node name="Background_music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("62_1qo1k")
+volume_db = -5.0
+autoplay = true
 
 [connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Resume Button" to="UI/Pause Menu" method="_on_resume_button_pressed"]
 [connection signal="pressed" from="UI/Pause Menu/Pause Panel/VBoxContainer/Reset Button" to="UI/Pause Menu" method="_on_reset_button_pressed"]

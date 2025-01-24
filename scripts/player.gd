@@ -47,6 +47,15 @@ var current_health := max_health
 var current_stamina := max_stamina
 var is_dead := false
 
+# Sounds
+@onready var heavy_attack_charged_sound: AudioStreamPlayer2D = $Sounds/heavy_attack_charged_sound
+@onready var heavy_attack_released_sound: AudioStreamPlayer2D = $Sounds/heavy_attack_released_sound
+@onready var jumping_sound: AudioStreamPlayer2D = $Sounds/jumping_sound
+@onready var dashing_sound: AudioStreamPlayer2D = $Sounds/dashing_sound
+@onready var light_attack_sound: AudioStreamPlayer2D = $Sounds/light_attack_sound
+@onready var damage_taken_sound: AudioStreamPlayer2D = $Sounds/damage_taken_sound
+
+
 
 # signals
 signal stamina_value(current_stamina)
@@ -204,15 +213,18 @@ func jump():
 	# Bewegung des Players 
 	if Input.is_action_just_pressed("jump") and is_dashing == false and is_attacking == false and jump_count < MAX_JUMPS:
 		velocity.y = JUMP_VELOCITY
+		jumping_sound.play()
 		jump_count += 1
 		
 		# Je nach count unterschiedliche Animation spielen
 		if jump_count == 1:
 			if animated_sprite != null:
 				animated_sprite.play("jump")
+				jumping_sound.play()
 		else:
 			if animated_sprite != null:
 				animated_sprite.play("jump_flip")
+				jumping_sound.play()
 
 # Handle dash
 func dash(delta: float, direction: float) -> void:
@@ -254,6 +266,7 @@ func dash(delta: float, direction: float) -> void:
 			# Dash-Animation abspielen
 			if animated_sprite != null:
 				animated_sprite.play("dash")
+				dashing_sound.play()
 			
 	# Dash Bewegungslogik 
 	if is_dashing:
@@ -285,6 +298,7 @@ func attack():
 		update_hud_stamina()
 		if animated_sprite != null:
 			animated_sprite.play("attack_light")
+			light_attack_sound.play()
 		is_attacking = true
 		current_damage = calculate_damage("light")
 		$AttackArea2D/CollisionShape2D.disabled = false
@@ -308,6 +322,7 @@ func attack():
 			is_attacking = true
 			if animated_sprite != null:
 				animated_sprite.play("attack_heavy_charge")
+				heavy_attack_charged_sound.play()
 			if animated_sprite != null and animated_sprite.flip_h:
 				animated_sprite.offset.x = -55 
 				$AttackArea2D.position.x = 0
@@ -318,6 +333,8 @@ func attack():
 				$AttackArea2D.scale.x = 1
 
 	if Input.is_action_just_released("heavy_attack") and is_charging:
+		heavy_attack_charged_sound.stop()
+		heavy_attack_released_sound.play()
 		current_stamina -= HEAVY_ATTACK_COST
 		update_hud_stamina()
 		if animated_sprite != null:
@@ -512,6 +529,7 @@ func take_damage(amount: int) -> void:
 		die()
 	else:
 		animated_sprite.play("get_hit")
+		damage_taken_sound.play()
 
 @rpc("any_peer", "reliable")
 func request_damage(amount: int) -> void:
