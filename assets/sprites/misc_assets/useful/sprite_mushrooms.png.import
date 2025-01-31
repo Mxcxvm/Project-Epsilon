@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cvq3pa4ta0j67"
-path="res://.godot/imported/18.png-afb41bd9b4940806e8fc4ecef6fbe705.ctex"
+uid="uid://b11fl0rkchq3"
+path="res://.godot/imported/sprite_mushrooms.png-a83f1678d050d2a88647c2c2ffb0c795.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/misc_assets/Trap and Weapon/18.png"
-dest_files=["res://.godot/imported/18.png-afb41bd9b4940806e8fc4ecef6fbe705.ctex"]
+source_file="res://assets/sprites/misc_assets/useful/sprite_mushrooms.png"
+dest_files=["res://.godot/imported/sprite_mushrooms.png-a83f1678d050d2a88647c2c2ffb0c795.ctex"]
 
 [params]
 
