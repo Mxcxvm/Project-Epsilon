@@ -14,7 +14,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if(!doorOpened):
-		if(state_one): #and state_two
+		if(state_one and state_two): #and state_two
 			doorOpened = true
 			animated_sprite_2d.play("open_door")
 
