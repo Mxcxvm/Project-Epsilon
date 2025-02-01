@@ -28,27 +28,25 @@ extends CharacterBody2D
 		if not is_multiplayer_authority():
 			$AnimatedSprite2D.play(value)
 
-@export var sync_damage := 50:
+@export var sync_damage := 5:
 	set(value):
 		sync_damage = value
 		if not is_multiplayer_authority(): 
 			damage = value
 
 var hp = 30
-const SPEED = 30
+const SPEED = 50
 const GRAVITY = 980
 var chase = false
 var direction
 var player
-var damage = 50
+var damage = 5
 	
 func _enter_tree():
 	# Only server should control enemies
 	set_multiplayer_authority(1)  # Server controls all enemies
 	print("[Enemy] Entering tree, authority: ", get_multiplayer_authority())
 	
-	# Set initial damage
-	damage = 50
 	sync_damage = damage
 	
 	# Configure spawner if available

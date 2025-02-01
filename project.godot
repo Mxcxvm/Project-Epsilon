@@ -36,6 +36,10 @@ folder_colors={
 "res://assets/music/": "red"
 }
 
+[global_group]
+
+enemies=""
+
 [input]
 
 jump={

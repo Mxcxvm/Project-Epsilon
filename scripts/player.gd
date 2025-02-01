@@ -95,8 +95,7 @@ func _enter_tree():
 	print("[Player] Entering tree, authority: ", get_multiplayer_authority())
 
 func _ready() -> void:
-	
-	# set up initial values
+	add_to_group("player") 
 	current_health = max_health
 	current_stamina = max_stamina
 	
@@ -123,11 +122,10 @@ func _ready() -> void:
 		if $Camera2D:
 			$Camera2D.enabled = false
 	
-	# make sure inventory is only controlled by its owner
+	# inventory is only controlled by its owner
 	if inv:
 		inv.set_multiplayer_authority(get_multiplayer_authority())
 	
-	# wait a bit for nodes to be ready
 	await get_tree().create_timer(0.1).timeout
 	
 	# initial sync for all players
@@ -164,7 +162,7 @@ func _physics_process(delta: float) -> void:
 	jump()
 	move_and_slide()
 	
-	# Update sync variables at the end of physics processing
+	# update sync variables 
 	sync_position = position
 	sync_velocity = velocity
 	if animated_sprite != null:
@@ -421,6 +419,8 @@ func update_client_health(new_health: int, new_stamina: float) -> void:
 
 @rpc("any_peer", "reliable", "call_local")
 func initiate_death() -> void:
+	if death_timer:
+		return
 	print("Initiating death sequence for player: ", name, " on peer: ", multiplayer.get_unique_id())
 	
 	# Disable all RPCs and physics first
@@ -514,7 +514,15 @@ func request_death() -> void:
 
 # damage 
 func take_damage(amount: int) -> void:
+	if is_dead:
+		return
+	
 	print("Taking damage: ", amount, " current health: ", current_health)
+	
+	if not multiplayer.is_server():
+		request_damage.rpc_id(1, amount)
+		return
+	
 	current_health -= amount
 	if hud:
 		hud.update_health(current_health)
@@ -525,7 +533,8 @@ func take_damage(amount: int) -> void:
 		
 	print("Health after damage: ", current_health, " on peer: ", multiplayer.get_unique_id())
 	
-	if current_health <= 0:
+	if current_health <= 0 and not is_dead:
+		is_dead = true
 		die()
 	else:
 		animated_sprite.play("get_hit")
@@ -533,11 +542,11 @@ func take_damage(amount: int) -> void:
 
 @rpc("any_peer", "reliable")
 func request_damage(amount: int) -> void:
-	print("Server received damage request: ", amount)
 	if multiplayer.is_server():
-		take_damage(amount)
-		# Sync the new health to all clients
-		update_client_health.rpc(current_health, current_stamina)
+		return
+	print("Server received damage request: ", amount)
+	take_damage(amount)
+	update_client_health.rpc(current_health, current_stamina)
 
 @rpc("any_peer", "reliable")
 func notify_attack(damage_amount: int) -> void:
