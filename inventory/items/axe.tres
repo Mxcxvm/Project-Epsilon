@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://bhcelx1nhv46e"]
+
+[ext_resource type="Script" path="res://inventory/items/ItemData.gd" id="1_7c47w"]
+[ext_resource type="Texture2D" uid="uid://c56wbvv47t12j" path="res://assets/sprites/items/axe.png" id="2_jrgji"]
+
+[resource]
+script = ExtResource("1_7c47w")
+type = 4
+name = "Arbeitsaxt"
+damage = 6.0
+defense = 0.0
+description = "Eine schwere, einseitige Axt, ursprünglich für harte Arbeit gedacht. Grob, aber effektiv."
+texture = ExtResource("2_jrgji")

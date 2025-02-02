@@ -2,7 +2,12 @@ extends Node
 
 var InvSize = 16
 var itemsLoad = [
-
+	"res://inventory/items/sword.tres",
+	"res://inventory/items/helmet.tres",
+	"res://inventory/items/chest.tres",
+	"res://inventory/items/legs.tres",
+	"res://inventory/items/feet.tres",
+	"res://inventory/items/axe.tres"
 ]
 
 func _ready() -> void:

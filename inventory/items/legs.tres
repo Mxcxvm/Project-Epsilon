@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://c3xkoadfctrfm"]
+
+[ext_resource type="Script" path="res://inventory/items/ItemData.gd" id="1_p552d"]
+[ext_resource type="Texture2D" uid="uid://cyux16b3n8dnd" path="res://assets/sprites/items/platemail_pants.png" id="2_8vdgw"]
+
+[resource]
+script = ExtResource("1_p552d")
+type = 2
+name = "Gefütterte Taktikhose"
+damage = 0.0
+defense = 3.0
+description = "Leichte, flexible Hose mit verstärkten Nähten. Bietet minimalen Schutz vor Splittern und Witterung.
+
+"
+texture = ExtResource("2_8vdgw")

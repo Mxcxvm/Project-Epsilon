@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://dqt0tvqgc40et"]
+
+[ext_resource type="Script" path="res://inventory/items/ItemData.gd" id="1_xw2cl"]
+[ext_resource type="Texture2D" uid="uid://dmwm68euamghl" path="res://assets/sprites/items/leather_boots_01.png" id="2_l5cvd"]
+
+[resource]
+script = ExtResource("1_xw2cl")
+type = 3
+name = "Verstärkte Stiefel"
+damage = 0.0
+defense = 3.0
+description = "Robuste Stiefel mit verstärkter Zehenkappe und rutschfester Sohle. Dämpfen Schritte leicht."
+texture = ExtResource("2_l5cvd")

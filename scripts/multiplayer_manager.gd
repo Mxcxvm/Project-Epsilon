@@ -11,6 +11,7 @@ var enemy_types = {
 }
 
 var connected_players = []
+var player_references = {}  # Dictionary to store player nodes by their unique ID
 
 func _ready():
 	# check if server needs to be instantiated
@@ -41,11 +42,13 @@ func spawn_player(peer_id):
 			print("Player scene loaded successfully")
 			var player = player_scene.instantiate()
 			if player:
-				print("Player instantiated successfully")
 				player.name = str(peer_id)
-				
-				# add player to container node
+				player.add_to_group("players")  # Add player to the "players" group
+				player.set_multiplayer_authority(peer_id)
 				players_node.add_child(player, true)
+				print("Player added to scene tree at path: ", player.get_path())
+				connected_players.append(peer_id)
+				return true
 				
 				# connect signals to HUD if this is the local player
 				if peer_id == multiplayer.get_unique_id():
@@ -70,8 +73,7 @@ func spawn_player(peer_id):
 		return true
 	else:
 		print("ERROR: No valid spawner found in group 'player_spawner'")
-	return false
-
+	return false	
 
 func host_game():
 	print("Starting host game...")

@@ -37,6 +37,8 @@ extends CharacterBody2D
 @onready var timer: Timer = $Timer
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hud = $PlayerHUD
+var armor_slots = ["HeadSlot", "ChestSlot", "LegSlot", "FeetSlot"]
+var total_defense_multiplier = 1.0
 var death_timer: Timer
 
 const max_health := 100
@@ -86,11 +88,9 @@ func _enter_tree():
 	print("[Player] Entering tree, authority: ", get_multiplayer_authority())
 
 func _ready() -> void:
-	
 	# set up initial values
 	current_health = max_health
 	current_stamina = max_stamina
-	
 	# initialize sync properties
 	sync_position = position
 	sync_velocity = velocity
@@ -130,6 +130,8 @@ func _ready() -> void:
 		hud.show()
 	elif hud:
 		hud.hide()
+		
+	total_defense_multiplier = calculate_defense_multiplier()
 		
 	
 
@@ -268,13 +270,89 @@ func dash(delta: float, direction: float) -> void:
 		if not timer.time_left > 0: # Nur enable wenn der Unverwundbarkeits-Timer abgelaufen ist
 			$HitBox/HitBoxCollisionShape2D.disabled = false
 
-# Damage je nach attacke berechnen
+#Schaden und Verteidigung verrechnen
+func get_weapon_damage_multiplier() -> float:
+	var equipped_weapon = get_equipped_weapon()
+	if equipped_weapon:
+		return 1.0 + equipped_weapon.damage
+	return 1.0
+	
+# Immer aktuelle Werte tracken
+func update_equipment_stats() -> void:
+	total_defense_multiplier = calculate_defense_multiplier()
+
+	print("Updated equipment stats:")
+	print("Defense multiplier: ", total_defense_multiplier)
+	var weapon = get_equipped_weapon()
+	if weapon:
+		print("Weapon damage multiplier: ", get_weapon_damage_multiplier())
+
+#Helper Funktion für Waffenslot
+func get_equipped_weapon() -> ItemData:
+	var inventory = $Inventory
+	if not inventory:
+		print("No inventory found!")
+		return null
+	
+	var weapon_slot = inventory.get_node_or_null("VBoxContainer/HBoxContainer3/WeaponSlot")
+	if not weapon_slot:
+		print("No weapon slot found")
+		return null
+	
+	if weapon_slot.get_child_count() > 0:
+		var weapon_item = weapon_slot.get_child(0)
+		if weapon_item is InventoryItem:
+			var item_data = weapon_item.data
+			if item_data:
+				print("Found equipped weapon: ", item_data.name)
+				return item_data
+	
+	print("No weapon equipped in weapon slot")
+	return null
+
+func calculate_defense_multiplier() -> float:
+	var total_defense = 1.0  # Base defense multiplier
+	var inventory = $Inventory
+	
+	if not inventory:
+		return total_defense
+	
+	var slot_paths = {
+		"head": "VBoxContainer/HBoxContainer/HeadSlot",
+		"chest": "VBoxContainer/HBoxContainer/ChestSlot",
+		"legs": "VBoxContainer/HBoxContainer2/LegSlot",
+		"feet": "VBoxContainer/HBoxContainer2/FeetSlot"
+	}
+	
+	# Jeden armor slot checken
+	for slot_path in slot_paths.values():
+		var slot = inventory.get_node_or_null(slot_path)
+		if slot and slot.get_child_count() > 0:
+			var armor_item = slot.get_child(0)
+			if armor_item is InventoryItem:
+				var item_data = armor_item.data
+				if item_data:
+					total_defense += item_data.defense
+					print("Found armor in ", slot_path, " with defense: ", item_data.defense)
+	
+	print("Total defense multiplier: ", total_defense)
+	return total_defense
+
+#Verrechnung von Schaden der Waffe mit Attack Art
 func calculate_damage(attack_type: String) -> int:
+	var equipped_weapon = get_equipped_weapon()
+	if not equipped_weapon:
+		print("No weapon equipped!")
+		return base_damage
+	
+	var weapon_multiplier = get_weapon_damage_multiplier()
+	print("Weapon multiplier: ", weapon_multiplier)
+	
 	match attack_type:
 		"light":
-			return int(base_damage * LIGHT_ATTACK_MULTIPLIER)
+			return int(base_damage * LIGHT_ATTACK_MULTIPLIER * weapon_multiplier)
 		"heavy":
-			return int(base_damage * HEAVY_ATTACK_MULTIPLIER)
+			return int(base_damage * HEAVY_ATTACK_MULTIPLIER * weapon_multiplier)
 		_:
 			return 0
 
@@ -492,8 +570,14 @@ func request_death() -> void:
 
 # damage 
 func take_damage(amount: int) -> void:
-	print("Taking damage: ", amount, " current health: ", current_health)
-	current_health -= amount
+	# Calculate defense multiplier from equipped armor
+	var defense_multiplier = calculate_defense_multiplier()
+	
+	# Apply defense reduction to incoming damage
+	var final_damage = int(amount / defense_multiplier)
+	print("Taking damage: ", amount, " reduced to: ", final_damage, " by defense multiplier: ", defense_multiplier)
+	
+	current_health -= final_damage
 	if hud:
 		hud.update_health(current_health)
 		
@@ -569,47 +653,70 @@ func _on_timer_timeout() -> void:
 func get_current_damage() -> int:
 	return current_damage
 
-@rpc("reliable", "call_local")
-func request_item_pickup(pickup_node_path: NodePath) -> void:
+#Item Pickup Logik
+
+@rpc("reliable", "any_peer")
+func request_item_pickup(pickup_node_path: NodePath, player_id: int) -> void:
 	if multiplayer.is_server():
+		print("Server received pickup request from player: ", player_id)
 		var interactable = get_node_or_null(pickup_node_path)
 		if not interactable or not interactable.is_in_group("pickup_items"):
+			print("Invalid interactable or not in pickup_items group")
 			return
 
-		var requesting_player = multiplayer.get_remote_sender_id()
-		if requesting_player != multiplayer.get_unique_id():
-			return
-
-		process_item_pickup(pickup_node_path)
-	else:
-		rpc_id(1, "request_item_pickup", pickup_node_path)
-
+		print("Processing pickup for player: ", player_id)
+		process_item_pickup(pickup_node_path, player_id)
 
 @rpc("reliable", "call_local")
-func process_item_pickup(pickup_node_path: NodePath) -> void:
+func process_item_pickup(pickup_node_path: NodePath, player_id: int) -> void:
 	var interactable = get_node_or_null(pickup_node_path)
 	if not interactable:
+		print("Interactable not found at path: ", pickup_node_path)
 		return
 
+	print("Processing pickup for player: ", player_id)
 	var item_data = interactable.get_item_data()
-	if add_item_to_inventory(item_data):
-		interactable.queue_free()
 
-		rpc("sync_item_removal", pickup_node_path)
+	# Find the player who should receive the item
+	var player = null
+	for p in get_tree().get_nodes_in_group("players"):
+		if str(p.get_multiplayer_authority()) == str(player_id):
+			player = p
+			break
+
+	if player:
+		print("Player found: ", player.name)
+		if player.has_method("add_item_to_inventory"):
+			print("Adding item to inventory for player: ", player_id)
+			if player.add_item_to_inventory(item_data):
+				print("Item added to inventory, removing from world")
+				interactable.queue_free()
+				rpc("sync_item_removal", pickup_node_path)
+			else:
+				print("Failed to add item to inventory")
+		else:
+			print("Player does not have add_item_to_inventory method")
+	else:
+		print("Player not found for ID: ", player_id)
 		
 @rpc("reliable")
 func sync_item_removal(pickup_node_path: NodePath) -> void:
 	var interactable = get_node_or_null(pickup_node_path)
 	if interactable:
+		print("Removing item from world: ", interactable.name)
 		interactable.queue_free()
+	else:
+		print("Item not found at path: ", pickup_node_path)
 
 func _on_interact(interactable: Node2D) -> void:
-	if not is_multiplayer_authority():
-		return  
-
 	if interactable.is_in_group("pickup_items"):
-		request_item_pickup.rpc_id(1, interactable.get_path())
-
+		print("Player interacting with item: ", interactable.name)
+		if multiplayer.is_server():
+			print("Server processing pickup for player: ", multiplayer.get_unique_id())
+			request_item_pickup(interactable.get_path(), multiplayer.get_unique_id())
+		else:
+			print("Client sending RPC to server for player: ", multiplayer.get_unique_id())
+			rpc_id(1, "request_item_pickup", interactable.get_path(), multiplayer.get_unique_id())
 
 func add_item_to_inventory(item_data: ItemData) -> bool:
 	var inventory = $Inventory
@@ -622,28 +729,31 @@ func add_item_to_inventory(item_data: ItemData) -> bool:
 		print("Inventory grid not found!")
 		return false
 	
-	if not is_multiplayer_authority():
-		return false
-	
 	for slot in inv_grid.get_children():
 		if slot.get_child_count() == 0:
 			var item = InventoryItem.new()
 			item.init(item_data)
 			slot.add_child(item)
-			sync_inventory.rpc(slot.get_path(), item_data.resource_path)
+			print("Item added to inventory: ", item_data.resource_path)
+			
+			# Call sync_inventory on the specific player node
+			if multiplayer.is_server():
+				rpc_id(get_multiplayer_authority(), "sync_inventory", slot.get_path(), item_data.resource_path)
+			else:
+				sync_inventory.rpc(slot.get_path(), item_data.resource_path)
 			return true
 	
+	print("No available slots in inventory")
 	return false
 
-@rpc("reliable", "call_local")
+@rpc("reliable", "any_peer", "call_local")
 func sync_inventory(slot_path: NodePath, item_resource_path: String) -> void:
-	if is_multiplayer_authority():
-		return
-		
 	var slot = get_node_or_null(slot_path)
 	if not slot:
+		print("Slot not found at path: ", slot_path)
 		return
 		
 	var item = InventoryItem.new()
 	item.init(load(item_resource_path))
 	slot.add_child(item)
+	print("Item synchronized in inventory: ", item_resource_path)

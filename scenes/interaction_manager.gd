@@ -10,9 +10,11 @@ var can_interact = true
 
 func register_area(area: InteractionArea):
 	if area not in active_areas:
+		print("Registering interaction area: ", area.name)
 		active_areas.push_back(area)
 
 func unregister_area(area: InteractionArea):
+	print("Unregistering interaction area: ", area.name)
 	active_areas.erase(area)
 
 func _process(delta):
@@ -35,9 +37,13 @@ func _sort_by_distance_to_player(area1, area2):
 
 func _input(event):
 	if event.is_action_pressed("Interact") and can_interact:
+		print("Interact key pressed")
 		if active_areas.size() > 0:
 			can_interact = false
 			label.hide()
 			var closest_area = active_areas[0]
+			print("Calling interact on: ", closest_area.name)
 			await closest_area.interact.call()
 			can_interact = true
+		else:
+			print("No active interaction areas")

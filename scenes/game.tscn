@@ -1,4 +1,4 @@
-[gd_scene load_steps=142 format=4 uid="uid://b6nalqfrc6gn"]
+[gd_scene load_steps=144 format=4 uid="uid://b6nalqfrc6gn"]
 
 [ext_resource type="Texture2D" uid="uid://dcnnqy24s70v6" path="res://assets/sprites/world_tileset.png" id="1_cneqb"]
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_u4n54"]
@@ -14,12 +14,13 @@
 [ext_resource type="Script" path="res://scenes/sword_pickup.gd" id="11_5d6n8"]
 [ext_resource type="Resource" uid="uid://dsjgbhxl66jym" path="res://inventory/items/sword.tres" id="12_ooi5k"]
 [ext_resource type="Texture2D" uid="uid://cnnec44ug1t0t" path="res://assets/backgrounds/5.png" id="14_6ucq3"]
-[ext_resource type="Texture2D" uid="uid://cgycb5wylg2m5" path="res://assets/sprites/items/sword.png" id="14_ftsns"]
 [ext_resource type="Texture2D" uid="uid://c6agexyvqtbwg" path="res://assets/backgrounds/fillup.png" id="14_hkye8"]
 [ext_resource type="Texture2D" uid="uid://biyg4ekmvusgj" path="res://assets/backgrounds/1.png" id="14_qcufi"]
 [ext_resource type="PackedScene" uid="uid://cp8svf3yg7uru" path="res://scenes/interaction_area.tscn" id="14_y2qun"]
+[ext_resource type="Texture2D" uid="uid://c56wbvv47t12j" path="res://assets/sprites/items/axe.png" id="15_0vnjw"]
 [ext_resource type="Texture2D" uid="uid://cyqxpslviumj8" path="res://assets/backgrounds/4.png" id="15_auap8"]
 [ext_resource type="Texture2D" uid="uid://cag4xypbosr6x" path="res://assets/backgrounds/fillup_low.png" id="15_tw43o"]
+[ext_resource type="Resource" uid="uid://bhcelx1nhv46e" path="res://inventory/items/axe.tres" id="15_xcbi4"]
 [ext_resource type="Texture2D" uid="uid://cmgv5057jmtvh" path="res://assets/sprites/misc_assets/spaceships/Foozle_2DS0013_Void_EnemyFleet_2/Nairan/Designs - Base/PNGs/Nairan - Frigate - Base.png" id="16_1rwbe"]
 [ext_resource type="Texture2D" uid="uid://bhnidqtbeh726" path="res://assets/backgrounds/3.png" id="16_id7fr"]
 [ext_resource type="Texture2D" uid="uid://dmy7b4ywb8rd6" path="res://assets/sprites/misc_assets/particle effects/Spritesheets/Fire+Sparks-Sheet.png" id="17_jajwk"]
@@ -4066,6 +4067,9 @@ _data = {
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ptsxl"]
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8j0sj"]
+load_path = "res://.godot/imported/sword.png-a345d20c57aabefdedfeb97bd2c1f701.ctex"
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_ggafh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ra8r"]
@@ -4633,17 +4637,34 @@ shape = SubResource("WorldBoundaryShape2D_ptsxl")
 [node name="Items" type="Node" parent="."]
 
 [node name="Sword_pickup" type="Node2D" parent="Items"]
-position = Vector2(-176, 0)
+visible = false
+position = Vector2(-208, 0)
 script = ExtResource("11_5d6n8")
 item_resource = ExtResource("12_ooi5k")
 
 [node name="Sprite2D" type="Sprite2D" parent="Items/Sword_pickup"]
 scale = Vector2(0.03, 0.03)
-texture = ExtResource("14_ftsns")
+texture = SubResource("CompressedTexture2D_8j0sj")
 
 [node name="InteractionArea" parent="Items/Sword_pickup" instance=ExtResource("14_y2qun")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Items/Sword_pickup/InteractionArea"]
+shape = SubResource("CircleShape2D_ggafh")
+one_way_collision_margin = 4.9
+
+[node name="Axe_pickup" type="Node2D" parent="Items"]
+visible = false
+position = Vector2(-176, 0)
+script = ExtResource("11_5d6n8")
+item_resource = ExtResource("15_xcbi4")
+
+[node name="Sprite2D" type="Sprite2D" parent="Items/Axe_pickup"]
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("15_0vnjw")
+
+[node name="InteractionArea" parent="Items/Axe_pickup" instance=ExtResource("14_y2qun")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Items/Axe_pickup/InteractionArea"]
 shape = SubResource("CircleShape2D_ggafh")
 one_way_collision_margin = 4.9
 
