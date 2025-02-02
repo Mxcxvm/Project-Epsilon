@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/Checkpoint.gd" id="1_mr7yu"]
 [ext_resource type="Texture2D" uid="uid://cem5ajxd5hu60" path="res://assets/Obelisk_demo/Obelisk.png" id="2_ixl35"]
-[ext_resource type="AudioStream" uid="uid://da5gc8hqocdqh" path="res://assets/music/level-up-289723.mp3" id="3_5px5t"]
+[ext_resource type="AudioStream" uid="uid://jyt1wekdgarx" path="res://assets/music/level-up-289723.mp3" id="3_5px5t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3miwo"]
 size = Vector2(60, 90.75)
