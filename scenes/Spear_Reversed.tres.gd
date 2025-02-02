@@ -10,7 +10,7 @@ func _process(delta: float) -> void:
 	pass
 
 
-func _on_pressure_plate_3_spear_state(state: Variant) -> void:
+func _on_pressure_plate_4_spear_state(state: Variant) -> void:
 	if(state):
 		animated_sprite_2d.play("activate")
 		collision_shape.set_deferred("disabled", false)

@@ -2,7 +2,7 @@ extends AnimatedSprite2D
 @onready var animated_sprite_2d = $"."
 
 var doorOpened: bool = true
-var area_two_location = Vector2(5200, -1430)
+var area_one_location = Vector2(1775, -250)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -18,4 +18,4 @@ func _process(delta: float) -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	#if ("Player" in body.name):
 	if(doorOpened):
-		body.global_position = area_two_location
+		body.global_position = area_one_location

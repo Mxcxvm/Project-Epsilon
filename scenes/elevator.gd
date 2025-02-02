@@ -15,7 +15,7 @@ var elevator_controlstation = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
-
+@onready var elevator_fixing_sound: AudioStreamPlayer2D = $"../../elevator_top_part/elevator_fixing_sound"
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -33,6 +33,7 @@ func _process(delta: float) -> void:
 		control_station_interaction.visible = false
 		elevator_repaired = true
 		animation_player_topPart.play("elevator_repair")
+		elevator_fixing_sound.play()
 		animated_sprite_2d.play("open_elevator")
 
 #utility function to interrupt the script execution for the given seconds

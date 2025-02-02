@@ -60,10 +60,10 @@ var is_dead := false
 # signals
 signal stamina_value(current_stamina)
 
-# Movement Konstanten
-const SPEED = 125.0
+# Movement Konstanten (Speed und Dash_Speed variable to lock player at the ending)
+var SPEED = 125.0
 const JUMP_VELOCITY = -250.0
-const DASH_SPEED = 200.0
+var DASH_SPEED = 200.0
 const DASH_DURATION = 0.4
 
 # Stamina Konstanten
@@ -148,6 +148,10 @@ func _physics_process(delta: float) -> void:
 
 	if not is_on_floor() and not is_dashing:
 		velocity += get_gravity() * delta
+		
+	if (Global.game_over):
+		DASH_SPEED = 0
+		SPEED = 0
 		
 	if is_on_floor():
 		air_dash_used = false

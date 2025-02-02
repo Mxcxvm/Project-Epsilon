@@ -291,6 +291,7 @@ func apply_damage(damage_amount: int):
 	if health <= 0:
 		sync_animation = "death"
 		call_deferred("disable_hitbox")
+		Global.bossDoor = true
 
 
 func disable_hitbox():
