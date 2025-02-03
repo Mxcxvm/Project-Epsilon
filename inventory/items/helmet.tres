@@ -8,7 +8,7 @@ script = ExtResource("1_mxq0f")
 type = 0
 name = "Grundschutz-Helm"
 damage = 0.0
-defense = 2.0
+defense = 3.0
 description = "Ein einfacher Helm, der grundlegenden Schutz vor Stößen und leichten Umwelteinflüssen bietet.
 
 "

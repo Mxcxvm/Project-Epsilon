@@ -1,13 +1,13 @@
 [gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://dbm1m876l30g0"]
 
 [ext_resource type="Script" path="res://inventory/items/ItemData.gd" id="1_t6drb"]
-[ext_resource type="Texture2D" uid="uid://5nl372a3jggy" path="res://assets/sprites/items/iron_armor.png" id="2_2wlye"]
+[ext_resource type="Texture2D" uid="uid://clgl4j747u3fa" path="res://assets/sprites/items/headgear_01.png" id="2_3e87c"]
 
 [resource]
 script = ExtResource("1_t6drb")
 type = 1
 name = "Stabilitätsweste"
 damage = 0.0
-defense = 4.0
+defense = 5.0
 description = "Eine leichte Weste, die vor kleinen Projektilen und leichten Treffern schützt, aber keine schwere Rüstung ersetzt."
-texture = ExtResource("2_2wlye")
+texture = ExtResource("2_3e87c")
