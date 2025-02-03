@@ -1,4 +1,4 @@
-[gd_scene load_steps=83 format=3 uid="uid://dxnkfj47wkm23"]
+[gd_scene load_steps=90 format=3 uid="uid://dxnkfj47wkm23"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_7rjoq"]
 [ext_resource type="Texture2D" uid="uid://cfu1x4qmoxqg2" path="res://assets/sprites/vagabond/idle/idle01.png" id="2_6bst3"]
@@ -71,6 +71,13 @@
 [ext_resource type="Texture2D" uid="uid://r7ac812j1i7f" path="res://assets/sprites/vagabond/jump_flip/jump_flip03.png" id="50_2w5xf"]
 [ext_resource type="PackedScene" uid="uid://cej12kcqx0d0o" path="res://scenes/player_hud.tscn" id="70_qypdi"]
 [ext_resource type="PackedScene" uid="uid://bvucexn2jjegg" path="res://scenes/inventory.tscn" id="71_rw5li"]
+[ext_resource type="AudioStream" uid="uid://btbl6uuevc3ml" path="res://assets/music/062708_laser-charging-81968.mp3" id="72_oqnt5"]
+[ext_resource type="AudioStream" uid="uid://cwyduk35v2rq3" path="res://assets/music/laser-zap-90575.mp3" id="73_a0bjc"]
+[ext_resource type="AudioStream" uid="uid://l526m1xr37wx" path="res://assets/music/whoosh-clothes-cape-243486.mp3" id="74_8gnet"]
+[ext_resource type="AudioStream" uid="uid://cg1bp08k1vhim" path="res://assets/music/jumping_1-6452.mp3" id="74_l10mo"]
+[ext_resource type="AudioStream" uid="uid://dp8t8mglol6m7" path="res://assets/music/laser-6042_3mUjfFLT.mp3" id="76_4pnxv"]
+[ext_resource type="AudioStream" uid="uid://5ajp7efwu7di" path="res://assets/music/ouch-sound-effect-30-11844.mp3" id="77_nq8ug"]
+[ext_resource type="AudioStream" uid="uid://bpelt88ax87me" path="res://assets/music/item-equip-6904.mp3" id="78_s5kut"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1e687"]
 properties/0/path = NodePath(".:sync_position")
@@ -445,9 +452,9 @@ position = Vector2(-2, -10)
 shape = SubResource("CapsuleShape2D_j0j4y")
 
 [node name="HitBox" type="Area2D" parent="."]
+position = Vector2(-2, -10)
 
 [node name="HitBoxCollisionShape2D" type="CollisionShape2D" parent="HitBox"]
-position = Vector2(-2, -10)
 shape = SubResource("CapsuleShape2D_j0j4y")
 
 [node name="AttackArea2D" type="Area2D" parent="." groups=["Sword"]]
@@ -461,11 +468,43 @@ disabled = true
 one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(4, 4)
+position = Vector2(-2, -10)
+zoom = Vector2(5, 5)
 
 [node name="PlayerHUD" parent="." instance=ExtResource("70_qypdi")]
 
 [node name="Inventory" parent="." instance=ExtResource("71_rw5li")]
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="heavy_attack_charged_sound" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("72_oqnt5")
+volume_db = -10.0
+pitch_scale = 2.0
+
+[node name="heavy_attack_released_sound" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("73_a0bjc")
+volume_db = -15.0
+pitch_scale = 0.7
+
+[node name="jumping_sound" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("74_8gnet")
+volume_db = -15.0
+
+[node name="dashing_sound" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("74_l10mo")
+volume_db = 4.0
+
+[node name="light_attack_sound" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("76_4pnxv")
+pitch_scale = 1.5
+
+[node name="damage_taken_sound" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("77_nq8ug")
+
+[node name="pickup_sound" type="AudioStreamPlayer2D" parent="Sounds"]
+position = Vector2(-2, -10)
+stream = ExtResource("78_s5kut")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_entered" from="AttackArea2D" to="." method="_on_attack_area_2d_body_entered"]

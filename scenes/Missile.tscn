@@ -1,0 +1,92 @@
+[gd_scene load_steps=12 format=3 uid="uid://j5u4gk7ucmun"]
+
+[ext_resource type="Script" path="res://scripts/stone_golem/weapon_scripts/missile.gd" id="1_t7xqw"]
+[ext_resource type="Texture2D" uid="uid://crgo4ih13fhbs" path="res://assets/sprites/EndBoss/weaponPNG/arm_projectile_glowing.png" id="2_4w4qo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mwhen"]
+atlas = ExtResource("2_4w4qo")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f5c4w"]
+atlas = ExtResource("2_4w4qo")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mw3qu"]
+atlas = ExtResource("2_4w4qo")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aas27"]
+atlas = ExtResource("2_4w4qo")
+region = Rect2(0, 100, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4sjnn"]
+atlas = ExtResource("2_4w4qo")
+region = Rect2(100, 100, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8cx4w"]
+atlas = ExtResource("2_4w4qo")
+region = Rect2(200, 100, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0jj5r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mwhen")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f5c4w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mw3qu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aas27")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4sjnn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8cx4w")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sm8cs"]
+size = Vector2(35, 14)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1"]
+properties/0/path = NodePath(".:sync_position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:sync_target_id")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:sync_direction")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:sync_flip_h")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath(".:sync_rotation")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+
+[node name="Missile" type="Area2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_t7xqw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-28, 13)
+sprite_frames = SubResource("SpriteFrames_0jj5r")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_sm8cs")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_1")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

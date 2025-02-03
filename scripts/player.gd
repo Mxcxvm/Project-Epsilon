@@ -49,14 +49,23 @@ var current_health := max_health
 var current_stamina := max_stamina
 var is_dead := false
 
+# Sounds
+@onready var heavy_attack_charged_sound: AudioStreamPlayer2D = $Sounds/heavy_attack_charged_sound
+@onready var heavy_attack_released_sound: AudioStreamPlayer2D = $Sounds/heavy_attack_released_sound
+@onready var jumping_sound: AudioStreamPlayer2D = $Sounds/jumping_sound
+@onready var dashing_sound: AudioStreamPlayer2D = $Sounds/dashing_sound
+@onready var light_attack_sound: AudioStreamPlayer2D = $Sounds/light_attack_sound
+@onready var damage_taken_sound: AudioStreamPlayer2D = $Sounds/damage_taken_sound
+@onready var pickup_sound: AudioStreamPlayer2D = $Sounds/pickup_sound
+
 
 # signals
 signal stamina_value(current_stamina)
 
-# Movement Konstanten
-const SPEED = 125.0
+# Movement Konstanten (Speed und Dash_Speed variable to lock player at the ending)
+var SPEED = 125.0
 const JUMP_VELOCITY = -250.0
-const DASH_SPEED = 200.0
+var DASH_SPEED = 200.0
 const DASH_DURATION = 0.4
 
 # Stamina Konstanten
@@ -88,6 +97,7 @@ func _enter_tree():
 	print("[Player] Entering tree, authority: ", get_multiplayer_authority())
 
 func _ready() -> void:
+	add_to_group("player") 
 	# set up initial values
 	current_health = max_health
 	current_stamina = max_stamina
@@ -114,7 +124,7 @@ func _ready() -> void:
 		if $Camera2D:
 			$Camera2D.enabled = false
 	
-	# make sure inventory is only controlled by its owner
+	# inventory is only controlled by its owner
 	if inv:
 		inv.set_multiplayer_authority(get_multiplayer_authority())
 	
@@ -144,6 +154,10 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor() and not is_dashing:
 		velocity += get_gravity() * delta
 		
+	if (Global.game_over):
+		DASH_SPEED = 0
+		SPEED = 0
+		
 	if is_on_floor():
 		air_dash_used = false
 		jump_count = 0
@@ -157,7 +171,7 @@ func _physics_process(delta: float) -> void:
 	jump()
 	move_and_slide()
 	
-	# Update sync variables at the end of physics processing
+	# update sync variables 
 	sync_position = position
 	sync_velocity = velocity
 	if animated_sprite != null:
@@ -350,9 +364,9 @@ func calculate_damage(attack_type: String) -> int:
 	
 	match attack_type:
 		"light":
-			return int(base_damage * LIGHT_ATTACK_MULTIPLIER * weapon_multiplier)
+			return int(base_damage * LIGHT_ATTACK_MULTIPLIER)
 		"heavy":
-			return int(base_damage * HEAVY_ATTACK_MULTIPLIER * weapon_multiplier)
+			return int(base_damage * HEAVY_ATTACK_MULTIPLIER)
 		_:
 			return 0
 
@@ -363,6 +377,7 @@ func attack():
 		update_hud_stamina()
 		if animated_sprite != null:
 			animated_sprite.play("attack_light")
+			light_attack_sound.play()
 		is_attacking = true
 		current_damage = calculate_damage("light")
 		$AttackArea2D/CollisionShape2D.disabled = false
@@ -386,6 +401,7 @@ func attack():
 			is_attacking = true
 			if animated_sprite != null:
 				animated_sprite.play("attack_heavy_charge")
+				heavy_attack_charged_sound.play()
 			if animated_sprite != null and animated_sprite.flip_h:
 				animated_sprite.offset.x = -55 
 				$AttackArea2D.position.x = 0
@@ -396,6 +412,8 @@ func attack():
 				$AttackArea2D.scale.x = 1
 
 	if Input.is_action_just_released("heavy_attack") and is_charging:
+		heavy_attack_charged_sound.stop()
+		heavy_attack_released_sound.play()
 		current_stamina -= HEAVY_ATTACK_COST
 		update_hud_stamina()
 		if animated_sprite != null:
@@ -482,6 +500,8 @@ func update_client_health(new_health: int, new_stamina: float) -> void:
 
 @rpc("any_peer", "reliable", "call_local")
 func initiate_death() -> void:
+	if death_timer:
+		return
 	print("Initiating death sequence for player: ", name, " on peer: ", multiplayer.get_unique_id())
 	
 	# Disable all RPCs and physics first
@@ -521,8 +541,13 @@ func initiate_respawn() -> void:
 	current_stamina = max_stamina
 	is_dead = false
 	
-	# Reset position
-	position = Vector2(0, -60)
+	if Checkpoint.is_activated and Checkpoint.last_location:
+		position = Checkpoint.last_location
+		
+	else:
+		# Fallback 
+		position = Vector2(0, -60)
+
 	sync_position = position
 	velocity = Vector2.ZERO
 	sync_velocity = velocity
@@ -587,18 +612,20 @@ func take_damage(amount: int) -> void:
 		
 	print("Health after damage: ", current_health, " on peer: ", multiplayer.get_unique_id())
 	
-	if current_health <= 0:
+	if current_health <= 0 and not is_dead:
+		is_dead = true
 		die()
 	else:
 		animated_sprite.play("get_hit")
+		damage_taken_sound.play()
 
 @rpc("any_peer", "reliable")
 func request_damage(amount: int) -> void:
-	print("Server received damage request: ", amount)
 	if multiplayer.is_server():
-		take_damage(amount)
-		# Sync the new health to all clients
-		update_client_health.rpc(current_health, current_stamina)
+		return
+	print("Server received damage request: ", amount)
+	take_damage(amount)
+	update_client_health.rpc(current_health, current_stamina)
 
 @rpc("any_peer", "reliable")
 func notify_attack(damage_amount: int) -> void:
@@ -698,6 +725,11 @@ func process_item_pickup(pickup_node_path: NodePath, player_id: int) -> void:
 			print("Player does not have add_item_to_inventory method")
 	else:
 		print("Player not found for ID: ", player_id)
+	if add_item_to_inventory(item_data):
+		pickup_sound.play()
+		interactable.queue_free()
+
+		rpc("sync_item_removal", pickup_node_path)
 		
 @rpc("reliable")
 func sync_item_removal(pickup_node_path: NodePath) -> void:

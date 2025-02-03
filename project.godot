@@ -19,6 +19,8 @@ config/icon="res://icon.svg"
 
 MultiplayerManager="*res://scripts/multiplayer_manager.gd"
 InteractionManager="*res://scenes/InteractionManager.tscn"
+Checkpoint="*res://scripts/Checkpoint.gd"
+Global="*res://scenes/global.gd"
 
 [editor]
 
@@ -28,6 +30,16 @@ version_control/autoload_on_startup=true
 [editor_plugins]
 
 enabled=PackedStringArray()
+
+[file_customization]
+
+folder_colors={
+"res://assets/music/": "red"
+}
+
+[global_group]
+
+enemies=""
 
 [input]
 

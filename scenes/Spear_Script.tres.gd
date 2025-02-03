@@ -12,12 +12,12 @@ func _process(delta: float) -> void:
 
 
 func _on_pressure_plate_3_spear_state(state: Variant) -> void:
-	if(state):
-		animated_sprite_2d.play("withdraw")
-		collision_shape.set_deferred("disabled", true)
-	else: 
-		animated_sprite_2d.play("activate")
-		collision_shape.set_deferred("disabled", false)
+	#if(state):
+		#animated_sprite_2d.play("withdraw")
+		#collision_shape.set_deferred("disabled", true)
+	#else: 
+		#animated_sprite_2d.play("activate")
+		#collision_shape.set_deferred("disabled", false)
 		
 	pass # Replace with function body.
 
