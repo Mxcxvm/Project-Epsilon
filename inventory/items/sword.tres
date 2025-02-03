@@ -6,10 +6,7 @@
 [resource]
 script = ExtResource("1_0q58t")
 type = 4
-name = "Standardklinge"
+name = "Basic Sword"
 damage = 5.0
-defense = 0.0
-description = "Ein gut ausbalanciertes Schwert mit robuster Legierung. Solide, aber unspektakulär.
-
-"
+description = "boring ahh sword"
 texture = ExtResource("2_exmvi")
