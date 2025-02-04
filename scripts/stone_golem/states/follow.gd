@@ -3,7 +3,6 @@ extends State
 const MELEE_RANGE = 20
 const LASER_RANGE_MIN = 100
 const LASER_RANGE_MAX = 260
-const MOVEMENT_SPEED = 40
 
 var attack_cooldown = 3.0  # sekunden zwischen angriff
 var can_attack = true
@@ -15,7 +14,6 @@ func enter():
 		owner.sync_animation = "idle"
 	if debug:
 		debug.text = "Follow"
-		debug.visible = true
  
 func exit():
 	super.exit()
@@ -39,7 +37,7 @@ func _physics_process(_delta):
 	owner.direction = owner.position.direction_to(owner.player.position)
 	
 	if distance > 20:
-		var velocity = owner.direction.normalized() * MOVEMENT_SPEED
+		var velocity = owner.direction.normalized() * owner.MOVEMENT_SPEED
 		owner.velocity = velocity
 		owner.sync_position = owner.position
  

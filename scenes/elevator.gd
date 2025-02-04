@@ -28,7 +28,8 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("Interact") and elevator_recall:
 			animation_player.play_backwards("elevator_up") 
 			animated_sprite_2d.play("open_elevator")
-	
+			elevator_started = false
+			
 	if  Input.is_action_just_pressed("Interact") and elevator_controlstation and not elevator_repaired:
 		control_station_interaction.visible = false
 		elevator_repaired = true

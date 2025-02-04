@@ -13,7 +13,6 @@ func enter():
 	set_process(true)
 	if debug:
 		debug.text = name
-		debug.visible = true
 
 func exit():
 	set_physics_process(false)

@@ -10,7 +10,6 @@ func enter():
 	animation_player.play("idle")
 	if debug:
 		debug.text = "Idle"
-		debug.visible = true
  
 func _physics_process(_delta):
 	super._physics_process(_delta)

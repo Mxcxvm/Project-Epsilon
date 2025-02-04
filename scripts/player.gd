@@ -542,7 +542,7 @@ func take_damage(amount: int) -> void:
 		is_dead = true
 		die()
 	else:
-		animated_sprite.play("get_hit")
+		#animated_sprite.play("get_hit")
 		damage_taken_sound.play()
 
 @rpc("any_peer", "reliable")

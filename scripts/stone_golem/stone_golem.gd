@@ -3,6 +3,8 @@ extends CharacterBody2D
 const MAX_HEALTH = 1000
 const CHECK_NEAREST_INTERVAL = 0.2
 
+@export var MOVEMENT_SPEED: float = 100.0
+
 @onready var synchronizer = $MultiplayerSynchronizer
 @onready var sprite = $Sprite2D
 @onready var progress_bar = $UI/ProgressBar
@@ -245,7 +247,7 @@ func _physics_process(delta):
 		return
 		
 	if player != null and is_instance_valid(player):
-		velocity = direction.normalized() * 40
+		velocity = direction.normalized() * MOVEMENT_SPEED
 		var collision = move_and_collide(velocity * delta)
 		sync_position = position
 		

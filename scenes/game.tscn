@@ -7101,7 +7101,6 @@ offset_bottom = 906.0
 text = "Press [E] to interact"
 
 [node name="GG_text" type="Label" parent="MapAssets/Text"]
-visible = false
 z_index = 3
 offset_left = 2868.0
 offset_top = -115.0

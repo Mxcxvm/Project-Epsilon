@@ -391,9 +391,10 @@ func _ready():
 func _on_body_entered(body):
 	if not owner.is_multiplayer_authority():
 		return
-	    
+		
 	if body.has_method(\"take_damage\"):
-		body.take_damage(MELEE_DAMAGE)"
+		body.take_damage(MELEE_DAMAGE)
+"
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_m0oxi"]
 radius = 15.9903

@@ -50,7 +50,6 @@ theme_override_fonts/font = ExtResource("2_6ax75")
 theme_override_styles/background = SubResource("StyleBoxFlat_4jhae")
 theme_override_styles/fill = SubResource("StyleBoxFlat_qe6da")
 value = 100.0
-show_percentage = false
 
 [node name="hp_label" type="Label" parent="Control"]
 layout_mode = 0
