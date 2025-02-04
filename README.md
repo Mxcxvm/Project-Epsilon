@@ -1,5 +1,8 @@
 # Project Epsilon
 
+![Uploading Screenshot 2025-02-04 at 10.32.08.png…]()
+
+
 **Project Epsilon** ist ein 2D-Coop-Metroidvania-Spiel im futuristischen Stil. 
 Tauche ein in eine geheimnisvolle Welt voller düsterer Geheimnisse, gefährlicher Gegner und faszinierender Technologien. 
 Als Spieler übernimmst du die Rolle eines abtrünnigen Vagabond Cyborgs, der in einer dystopischen Zukunft seine Identität und Wahrheit aufdecken muss.
