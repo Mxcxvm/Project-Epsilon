@@ -8,5 +8,4 @@ func _on_host_pressed():
 
 
 func _on_join_pressed() -> void:
-	var ip = "localhost"
-	MultiplayerManager.join_game(ip)
+	MultiplayerManager.join_game()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=219 format=4 uid="uid://b6nalqfrc6gn"]
+[gd_scene load_steps=220 format=4 uid="uid://b6nalqfrc6gn"]
 
 [ext_resource type="Texture2D" uid="uid://dcnnqy24s70v6" path="res://assets/sprites/world_tileset.png" id="1_cneqb"]
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_u4n54"]
@@ -6005,6 +6005,11 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lcutv"]
 size = Vector2(10, 42.5)
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_qyxe8"]
+properties/0/path = NodePath(".:sync_door_open")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0i73m"]
 size = Vector2(44, 103.125)
 
@@ -7029,6 +7034,9 @@ shape = SubResource("RectangleShape2D_lcutv")
 position = Vector2(0, 4)
 stream = ExtResource("63_to8qs")
 
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="MapAssets/Doors/Boss_Door"]
+replication_config = SubResource("SceneReplicationConfig_qyxe8")
+
 [node name="Door7" type="Sprite2D" parent="MapAssets/Doors"]
 position = Vector2(2553, -43)
 scale = Vector2(0.84375, 0.859375)
@@ -7846,7 +7854,7 @@ texture = ExtResource("72_x5yyw")
 [node name="Keyitems" type="Node" parent="MapAssets"]
 
 [node name="Doorkey" type="AnimatedSprite2D" parent="MapAssets/Keyitems"]
-position = Vector2(-6624, -633)
+position = Vector2(-6624, -645)
 rotation = -0.0160824
 scale = Vector2(1.15426, 1.05945)
 sprite_frames = SubResource("SpriteFrames_c70mi")
@@ -7854,10 +7862,9 @@ autoplay = "default"
 frame_progress = 0.446892
 
 [node name="Key_Collection_Area" type="Area2D" parent="MapAssets/Keyitems"]
-position = Vector2(-6593.03, -641.75)
+position = Vector2(-6623, -645)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MapAssets/Keyitems/Key_Collection_Area"]
-position = Vector2(-31.4731, 5.75)
 shape = SubResource("RectangleShape2D_pqwi4")
 
 [node name="Hurtful_Objects" type="Node" parent="MapAssets"]

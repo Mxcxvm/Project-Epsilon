@@ -4,7 +4,6 @@
 [ext_resource type="Script" path="res://scripts/stone_golem/stone_golem.gd" id="1_ttdvg"]
 [ext_resource type="Texture2D" uid="uid://b454qnkwymv4q" path="res://assets/sprites/EndBoss/weaponPNG/Laser_sheet.png" id="2_itkcw"]
 [ext_resource type="Script" path="res://scripts/stone_golem/states/idle_state.gd" id="3_n4k2m"]
-[ext_resource type="Script" path="res://scripts/state.gd" id="3_qldbm"]
 [ext_resource type="Script" path="res://scripts/finite_state_machine.gd" id="3_ul75m"]
 [ext_resource type="Script" path="res://scripts/stone_golem/states/follow.gd" id="4_m3k2n"]
 [ext_resource type="Script" path="res://scripts/stone_golem/states/melee_attack.gd" id="7_a5glj"]
@@ -363,6 +362,9 @@ _data = {
 "ranged_attack": SubResource("Animation_3psc8")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8wbmo"]
+bg_color = Color(0, 0, 0, 1)
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x4yan"]
 radius = 15.0
 height = 46.0
@@ -394,12 +396,12 @@ func _on_body_entered(body):
 		body.take_damage(MELEE_DAMAGE)"
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_m0oxi"]
-radius = 13.8912
-height = 47.5279
+radius = 15.9903
+height = 49.6183
 
 [node name="StoneGolem" type="CharacterBody2D"]
 collision_layer = 4
-collision_mask = 3
+collision_mask = 2
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_ttdvg")
@@ -440,20 +442,19 @@ autoplay = "idle"
 [node name="ProgressBar" type="ProgressBar" parent="UI"]
 modulate = Color(0.666667, 0, 0, 1)
 custom_minimum_size = Vector2(200, 0)
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -169.0
-offset_top = -105.0
-offset_right = 156.0
-offset_bottom = -67.0
+anchors_preset = -1
+anchor_left = 0.374
+anchor_top = 0.873667
+anchor_right = 0.625
+anchor_bottom = 0.908951
+offset_left = 0.151978
+offset_top = -0.135986
 grow_horizontal = 2
-grow_vertical = 0
-max_value = 200.0
-value = 100.0
-show_percentage = false
+grow_vertical = 2
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_8wbmo")
+max_value = 1000.0
+value = 1000.0
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="UI/ProgressBar"]
@@ -476,17 +477,19 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -87.0
-offset_top = -62.0
-offset_right = 84.0
-offset_bottom = -39.0
+offset_left = -134.0
+offset_top = -116.0
+offset_right = 132.0
+offset_bottom = -81.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_font_sizes/font_size = 30
 text = "Boss has been Slained
 "
 metadata/_edit_use_anchors_ = true
 
 [node name="debug" type="Label" parent="."]
+visible = false
 offset_left = -25.0
 offset_top = -44.0
 offset_right = 24.0
@@ -503,6 +506,7 @@ position = Vector2(1, -23)
 shape = SubResource("CapsuleShape2D_x4yan")
 
 [node name="PlayerDetection" type="Area2D" parent="."]
+visible = false
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetection"]
@@ -526,9 +530,6 @@ script = ExtResource("8_ce1ed")
 
 [node name="ArmorBuff" type="Node2D" parent="FiniteStateMachine"]
 script = ExtResource("9_bnapr")
-
-[node name="Dash" type="Node2D" parent="FiniteStateMachine"]
-script = ExtResource("3_qldbm")
 
 [node name="Death" type="Node2D" parent="FiniteStateMachine"]
 script = ExtResource("11_ov73e")
@@ -559,7 +560,7 @@ script = SubResource("GDScript_grbpy")
 
 [node name="CollisionShape2D Melee" type="CollisionShape2D" parent="AttackArea2D"]
 position = Vector2(22, -15)
-rotation = -0.226893
+rotation = -0.0349066
 shape = SubResource("CapsuleShape2D_m0oxi")
 
 [connection signal="body_entered" from="PlayerDetection" to="." method="_on_player_detection_body_entered"]

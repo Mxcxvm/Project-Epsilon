@@ -1,11 +1,11 @@
 extends State
 
 const MELEE_RANGE = 20
-const LASER_RANGE_MIN = 120
+const LASER_RANGE_MIN = 100
 const LASER_RANGE_MAX = 260
 const MOVEMENT_SPEED = 40
 
-var attack_cooldown = 2.0  # Seconds between attacks
+var attack_cooldown = 3.0  # sekunden zwischen angriff
 var can_attack = true
 
 func enter():
@@ -38,11 +38,9 @@ func _physics_process(_delta):
 	var distance = owner.position.distance_to(owner.player.position)
 	owner.direction = owner.position.direction_to(owner.player.position)
 	
-	# movement towards player with wall sliding
 	if distance > 20:
 		var velocity = owner.direction.normalized() * MOVEMENT_SPEED
 		owner.velocity = velocity
-		owner.move_and_slide()
 		owner.sync_position = owner.position
  
 	# Check attack ranges

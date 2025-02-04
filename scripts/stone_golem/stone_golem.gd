@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const MAX_HEALTH = 200
+const MAX_HEALTH = 1000
 const CHECK_NEAREST_INTERVAL = 0.2
 
 @onready var synchronizer = $MultiplayerSynchronizer
@@ -10,6 +10,8 @@ const CHECK_NEAREST_INTERVAL = 0.2
 @onready var player_detection = $PlayerDetection
 @onready var animation_player = $AnimationPlayer
 @onready var cave_area = $CaveArea
+@onready var block_cooldown_timer = Timer.new()
+var block_on_cooldown : bool = false
 
 var players = []
 var player = null
@@ -87,11 +89,18 @@ var is_armor_buff_active = false
 @export var sync_health := MAX_HEALTH:
 	set(value):
 		sync_health = value
-		if not is_multiplayer_authority(): 
-			health = value
+		if progress_bar:
+			progress_bar.value = value
 
 var health = MAX_HEALTH:
 	set(value):
+		var damage_taken = health - value
+		
+		# apply damage reduction if in block state
+		if state_machine and state_machine.current_state.name == "Block":
+			damage_taken *= state_machine.get_node("Block").DAMAGE_REDUCTION
+			value = health - damage_taken
+		
 		health = value
 		if progress_bar:
 			progress_bar.value = value
@@ -102,13 +111,26 @@ var health = MAX_HEALTH:
 					sync_animation = "death"
 				state_machine.change_state("Death")
 			else:
+				if damage_taken > 0:
+					print("[GOLEM] Took ", damage_taken, " damage. Health: ", value, "/", MAX_HEALTH)
 				check_armor_buff()
-				var block_state = state_machine.get_node("Block")
-				if block_state.can_activate(self):
-					var previous_state = state_machine.current_state.name
-					sync_state = "Block"
-					sync_animation = "block"
-					state_machine.change_state("Block")
+				
+				# update hit counter for block state
+				if damage_taken > 0:  # only count actual hits
+					if state_machine.current_state.name != "Dead":
+						var block_state = state_machine.get_node("Block")
+						block_state.on_hit()
+						
+						var current_hp_percent = float(health) / MAX_HEALTH
+						if current_hp_percent <= block_state.HP_THRESHOLD_PERCENT and block_state.can_activate(self) and state_machine.current_state.name != "Block" and not block_on_cooldown:
+							var previous_state = state_machine.current_state.name
+							sync_state = "Block"
+							sync_animation = "block"
+							state_machine.change_state("Block")
+							block_on_cooldown = true
+							block_cooldown_timer.start()
+							block_state.recent_hits = 0
+							block_state.hit_timer = 0
 
 func check_armor_buff():
 	if not is_multiplayer_authority():
@@ -135,13 +157,14 @@ func _enter_tree():
 	set_multiplayer_authority(1)  # server controls enemies
 
 func _ready():
-	if not is_multiplayer_authority():
-		return
-	
 	if progress_bar:
 		progress_bar.max_value = MAX_HEALTH
 		progress_bar.value = health
 		progress_bar.visible = false
+		
+	if not is_multiplayer_authority():
+		return
+		
 	find_players()
 	
 	# player detection signals
@@ -153,6 +176,12 @@ func _ready():
 	if cave_area:
 		cave_area.body_entered.connect(_on_cave_area_body_entered)
 		cave_area.body_exited.connect(_on_cave_area_body_exited)
+	
+	# setup block cooldown timer
+	add_child(block_cooldown_timer)
+	block_cooldown_timer.one_shot = true
+	block_cooldown_timer.wait_time = 10.0  # 10 second cooldown
+	block_cooldown_timer.timeout.connect(_on_block_cooldown_timeout)
 
 func is_player(body: Node) -> bool:
 	return body.is_in_group("player")
@@ -220,7 +249,7 @@ func _physics_process(delta):
 		var collision = move_and_collide(velocity * delta)
 		sync_position = position
 		
-		# Check distance for camera zoom for fight
+		# check distance for camera zoom for fight
 		var distance = position.distance_to(player.position)
 		if distance <= 300 and player.has_node("Camera2D"):
 			zoom_camera_for_player.rpc(player.get_path(), 3.5)
@@ -262,7 +291,6 @@ func _on_cave_area_body_entered(body: Node2D) -> void:
 			sync_progress_bar_visible = true
 		progress_bar.visible = true
 		
-		# zoom out for all clients in the cave
 		if multiplayer.is_server():
 			zoom_camera_for_player.rpc(body.get_path(), 2.0)  
 
@@ -272,7 +300,6 @@ func _on_cave_area_body_exited(body: Node2D) -> void:
 			sync_progress_bar_visible = false
 		progress_bar.visible = false
 		
-		# return camera to normal
 		if multiplayer.is_server():
 			zoom_camera_for_player.rpc(body.get_path(), 4.0) 
 
@@ -285,14 +312,22 @@ func apply_damage(damage_amount: int):
 	if not multiplayer.is_server():
 		return
 	
-	health -= damage_amount / armor  # apply armor reduction
+	health -= damage_amount / armor
 	sync_health = health
+	
+	# Track hits for block state
+	var block_state = $FiniteStateMachine/Block
+	if block_state and not block_on_cooldown:
+		block_state.on_hit()
+		if block_state.can_activate(self) and state_machine.current_state.name != "Block":
+			block_on_cooldown = true
+			block_cooldown_timer.start()
+			state_machine.change_state("Block")
 	
 	if health <= 0:
 		sync_animation = "death"
 		call_deferred("disable_hitbox")
 		Global.bossDoor = true
-
 
 func disable_hitbox():
 	if has_node("HitBox2D/HitBoxCollision2D"):
@@ -317,3 +352,6 @@ func _on_hitbox_2d_area_entered(area: Area2D) -> void:
 					apply_damage(player_damage)
 			else:
 				request_apply_damage.rpc_id(1, player_damage, multiplayer.get_unique_id())
+
+func _on_block_cooldown_timeout():
+	block_on_cooldown = false

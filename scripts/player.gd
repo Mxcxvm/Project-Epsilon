@@ -60,23 +60,23 @@ var is_dead := false
 # signals
 signal stamina_value(current_stamina)
 
-# Movement Konstanten (Speed und Dash_Speed variable to lock player at the ending)
-var SPEED = 125.0
+# Movement Variablen
+var speed = 125.0
 const JUMP_VELOCITY = -250.0
-var DASH_SPEED = 200.0
+var dash_speed = 250.0
 const DASH_DURATION = 0.4
 
 # Stamina Konstanten
 const MAX_STAMINA = 100.0
 const STAMINA_REGEN = 25.0  
 const DASH_COST = 25.0
-const LIGHT_ATTACK_COST = 20.0
+const LIGHT_ATTACK_COST = 10.0
 const HEAVY_ATTACK_COST = 35.0
 
 # Damage Konstanten
 var base_damage = 10
 const LIGHT_ATTACK_MULTIPLIER = 1.0
-const HEAVY_ATTACK_MULTIPLIER = 4.0
+const HEAVY_ATTACK_MULTIPLIER = 3.5
 var current_damage = 0
 
 var is_attacking = false
@@ -95,11 +95,12 @@ func _enter_tree():
 	print("[Player] Entering tree, authority: ", get_multiplayer_authority())
 
 func _ready() -> void:
-	add_to_group("player") 
+	add_to_group("player")
+	$AttackArea2D.add_to_group("player_attack")
 	current_health = max_health
 	current_stamina = max_stamina
 	
-	# initialize sync properties
+	# sync variablen festlegen
 	sync_position = position
 	sync_velocity = velocity
 	sync_animation = ""
@@ -113,7 +114,7 @@ func _ready() -> void:
 	if is_multiplayer_authority():
 		if $Camera2D:
 			$Camera2D.enabled = true
-		# update HUD for this player
+		# HUD update fuer diesen spieler
 		if hud:
 			hud.update_health(current_health)
 			hud.update_stamina(current_stamina)
@@ -122,7 +123,7 @@ func _ready() -> void:
 		if $Camera2D:
 			$Camera2D.enabled = false
 	
-	# inventory is only controlled by its owner
+	# inventar kann nur vom besitzer geöffnet werden
 	if inv:
 		inv.set_multiplayer_authority(get_multiplayer_authority())
 	
@@ -150,8 +151,8 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 		
 	if (Global.game_over):
-		DASH_SPEED = 0
-		SPEED = 0
+		dash_speed = 0
+		speed = 0
 		
 	if is_on_floor():
 		air_dash_used = false
@@ -198,9 +199,9 @@ func idle_and_move(direction):
 					animated_sprite.play("run")
 	# Bewegung des Players
 	if direction:
-		velocity.x = direction * SPEED
+		velocity.x = direction * speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, speed)
 		
 	# Flip the Sprite
 	if direction > 0 and not is_attacking:
@@ -273,7 +274,7 @@ func dash(delta: float, direction: float) -> void:
 	# Dash Bewegungslogik 
 	if is_dashing:
 		dash_timer -= delta
-		velocity.x = dash_direction * DASH_SPEED
+		velocity.x = dash_direction * dash_speed
 		velocity.y = 0
 		$HitBox/HitBoxCollisionShape2D.disabled = true # Macht den Player während des Dash unverwundbar
 		if dash_timer <= 0:
@@ -296,8 +297,6 @@ func calculate_damage(attack_type: String) -> int:
 # Handle attack
 func attack():
 	if Input.is_action_just_pressed("light_attack") and current_stamina >= LIGHT_ATTACK_COST:
-		current_stamina -= LIGHT_ATTACK_COST
-		update_hud_stamina()
 		if animated_sprite != null:
 			animated_sprite.play("attack_light")
 			light_attack_sound.play()
@@ -316,6 +315,8 @@ func attack():
 		# Notify server about the attack
 		if not multiplayer.is_server():
 			notify_attack.rpc_id(1, current_damage)
+		current_stamina -= LIGHT_ATTACK_COST
+		update_hud_stamina()
 
 	# Heavy Attack - Zwei Animationen
 	if Input.is_action_pressed("heavy_attack") and not is_attacking and current_stamina >= HEAVY_ATTACK_COST:
@@ -546,7 +547,7 @@ func take_damage(amount: int) -> void:
 
 @rpc("any_peer", "reliable")
 func request_damage(amount: int) -> void:
-	if multiplayer.is_server():
+	if not multiplayer.is_server():
 		return
 	print("Server received damage request: ", amount)
 	take_damage(amount)
@@ -603,6 +604,8 @@ func _on_timer_timeout() -> void:
 
 # Attack Damage rückgabe für den Enemy
 func get_current_damage() -> int:
+	if not is_attacking:
+		return 0
 	return current_damage
 
 @rpc("reliable", "call_local")

@@ -72,10 +72,13 @@ properties/3/replication_mode = 1
 properties/4/path = NodePath(".:sync_rotation")
 properties/4/spawn = true
 properties/4/replication_mode = 2
+properties/5/path = NodePath(".:sync_health")
+properties/5/spawn = true
+properties/5/replication_mode = 1
 
 [node name="Missile" type="Area2D"]
 collision_layer = 4
-collision_mask = 3
+collision_mask = 7
 script = ExtResource("1_t7xqw")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -89,4 +92,5 @@ shape = SubResource("RectangleShape2D_sm8cs")
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_1")
 
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

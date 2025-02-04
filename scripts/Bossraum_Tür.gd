@@ -9,15 +9,13 @@ var area_two_location = Vector2(5200, -1430)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if(!doorOpened):
-		if(keyCollected): #and state_two
-			doorOpened = true
-			animated_sprite_2d.play("open_door")
-
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	if(!doorOpened and keyCollected):
+		doorOpened = true
+		animated_sprite_2d.play("open_door")
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:

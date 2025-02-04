@@ -4,9 +4,9 @@ extends State
 @onready var laser_sprite = $"../../Pivot/Sprite2D"
 @onready var laser_area = $"../../Pivot/LaserArea2D"
 const LASER_WARMUP_TIME := 0.65
-const LASER_DAMAGE := 5  # Damage per tick
-const DAMAGE_TICK_TIME := 0.1  # How often damage is applied
-var current_phase := "cast"  # Either "cast" or "laser"
+const LASER_DAMAGE := 5  # damage pro tick, 50 max.
+const DAMAGE_TICK_TIME := 0.1  # damage tick time
+var current_phase := "cast"  # "cast" oder "laser"
 var animation_started := false
 var laser_hit_time = 0.0
 var time_since_last_damage := 0.0
@@ -21,21 +21,18 @@ func _ready():
 
 func enter():
 	if not owner.is_multiplayer_authority():
-		# Only set up visuals for non-authority
 		laser_sprite.visible = true
 		return
 	
 	super.enter()
 	
-	# Disconnect any existing connection first
 	if animation_player.animation_finished.is_connected(_on_animation_player_animation_finished):
 		animation_player.animation_finished.disconnect(_on_animation_player_animation_finished)
-	# Face the player and aim laser
+
 	if owner.player:
 		owner.sprite.flip_h = owner.direction.x < 0
 		_update_aim()
 	
-	# Reset state and prepare laser
 	current_phase = "cast"
 	animation_started = false
 	laser_sprite.frame = 0
@@ -72,7 +69,7 @@ func _physics_process(delta):
 		owner.change_state("Follow")
 		return
 	
-	# Update direction and aim while casting
+	# update richtung und ziel waehrend casting
 	if current_phase == "cast":
 		owner.direction = owner.position.direction_to(owner.player.position)
 		owner.sprite.flip_h = owner.direction.x < 0
@@ -80,21 +77,20 @@ func _physics_process(delta):
 	elif current_phase == "laser" and is_laser_active:
 		laser_hit_time += delta
 		
-		# Skip damage during warmup period
+		# die animation braucht kurz bevor der laser kommt deswegen kleine verzoegerung
 		if laser_hit_time < LASER_WARMUP_TIME:
 			return
 			
 		time_since_last_damage += delta
 		if time_since_last_damage >= DAMAGE_TICK_TIME:
-			time_since_last_damage = 0.0  # Reset timer
+			time_since_last_damage = 0.0
 			
 			for body in bodies_in_laser:
 				if body.has_method("take_damage") and not body.is_dead:
-					print("[Laser] Applying damage tick: ", LASER_DAMAGE)
 					body.take_damage(LASER_DAMAGE)
 
 func _update_aim():
-	# Calculate angle to player
+	# berechnung von richtung
 	var target_pos = owner.player.position
 	var pivot_global_pos = pivot.global_position
 	
@@ -113,7 +109,7 @@ func _update_aim():
 		owner.sync_pivot_rotation = angle
 
 func _on_laser_body_entered(body):
-	if not is_laser_active:  # Only track bodies if laser is active
+	if not is_laser_active:
 		return
 	if body not in bodies_in_laser and body != owner:
 		bodies_in_laser.append(body)

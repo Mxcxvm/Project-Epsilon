@@ -1,17 +1,19 @@
 extends State
 
 var can_transition : bool = false
-var block_cooldown : float = 0.0
-const BLOCK_COOLDOWN_TIME : float = 10.0
-const HEALTH_RESTORE_AMOUNT : int = 30
-const BLOCK_CHANCE : float = 0.1
+const HEALTH_RESTORE_AMOUNT : int = 25
+const DAMAGE_REDUCTION : float = 0.25
+const HITS_TO_TRIGGER : int = 5
+const HIT_WINDOW : float = 3.0
 const HP_THRESHOLD_PERCENT : float = 0.5
+
+var recent_hits : int = 0
+var hit_timer : float = 0.0
 
 func enter():
 	super.enter()
 	if owner.is_multiplayer_authority():
 		owner.health = min(owner.health + HEALTH_RESTORE_AMOUNT, owner.MAX_HEALTH)
-		block_cooldown = BLOCK_COOLDOWN_TIME
 		var previous_state = get_parent().previous_state.name
 		animation_player.play("block")
 		await animation_player.animation_finished
@@ -24,8 +26,10 @@ func exit():
 	can_transition = false
 
 func physics_process(delta: float) -> void:
-	if block_cooldown > 0:
-		block_cooldown -= delta
+	if hit_timer > 0:
+		hit_timer -= delta
+		if hit_timer <= 0:
+			recent_hits = 0
 
 func transition():
 	if can_transition:
@@ -33,12 +37,19 @@ func transition():
 	return null
 
 static func can_activate(character_node) -> bool:
-	var state = character_node.get_node("FiniteStateMachine/Block")
-	if state.block_cooldown > 0:
-		return false
-	
 	var current_hp_percent = float(character_node.health) / character_node.MAX_HEALTH
 	if current_hp_percent > HP_THRESHOLD_PERCENT:
 		return false
-	print("DID IT WORK???????")
-	return randf() < BLOCK_CHANCE
+	return character_node.get_node("FiniteStateMachine/Block").recent_hits >= HITS_TO_TRIGGER
+
+# aufruf, wenn golem damage bekommt
+func on_hit():
+	var current_hp_percent = float(owner.health) / owner.MAX_HEALTH
+	if current_hp_percent > HP_THRESHOLD_PERCENT:
+		return
+		
+	if hit_timer <= 0:
+		recent_hits = 1
+	else:
+		recent_hits += 1
+	hit_timer = HIT_WINDOW

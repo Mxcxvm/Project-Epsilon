@@ -34,13 +34,13 @@ extends CharacterBody2D
 		if not is_multiplayer_authority(): 
 			damage = value
 
-var hp = 30
-const SPEED = 50
+var hp = 40
+const SPEED = 45
 const GRAVITY = 980
 var chase = false
 var direction
 var player
-var damage = 5
+var damage = 15
 	
 func _enter_tree():
 	# Only server should control enemies
@@ -158,20 +158,24 @@ func _on_hit_box_2d_area_entered(area: Area2D) -> void:
 				request_apply_damage.rpc_id(1, damage, multiplayer.get_unique_id())
 
 func _on_hit_box_2d_body_entered(body: Node2D) -> void:
-	if not multiplayer.is_server():
+	if not is_multiplayer_authority():
 		return
 		
 	if body.name.is_valid_int():  # Check if it's a player
 		if body.has_method("knockback"):
 			var x = body.position.x - position.x
 			var peer_id = body.name.to_int()
+			var knockback_force = 500 if x > 0 else -500
 			
-			# If its the host player apply knockback directly
+			# For all players, use RPC to ensure consistent behavior
 			if peer_id == 1:
-				body.knockback(500 if x > 0 else -500, damage)
+				body.knockback(knockback_force, damage)
 			else:
-				# For clients use RPC
-				body.knockback.rpc_id(peer_id, 500 if x > 0 else -500, damage)
+				body.knockback.rpc_id(peer_id, knockback_force, damage)
+				
+			# Ensure damage is applied through the proper RPC channel
+			if body.has_method("request_apply_damage"):
+				body.request_apply_damage.rpc_id(peer_id, damage)
 
 func is_value_in_array(array: Array, value) -> bool:
 	for item in array:

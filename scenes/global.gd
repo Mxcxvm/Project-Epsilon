@@ -1,12 +1,22 @@
 extends Node
 
-var bossDoor: bool = false
+var _boss_door: bool = false
+var bossDoor: bool = false:
+	set(value):
+		_boss_door = value
+		if multiplayer.is_server() and value == true:
+			sync_boss_door.rpc()
+	get:
+		return _boss_door
+
 var game_over: bool = false
-# Called when the node enters the scene tree for the first time.
+
 func _ready() -> void:
-	pass # Replace with function body.
+	pass 
 
+@rpc("authority", "reliable", "call_local")
+func sync_boss_door():
+	_boss_door = true
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass

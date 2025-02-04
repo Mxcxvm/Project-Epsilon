@@ -3,7 +3,7 @@ extends State
 const MELEE_DAMAGE = 10
 var damage_applied = false
 var damage_timer = 0.0
-const DAMAGE_TIME = 0.75  # when should the damage be applied
+const DAMAGE_TIME = 0.75  # damage wird nach verzoegerung angewendet um auf animation anzupassen
 const ANIMATION_LENGTH = 0.875
 
 @onready var attack_area = $"../../AttackArea2D"
@@ -21,11 +21,10 @@ func _start_new_attack():
 	damage_timer = 0.0
 	owner.sync_animation = "melee_attack"
 	
-	# Set up attack area direction
+	# richtung des angriffs
 	if attack_area:
 		attack_area.monitoring = true
 		attack_area.monitorable = true
-		# flip attack area based on direction to player
 		if owner.direction.x < 0:
 			attack_area.scale.x = -1
 		else:
@@ -58,7 +57,6 @@ func _physics_process(delta):
 			damage_applied = true
 
 func _apply_damage():
-	# Get all bodies currently in the attack area and damage them
 	if attack_area:
 		var bodies = attack_area.get_overlapping_bodies()
 		for body in bodies:

@@ -1,6 +1,34 @@
-[gd_scene load_steps=2 format=3 uid="uid://brsck262ajcge"]
+[gd_scene load_steps=8 format=3 uid="uid://brsck262ajcge"]
 
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_crmmy"]
+[ext_resource type="Texture2D" uid="uid://c1qqjk3o84k3s" path="res://assets/Project Epsilon.png" id="2_cpw21"]
+[ext_resource type="FontFile" uid="uid://dohynjsmn6812" path="res://assets/fonts/PixelOperator8.ttf" id="3_gu0i8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3w3wv"]
+bg_color = Color(0.603922, 0.301961, 0.458824, 0.407843)
+border_width_left = 3
+border_color = Color(1, 1, 1, 1)
+corner_detail = 10
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_128f7"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+color = Color(0.466667, 0.862745, 1, 1)
+thickness = 3
+vertical = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5gov"]
+bg_color = Color(0.603922, 0.301961, 0.458824, 0.407843)
+border_width_left = 3
+border_color = Color(1, 1, 1, 1)
+corner_detail = 10
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_vdek8"]
+color = Color(0.466667, 0.862745, 1, 1)
+thickness = 3
+vertical = true
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -11,21 +39,66 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_crmmy")
 
-[node name="Host" type="Button" parent="."]
-layout_mode = 0
-offset_left = 403.0
-offset_top = 279.0
-offset_right = 447.0
-offset_bottom = 310.0
-text = "Host"
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_cpw21")
+expand_mode = 1
+stretch_mode = 6
 
-[node name="Join" type="Button" parent="."]
-layout_mode = 0
-offset_left = 734.0
-offset_top = 277.0
-offset_right = 772.0
-offset_bottom = 308.0
-text = "Join"
+[node name="Panel" type="Panel" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.017
+anchor_top = 0.332
+anchor_right = 0.182
+anchor_bottom = 0.529
+offset_left = 0.415998
+offset_top = -0.136017
+offset_right = 0.335983
+offset_bottom = 0.207977
+grow_horizontal = 2
+grow_vertical = 2
 
-[connection signal="pressed" from="Host" to="." method="_on_host_pressed"]
-[connection signal="pressed" from="Join" to="." method="_on_join_pressed"]
+[node name="Host" type="Button" parent="Panel"]
+modulate = Color(0.466667, 0.862745, 1, 1)
+top_level = true
+layout_mode = 2
+anchor_left = 0.019
+anchor_top = 0.338
+anchor_right = 0.179
+anchor_bottom = 0.431
+offset_left = 0.112
+offset_top = -0.0240173
+offset_right = -0.208008
+offset_bottom = -0.288025
+theme_override_fonts/font = ExtResource("3_gu0i8")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/hover = SubResource("StyleBoxFlat_3w3wv")
+theme_override_styles/normal = SubResource("StyleBoxLine_128f7")
+text = "Play as Host"
+
+[node name="Join" type="Button" parent="Panel"]
+modulate = Color(0.466667, 0.862745, 1, 1)
+top_level = true
+layout_mode = 2
+anchor_left = 0.019
+anchor_top = 0.435
+anchor_right = 0.179
+anchor_bottom = 0.523
+offset_left = 0.112
+offset_top = 0.119965
+offset_right = -0.208008
+offset_bottom = 0.0960083
+theme_override_fonts/font = ExtResource("3_gu0i8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_c5gov")
+theme_override_styles/normal = SubResource("StyleBoxLine_vdek8")
+text = "Join a Game"
+
+[connection signal="pressed" from="Panel/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="Panel/Join" to="." method="_on_join_pressed"]

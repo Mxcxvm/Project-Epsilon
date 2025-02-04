@@ -14,9 +14,16 @@ var enemy_types = {
 
 var connected_players = []
 
-func _ready():
+# network discovery config
+const BROADCAST_PORT = 7001
+const MAX_PORT_ATTEMPTS = 5
+const BROADCAST_INTERVAL = 1.0  # seconds
+var udp = PacketPeerUDP.new()
+var broadcast_timer = Timer.new()
+var searching_for_games = false
 
-	# check if server needs to be instantiated
+func _ready():
+	# check ob server instanziiert werden muss
 	if multiplayer.is_server():
 		print("Server initializing world objects...")
 		await get_tree().create_timer(0.1).timeout
@@ -25,19 +32,22 @@ func _ready():
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
+	# add timer fuer broadcasting
+	broadcast_timer.wait_time = BROADCAST_INTERVAL
+	broadcast_timer.timeout.connect(_broadcast_game)
+	add_child(broadcast_timer)
+
 func spawn_player(peer_id):
 	var players_node = get_tree().get_first_node_in_group("players_container")
 	if not players_node:
 		print("ERROR: No Players node found!")
 		return false
 	
-	# small timeout for synchronization
 	await get_tree().create_timer(0.1).timeout
 	
 	var spawner = get_tree().get_first_node_in_group("player_spawner")
 	print("Spawner found: ", spawner != null)
 	if spawner:
-		# create instance of preload-scene
 		if player_scene:
 			print("Player scene loaded successfully")
 			var player = player_scene.instantiate()
@@ -45,14 +55,12 @@ func spawn_player(peer_id):
 				print("Player instantiated successfully")
 				player.name = str(peer_id)
 				
-				# add player to container node
 				players_node.add_child(player, true)
 				
-				# connect signals to HUD if this is the local player
+				# verbindung zum hud
 				if peer_id == multiplayer.get_unique_id():
 					var hud = get_tree().get_first_node_in_group("hud")
 					if hud:
-						# check if signal is not already connected before connecting
 						if not player.stamina_value.is_connected(hud._on_player_stamina_value_change):
 							player.stamina_value.connect(hud._on_player_stamina_value_change)
 				connected_players.append(peer_id)
@@ -65,7 +73,6 @@ func spawn_player(peer_id):
 	# fallback option
 	if spawner and spawner is MultiplayerSpawner:
 		print("Found spawner, attempting spawn...")
-		# Spawn the player
 		spawner.spawn([peer_id])
 		print("Spawn command sent for peer: ", peer_id)
 		return true
@@ -83,6 +90,8 @@ func host_game():
 	
 	# server is assigned to the multiplayer interface
 	multiplayer.multiplayer_peer = enet_peer
+	
+	_start_broadcasting()
 	
 	# change scene to game
 	get_tree().change_scene_to_file("res://scenes/game.tscn")
@@ -103,6 +112,15 @@ func host_game():
 				{"type": "slime", "pos": Vector2(500, -60)},
 				{"type": "slime", "pos": Vector2(-3000, 150)},
 				{"type": "slime", "pos": Vector2(-2800, 150)},
+				{"type": "slime", "pos": Vector2(-3450, -575)},
+				{"type": "slime", "pos": Vector2(-3550, -575)},
+				{"type": "slime", "pos": Vector2(-4900, -775)},
+				{"type": "slime", "pos": Vector2(-6000, -575)},
+				{"type": "slime", "pos": Vector2(-6050, -575)},
+				{"type": "slime", "pos": Vector2(-6300, --575)},
+				{"type": "slime", "pos": Vector2(-6400, --575)},
+				{"type": "slime", "pos": Vector2(3600, -1200)},
+				{"type": "slime", "pos": Vector2(3500, -1200)},
 				{"type": "stoneGolemBoss", "pos": Vector2(6550, -1000)}
 			]
 			
@@ -112,22 +130,109 @@ func host_game():
 	
 	spawn_player(multiplayer.get_unique_id())
 
-func join_game(ip_address: String):
-	print("Joining game at: ", ip_address)
+func join_game():
+	search_for_games()
+
+func _start_broadcasting():
+	# clean up existing connection
+	if udp.is_bound():
+		udp.close()
+		
+	# set up udp for broadcasting
+	udp.set_broadcast_enabled(true)
+	var error = udp.bind(BROADCAST_PORT)
+	if error == OK:
+		print("Successfully started broadcasting on port ", BROADCAST_PORT)
+		broadcast_timer.start()
+	else:
+		print("Failed to start broadcasting, error: ", error)
+
+func _broadcast_game():
+	if multiplayer.is_server():
+		var message = JSON.stringify({"game": "Project-Epsilon", "port": PORT})
+		udp.set_broadcast_enabled(true)
+		udp.set_dest_address("255.255.255.255", BROADCAST_PORT)
+		udp.put_packet(message.to_utf8_buffer())
+
+func search_for_games():
+	print("Searching for games on local network...")
+	if enet_peer:
+		enet_peer.close()
+		enet_peer = ENetMultiplayerPeer.new()
 	
-	if multiplayer.multiplayer_peer != null:
-		multiplayer.multiplayer_peer = null
+	if udp.is_bound():
+		udp.close()
 	
-	var error = enet_peer.create_client(ip_address, PORT)
-	if error != OK:
-		print("Failed to create client: ", error)
+	await get_tree().create_timer(0.1).timeout
+		
+	searching_for_games = true
+	udp.set_broadcast_enabled(true)
+	
+	# try different ports if needed
+	var bound = false
+	for port_offset in range(MAX_PORT_ATTEMPTS):
+		var try_port = BROADCAST_PORT + port_offset
+		var error = udp.bind(try_port, "*")
+		if error == OK:
+			print("Successfully bound to UDP port ", try_port, " for game search")
+			bound = true
+			break
+		else:
+			print("Failed to bind UDP to port ", try_port, ", error: ", error)
+	
+	if not bound:
+		print("Failed to bind to any UDP port, falling back to localhost")
+		_try_localhost()
 		return
 	
-	# connection signals
-	multiplayer.connected_to_server.connect(_on_connected_to_server)
-	multiplayer.connection_failed.connect(_on_connection_failed)
-	multiplayer.server_disconnected.connect(_on_server_disconnected)
+	await get_tree().create_timer(2.0).timeout
+	_check_for_games()
+
+func _check_for_games():
+	if not searching_for_games:
+		return
+		
+	while udp.get_available_packet_count() > 0:
+		var packet = udp.get_packet()
+		var ip = udp.get_packet_ip()
+		var data = JSON.parse_string(packet.get_string_from_utf8())
+		
+		if data and data.get("game") == "Project-Epsilon":
+			print("Found game at ", ip)
+			_connect_to_game(ip, data.get("port", PORT))
+			searching_for_games = false
+			udp.close()
+			return
 	
+	# if no games found, try localhost
+	print("No games found on network, trying localhost...")
+	_try_localhost()
+
+func _try_localhost():
+	print("Attempting to connect to localhost...")
+	_connect_to_game("127.0.0.1", PORT)
+
+func _connect_to_game(ip, port):
+	# clean up existing peer if any
+	if multiplayer.multiplayer_peer != null:
+		multiplayer.multiplayer_peer = null
+	if enet_peer:
+		enet_peer.close()
+		enet_peer = ENetMultiplayerPeer.new()
+	
+	print("Attempting to connect to ", ip, ":", port)
+	var error = enet_peer.create_client(ip, port)
+	if error != OK:
+		print("Failed to connect to ", ip, ":", port, " error: ", error)
+		return
+		
+	if not multiplayer.connected_to_server.is_connected(_on_connected_to_server):
+		multiplayer.connected_to_server.connect(_on_connected_to_server)
+	if not multiplayer.connection_failed.is_connected(_on_connection_failed):
+		multiplayer.connection_failed.connect(_on_connection_failed)
+	if not multiplayer.server_disconnected.is_connected(_on_server_disconnected):
+		multiplayer.server_disconnected.connect(_on_server_disconnected)
+		
 	multiplayer.multiplayer_peer = enet_peer
 
 func _on_connected_to_server():
@@ -179,7 +284,6 @@ func assign_world_authority():
 		platform.set_multiplayer_authority(1) 
 		print("Set authority for platform: ", platform.name, " to server")
 
-
 func spawn_enemy(enemy_type: String, pos: Vector2, enemies_node: Node):
 	# check if enemy type exists, then spawn them
 	if enemy_types.has(enemy_type):
@@ -193,3 +297,12 @@ func spawn_enemy(enemy_type: String, pos: Vector2, enemies_node: Node):
 		print("Spawned enemy type: ", enemy_type, " at position: ", pos)
 	else:
 		print("Enemy type not found: ", enemy_type)
+
+func _exit_tree():
+	# Clean up network resources when the node is removed
+	if udp.is_bound():
+		udp.close()
+	if broadcast_timer.is_inside_tree():
+		broadcast_timer.stop()
+	if enet_peer:
+		enet_peer.close()
