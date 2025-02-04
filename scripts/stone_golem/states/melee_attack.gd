@@ -1,6 +1,6 @@
 extends State
 
-const MELEE_DAMAGE = 10
+const MELEE_DAMAGE = 18
 var damage_applied = false
 var damage_timer = 0.0
 const DAMAGE_TIME = 0.75  # damage wird nach verzoegerung angewendet um auf animation anzupassen
