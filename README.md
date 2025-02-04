@@ -1,6 +1,9 @@
 # Project Epsilon
 
-<img width="574" alt="Screenshot 2025-02-04 at 10 32 08" src="https://github.com/user-attachments/assets/871403f9-f873-434d-9a74-169701936d6c" />
+<center>
+    <img src="https://github.com/user-attachments/assets/871403f9-f873-434d-9a74-169701936d6c" alt="Screenshot" width="574">
+</center>
+
 
 
 **Project Epsilon** ist ein 2D-Coop-Metroidvania-Spiel im futuristischen Stil. 
