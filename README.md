@@ -51,9 +51,8 @@ In *Project Epsilon* steuerst du einen abtrünnigen Agenten, der sich durch eine
 | Bewegen                | `A/D & Linke/Rechte Pfeiltaste`|
 | Springen               | `Leertaste`                    |
 | Angreifen              | `J / Linke Maustaste`          |
-| Schwerer Angriff       | `k / Rechte Maustaste`         |
+| Schwerer Angriff       | `K / Rechte Maustaste`         |
 | Inventar öffnen        | `Tab`                          |
-| Karte öffnen           | `M`                            |
 | Dash                   | `Shift`                        |
 | Menü öffnen            | `Esc`                          |
 
